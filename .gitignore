@@ -39,3 +39,14 @@
 
 # debug information files
 *.dwo
+
+# codespace files
+.devcontainer
+.vscode
+
+# local data
+Binaries
+Makefile
+
+# log files
+*.log
