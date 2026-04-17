@@ -2,17 +2,17 @@
 
 #include <ncurses.h>
 #include "Utils/Debug.h"
-#include "PScreenVirtualizer.h"
-#include "PIOController.h"
+#include "ScreenVirtualizer.h"
+#include "IOController.h"
 
-[[maybe_unused]] PIOController* PIOController::get() {
+[[maybe_unused]] IOController* IOController::get() {
     // constructed on first call
-    static PIOController instance;
+    static IOController instance;
     
     return &instance;
 }
 
-PIOController::PIOController() {
+IOController::IOController() {
     LOG_DEFAULT(LogType::VITAL, "IOController instantiated");
     
     // initialize ncurses
@@ -27,7 +27,7 @@ PIOController::PIOController() {
 
 }
 
-void PIOController::HandleInput() const {
+void IOController::HandleInput() const {
     
     int ch = getch();
     
@@ -42,15 +42,15 @@ void PIOController::HandleInput() const {
 
 }
 
-void PIOController::OutputDefault() const {
+void IOController::OutputDefault() const {
     
     // Pre-draw operations here
 
-    PScreenVirtualizer::get()->Draw();
+    ScreenVirtualizer::get()->Draw();
     
 }
 
-void PIOController::Resolve() noexcept {
+void IOController::Resolve() noexcept {
 
     LOG_DEFAULT(LogType::VITAL, "Resolve called to IOController");
 
@@ -62,7 +62,7 @@ void PIOController::Resolve() noexcept {
 
 }
 
-PIOController::~PIOController() {
+IOController::~IOController() {
     
     Resolve();
 }

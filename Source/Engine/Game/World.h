@@ -1,6 +1,6 @@
 #pragma once
 
-class PWorld
+class World
 {
 public:
     static constexpr int EXTENT_X = 1'000;

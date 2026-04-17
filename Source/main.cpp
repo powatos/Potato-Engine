@@ -3,19 +3,20 @@
 
 #include "Utils/Debug.h"
 
-#include "Engine/PEngine.h"
+#include "Engine/Engine.h"
 
 int main()
 {
+    std::cout << "Session Start\n";
+
     Debug::BindDebugLogs();
 
     // Initialize engine object
-    [[maybe_unused]] PEngine* Engine = PEngine::get();
+    [[maybe_unused]] Engine* engine = Engine::get();
 
-    Engine->Resolve();
+    engine->Resolve();
     // End of session
 
-    std::cout << "test\n";
-    
+    std::cout << "Session End\n";
     return 0;    
 }

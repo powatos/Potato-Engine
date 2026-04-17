@@ -40,13 +40,14 @@
 # debug information files
 *.dwo
 
-# codespace files
+# Codespace Files
 .devcontainer
 .vscode
 
-# local data
+# Local Data
 Binaries
 Makefile
+engine
 
-# log files
+# Log Files
 *.log

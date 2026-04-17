@@ -1,38 +1,38 @@
 
-#include "PEngine.h"
+#include "Engine.h"
 #include "Utils/Debug.h"
 
-#include "Engine/Systems/PIOController.h"
+#include "Engine/Systems/IOController.h"
 
-[[maybe_unused]] PEngine* PEngine::get() {
+[[maybe_unused]] Engine* Engine::get() {
     // constructs on first call
-    static PEngine instance;
+    static Engine instance;
     
     return &instance;
 }
 
 
 
-PEngine::PEngine() {
+Engine::Engine() {
 
     LOG_DEFAULT(LogType::VITAL, "Engine instantiated");
 
     
     // IOManager cnstruction inits ncurses
-    [[maybe_unused]] PIOController* IOController = PIOController::get();
+    [[maybe_unused]] IOController* Controller = IOController::get();
     
     
 }
 
-void PEngine::Resolve() noexcept {
+void Engine::Resolve() noexcept {
     LOG_DEFAULT(LogType::VITAL, "Resolve called to Engine");
 
 
-    PIOController* IOController = PIOController::get();
-    IOController->Resolve();
+    IOController* Controller = IOController::get();
+    Controller->Resolve();
 }
 
-PEngine::~PEngine() {
+Engine::~Engine() {
     Resolve();
 
     LOG_DEFAULT(LogType::VITAL, "SESSION TERMINATED");
@@ -41,16 +41,16 @@ PEngine::~PEngine() {
 /** 
 * Main game loop
 */
-int PEngine::main() {
+int Engine::main() {
 
     LOG_DEFAULT(LogType::VITAL, "Engine game loop started");
     
-    PIOController* IOController = PIOController::get();
+    IOController* Controller = IOController::get();
     
-    IOController->HandleInput();
+    Controller->HandleInput();
     
     
-    IOController->OutputDefault();
+    Controller->OutputDefault();
     
     LOG_DEFAULT(LogType::VITAL, "Engine game loop returning");
     return 0;
