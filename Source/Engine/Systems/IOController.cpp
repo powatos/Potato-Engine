@@ -2,7 +2,7 @@
 
 #include <ncurses.h>
 #include "Utils/Debug.h"
-#include "ScreenVirtualizer.h"
+#include "Engine/GameInstance.h"
 #include "IOController.h"
 
 [[maybe_unused]] IOController* IOController::get() {
@@ -27,6 +27,12 @@ IOController::IOController() {
 
 }
 
+void IOController::BindInput(char targetKey, InputDelegate EventCallback) {
+
+    InputDelegates[static_cast<int>(targetKey)].push_back(std::move(EventCallback));
+
+}
+
 void IOController::HandleInput() const {
     
     int ch = getch();
@@ -40,19 +46,20 @@ void IOController::HandleInput() const {
         
     }
 
+    // DEBUG
+    if (ch == 't') { GameInstance::get()->GetState().isMainTickRunning = false; }
+
 }
 
-void IOController::OutputDefault() const {
+void IOController::Draw() const {
     
-    // Pre-draw operations here
+    mvaddch(5,5,'a');
 
-    ScreenVirtualizer::get()->Draw();
-    
+
 }
 
-void IOController::Resolve() noexcept {
-
-    LOG_DEFAULT(LogType::VITAL, "Resolve called to IOController");
+IOController::~IOController() {
+    LOG_DEFAULT(LogType::VITAL, "IOController destroying");
 
     refresh();
     getch();
@@ -60,9 +67,4 @@ void IOController::Resolve() noexcept {
     curs_set(1);
     endwin();
 
-}
-
-IOController::~IOController() {
-    
-    Resolve();
 }

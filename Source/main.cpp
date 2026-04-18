@@ -2,8 +2,9 @@
 #include <iostream>
 
 #include "Utils/Debug.h"
-
+#include "Engine/GameInstance.h"
 #include "Engine/Engine.h"
+#include "Engine/Systems/IOController.h"
 
 int main()
 {
@@ -11,12 +12,14 @@ int main()
 
     Debug::BindDebugLogs();
 
-    // Initialize engine object
+    // Initialize engine singletons
     [[maybe_unused]] Engine* engine = Engine::get();
+    [[maybe_unused]] IOController* Controller = IOController::get();
+    [[maybe_unused]] GameInstance* Instance = GameInstance::get();
 
-    engine->Resolve();
+    engine->main();
+
     // End of session
 
-    std::cout << "Session End\n";
     return 0;    
 }

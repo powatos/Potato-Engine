@@ -32,7 +32,7 @@ bool Logger::operator () (LogType type, const std::string& message) {
             colorMod = "";
     }
     
-    auto now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    std::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()); 
     LogFile << std::put_time(std::localtime(&now), "%H:%M:%S");
     LogFile << " - " << colorMod << message << "\e[0m" << std::endl;
 

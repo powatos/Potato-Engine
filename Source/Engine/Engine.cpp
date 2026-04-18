@@ -1,6 +1,10 @@
 
 #include "Engine.h"
 #include "Utils/Debug.h"
+#include "Engine/GameInstance.h"
+
+#include <chrono>
+#include <thread>
 
 #include "Engine/Systems/IOController.h"
 
@@ -11,47 +15,61 @@
     return &instance;
 }
 
-
-
 Engine::Engine() {
 
     LOG_DEFAULT(LogType::VITAL, "Engine instantiated");
 
-    
-    // IOManager cnstruction inits ncurses
-    [[maybe_unused]] IOController* Controller = IOController::get();
-    
-    
+    GameInstance::get()->GetState().isMainTickRunning = true;
+}
+
+GameState& Engine::GetState() {
+    return state;
 }
 
 void Engine::Resolve() noexcept {
+    // engine class specific logic
     LOG_DEFAULT(LogType::VITAL, "Resolve called to Engine");
 
-
-    IOController* Controller = IOController::get();
-    Controller->Resolve();
 }
 
 Engine::~Engine() {
     Resolve();
 
-    LOG_DEFAULT(LogType::VITAL, "SESSION TERMINATED");
+    LOG_DEFAULT(LogType::VITAL, "Engine Destroying");
 }
 
 /** 
 * Main game loop
-*/
+*/  
 int Engine::main() {
+    namespace stdc = std::chrono;
+    using chronoUnit = stdc::milliseconds;
 
     LOG_DEFAULT(LogType::VITAL, "Engine game loop started");
     
     IOController* Controller = IOController::get();
+    GameState& state = GameInstance::get()->GetState();
+
+    const chronoUnit idealDelay = stdc::duration_cast<chronoUnit>( stdc::duration<double>(1.0 / Controller->FRAMES_PER_SECOND) );
+    auto lastTick = stdc::steady_clock::now();
+
+    while (state.isMainTickRunning == true) {
+        Controller->HandleInput();
+
+        Controller->Draw();
+
+        // Syncronize FPS (dynamic sleep time based on variable tick times)
+        // TODO: use accumulative smoothing instead of per-tick correction
+        auto now = stdc::steady_clock::now();
+        const chronoUnit chronoUnitElapsed = stdc::duration_cast<chronoUnit>(now - lastTick);
+        const chronoUnit correctionDelay = std::max(chronoUnit(0), idealDelay - chronoUnitElapsed);
+        
+        lastTick = stdc::steady_clock::now();
+
+        std::this_thread::sleep_for(correctionDelay);
+    }
     
-    Controller->HandleInput();
-    
-    
-    Controller->OutputDefault();
-    
-    LOG_DEFAULT(LogType::VITAL, "Engine game loop returning");
+    LOG_DEFAULT(LogType::VITAL, "Engine self-resolving");
+
     return 0;
 }

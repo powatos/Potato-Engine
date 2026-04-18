@@ -1,15 +1,16 @@
 #pragma once
 
+#include "GameInstance.h"
 
 class Engine
 {
     
 public:
     [[maybe_unused]] static Engine* get();
+    GameState& GetState();
     
-    void Resolve() noexcept;
-
     int main();                                     // main game loop
+
 
 
 private:
@@ -20,9 +21,14 @@ private:
     Engine(Engine&&) = delete;                    // delete move const
     Engine& operator = (Engine&&) = delete;       // delete move op
     
-    
-    
-    
+    void Resolve() noexcept;
+
+
+    bool isLooping;
+
+protected:
+
+    GameState state;
 
     
 };
