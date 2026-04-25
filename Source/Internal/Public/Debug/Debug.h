@@ -1,19 +1,11 @@
 #pragma once
 
-#include "fmt/format.h"
 #include <fstream>
+#include <unordered_map>
 
 class Logger;
+enum class LogType;
 extern Logger LOG_DEFAULT;
-
-
-enum class LogType
-{
-    INFO, // white
-    WARNING, // yellow
-    ERROR,  // red
-    VITAL   // magenta
-};
 
 class Logger
 {
@@ -30,6 +22,14 @@ public:
     ~Logger();
 };
 
+enum class LogType
+{
+    INFO, // white
+    WARNING, // yellow
+    ERROR,  // red
+    VITAL   // magenta
+};
+
 namespace Debug
 {
     // construct global Logger objects, bind to log files
@@ -37,3 +37,4 @@ namespace Debug
         LOG_DEFAULT.init("logs/debug.log");
     }
 }
+

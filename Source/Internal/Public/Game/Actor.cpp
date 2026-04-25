@@ -1,10 +1,12 @@
 
+#include "Util/Vector2.h"
+#include "Debug/Debug.h"
+
 #include "Actor.h"
 
-#include "Util/Vector2.h"
-
 int Actor::_ = []() {
-        _GetArchive()["Actor"] = []() -> Archivable* { return new Actor(); };
+        __Archive::_GetArchive()["Actor"] = []() -> Archivable* { return new Actor(); };
+        LOG_DEFAULT(LogType::INFO, "actor inst callback archived");
         return 0;
     }();
 

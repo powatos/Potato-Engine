@@ -3,7 +3,6 @@
 
 #include "GameInstance.h"
 
-
 GameState::GameState() {
 
     isMainTickRunning = false;

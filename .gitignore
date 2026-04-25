@@ -47,7 +47,6 @@
 # Local Data
 Binaries
 Makefile
-engine
 
 # Log Files
 *.log

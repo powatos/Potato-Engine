@@ -1,12 +1,13 @@
 #pragma once
 
 #include <fstream>
+#include <filesystem>
 
 struct Vector2;
 
 struct PersistentLevel
 {
-    PersistentLevel(std::ifstream& save);
+    PersistentLevel(const std::string& saveFileName);
     ~PersistentLevel() = default;
 
     // @returns if all static actors were loaded successfully
@@ -24,6 +25,6 @@ struct PersistentLevel
     void WriteVector2Data( std::string key, const Vector2& value );
 
 private:
-    std::ifstream& savePath;
+    std::filesystem::path saveFileAbsPath;
 };
 

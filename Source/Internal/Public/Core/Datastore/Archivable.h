@@ -8,13 +8,11 @@ class Archivable
 public:
     Archivable() = default;
     virtual ~Archivable() = default;
-
-    
-
-
 };
 
-inline std::unordered_map< std::string, std::function<Archivable*()> > _GetArchive(){
-    static std::unordered_map< std::string, std::function<Archivable*()> > archive;
-    return archive;
+namespace __Archive {
+    inline std::unordered_map< std::string, std::function<Archivable*()> >& _GetArchive(){
+        static std::unordered_map< std::string, std::function<Archivable*()> > archive;
+        return archive;
+    }
 }
