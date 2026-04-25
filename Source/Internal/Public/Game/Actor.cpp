@@ -4,11 +4,7 @@
 
 #include "Actor.h"
 
-int Actor::_ = []() {
-        __Archive::_GetArchive()["Actor"] = []() -> Archivable* { return new Actor(); };
-        LOG_DEFAULT(LogType::INFO, "actor inst callback archived");
-        return 0;
-    }();
+ARCHIVE_STATIC(Actor);
 
 Actor::Actor() {
 

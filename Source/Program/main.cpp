@@ -1,4 +1,6 @@
 
+#include <memory>
+
 #include "Core/PotatoEngine.h"
 #include "Core/Datastore/PersistentLevel.h"
 #include "Debug/Debug.h"
@@ -9,16 +11,10 @@
 int main()
 {
     PotatoEngine engine;
-
     PersistentLevel level("save.json");
 
     engine.Initialize();
     level.LoadStaticActors();
-
-    engine.GetInputController()->RegisterInputBinding('w', []() {
-        LOG_DEFAULT(LogType::INFO, "W pressed");
-    });
-
 
     engine.BeginPlay();
 

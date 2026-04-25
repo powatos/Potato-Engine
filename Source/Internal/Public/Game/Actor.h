@@ -6,8 +6,7 @@
 class Actor : public Archivable
 {
 public:
-    static int _;
-
+    
     Actor();
     Actor(Vector2 position);
 

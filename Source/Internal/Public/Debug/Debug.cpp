@@ -11,8 +11,14 @@ static const std::unordered_map<LogType, std::string> LogColorMap = {
         {LogType::INFO, "\e[1;37m"},
         {LogType::WARNING, "\e[0;33m"},
         {LogType::ERROR, "\e[1;31m"},
-        {LogType::VITAL, "\e[1;4;35m"}
+        {LogType::VITAL, "\e[1;35m"}
 };
+
+#define X(name) { LogType::name, std::string(#name) },
+static const std::unordered_map<LogType, std::string> LogNameMap = {
+    logtypes
+};
+#undef X
 
 void Logger::init(const char* path){    
     LogFile.open(path, std::ios::app);
@@ -44,6 +50,8 @@ bool Logger::operator () (LogType type, const std::string& message) {
     std::string colorMod = LogColorMap.at(type);
     
     LogFile << timestamp << " - ";
+    LogFile << colorMod << LogNameMap.at(type) << "\e[0m";
+    LogFile << " | ";
     LogFile << colorMod << message << "\e[0m" << std::endl;
 
     return true;

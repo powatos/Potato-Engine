@@ -22,13 +22,15 @@ public:
     ~Logger();
 };
 
-enum class LogType
-{
-    INFO, // white
-    WARNING, // yellow
-    ERROR,  // red
-    VITAL   // magenta
-};
+#define logtypes \
+    X(INFO) \
+    X(WARNING) \
+    X(ERROR) \
+    X(VITAL)
+
+#define X(name) name,
+enum class LogType { logtypes };
+#undef X
 
 namespace Debug
 {
