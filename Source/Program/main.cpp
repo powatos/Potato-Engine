@@ -8,6 +8,7 @@
 #include "Game/GameInstance.hpp"
 #include "Game/World.hpp"
 #include "Game/Actors/Player.hpp"
+#include "Util/Vector2.hpp"
 
 
 int main()
@@ -17,7 +18,8 @@ int main()
     PersistentLevel level("save.json");
     level.LoadStaticActors();
 
-    GameInstance::get()->GetWorld()->SpawnActor<Player>();
+    Player* player = GameInstance::get()->GetWorld()->SpawnActor<Player>(Vector2(1,1));
+    player->Texture = 'P';
 
     engine.BeginPlay();
 

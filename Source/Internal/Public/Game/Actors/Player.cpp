@@ -2,6 +2,7 @@
 #include "Core/EventController.hpp"
 #include "Core/PotatoEngine.hpp"
 #include "Debug/Debug.hpp"
+#include "Util/GameplayHelper.hpp"
 
 #include "Player.hpp"
 
@@ -13,6 +14,8 @@ Player::Player() {
 
     controller->RegisterInputBinding( InputBinding('a', "MoveLeft", this, &Player::MoveLeft) );
     controller->RegisterInputBinding( InputBinding('d', "MoveRight", this, &Player::MoveRight) );
+    controller->RegisterInputBinding( InputBinding('w', "MoveUp", this, &Player::MoveUp) );
+    controller->RegisterInputBinding( InputBinding('s', "MoveDown", this, &Player::MoveDown) );
 
 }
 
@@ -25,9 +28,17 @@ Player::~Player() {
 }
 
 void Player::MoveLeft() {
-    AddLocalOffset(Vector2(-1.f, 0.f)); // Move left by 1 unit
+    AddLocalOffset(GameplayHelper::WorldToScreenDir(Vector2(-1.f, 0.f))); // Move left by 1 unit
 }
 
 void Player::MoveRight() {
-    AddLocalOffset(Vector2(1.f, 0.f)); // Move right by 1 unit
+    AddLocalOffset(GameplayHelper::WorldToScreenDir(Vector2(1.f, 0.f))); // Move right by 1 unit
+}
+
+void Player::MoveUp() {
+    AddLocalOffset(GameplayHelper::WorldToScreenDir(Vector2(0.f, 1.f))); // Move left by 1 unit
+}
+
+void Player::MoveDown() {
+    AddLocalOffset(GameplayHelper::WorldToScreenDir(Vector2(0.f, -1.f))); // Move left by 1 unit
 }

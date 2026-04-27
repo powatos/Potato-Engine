@@ -5,6 +5,7 @@
 #include "Debug/Debug.hpp"
 #include "Util/Vector2.hpp"
 #include "Game/World.hpp"
+#include "Util/GameplayHelper.hpp"
 #include "Game/GameInstance.hpp"
 
 #include "fmt/core.h"
@@ -110,21 +111,22 @@ void IOController::HandleInput() const {
 }
 
 void IOController::Draw() const {
+    erase();
     
     const World* world = GameInstance::get()->GetWorld();
 
     for ( Actor* actor : world->GetAllActors() ) {
-        if (actor == nullptr) { continue; }
-
-        Vector2 pos = actor->GetPosition();
+        if (actor == nullptr) {
+            LOG_DEFAULT(LogType::WARNING, "nullptr actor found in actor pool while drawing - skipped actor");
+            continue; 
+        }
+        Vector2 screenVector = GameplayHelper::WorldToScreenPos(actor->GetPosition());
         
-        mvaddch(static_cast<int>(pos.y), static_cast<int>(pos.x), '@');
+        mvaddch(static_cast<int>(screenVector.x), static_cast<int>(screenVector.y), actor->Texture);
 
     }
 
-
-
-
+    refresh();
 }
 
 void IOController::Resolve() noexcept {

@@ -10,8 +10,6 @@
 
 class IOController : public IEventController, public IEngineSubsystem
 {
-    ~IOController();
-    
 public:
     [[maybe_unused]] static IOController* get();
     virtual void Resolve() noexcept override;
@@ -28,6 +26,7 @@ public:
 
 private:
     IOController();
+    ~IOController();
     IOController(const IOController&) = delete;
     IOController& operator = (const IOController&) = delete;
     IOController(IOController&&) = delete;

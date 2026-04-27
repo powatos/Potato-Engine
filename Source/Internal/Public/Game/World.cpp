@@ -20,7 +20,7 @@ World::~World() {
 
 }
 
-void World::DespawnActor(Actor* actor) {
+void World::DestroyActor(Actor* actor) {
     auto it = std::find(actorPool.begin(), actorPool.end(), actor);
     
     if (it != actorPool.end()) {

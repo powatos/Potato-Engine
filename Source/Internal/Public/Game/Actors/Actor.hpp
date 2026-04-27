@@ -8,7 +8,6 @@ class Actor : public Archivable
 public:
     
     Actor();
-    Actor(Vector2 position);
     virtual ~Actor();
 
     Vector2 GetPosition() const;
@@ -20,6 +19,8 @@ public:
     void AddLocalOffset(const Vector2& offset);
     void AddLocalRotation(float rotation);
     
+    char Texture;
+
 private:
 
     void Destroy();

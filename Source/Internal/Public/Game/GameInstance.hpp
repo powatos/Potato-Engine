@@ -13,8 +13,6 @@ struct GameState
 
 class GameInstance : public IEngineSubsystem
 {
-    ~GameInstance();
-
 public:
     [[maybe_unused]] static GameInstance* get();
     virtual void Resolve() noexcept override;
@@ -24,6 +22,7 @@ public:
 
 private:
     GameInstance();
+    ~GameInstance();
     GameInstance(const GameInstance&) = delete;
     GameInstance& operator = (const GameInstance&) = delete;
     GameInstance(GameInstance&&) = delete;

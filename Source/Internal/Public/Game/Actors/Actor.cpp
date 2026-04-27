@@ -13,13 +13,6 @@ Actor::Actor() {
     
 }
 
-Actor::Actor(Vector2 position) {
-
-    Position = position;
-    Rotation = 0.f;
-    
-}
-
 Actor::~Actor() {
 
 }

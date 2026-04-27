@@ -3,6 +3,7 @@
 #include <vector>
 #include <type_traits>
 
+#include "Util/Vector2.hpp"
 #include "Game/Actors/Actor.hpp"
 
 using ActorPool = std::vector<Actor*>;
@@ -18,7 +19,10 @@ public:
 
     template<typename ActorClass>
     ActorClass* SpawnActor();
-    void DespawnActor(Actor* actor);
+    template<typename ActorClass>
+    ActorClass* SpawnActor(const Vector2& SpawnPosition);
+
+    void DestroyActor(Actor* actor);
     // @returns actor if added; nullptr if not
     Actor* AddtoPool(Actor* actor);
 
@@ -39,4 +43,12 @@ ActorClass* World::SpawnActor() {
     actorPool.push_back(actor);
 
     return actor;
+}
+
+template<typename ActorClass>
+ActorClass* World::SpawnActor(const Vector2& SpawnPosition) {
+    Actor* actor = SpawnActor<ActorClass>();
+    actor->SetPosition(SpawnPosition);
+
+    return static_cast<ActorClass*>(actor);
 }

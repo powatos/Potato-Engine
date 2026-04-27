@@ -27,6 +27,10 @@ struct Vector2
         return Vector2(-x, -y);
     }
 
+    inline Vector2 Swizzled() const {
+        return Vector2(y, x);
+    }
+
     inline float Dot(const Vector2& other) const {
         return x * other.x + y * other.y;
     }

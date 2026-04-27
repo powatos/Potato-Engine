@@ -4,8 +4,6 @@
 
 class Engine : public IEngineSubsystem
 {
-    ~Engine();
-
 public:
     [[maybe_unused]] static Engine* get();
     
@@ -13,6 +11,7 @@ public:
 
 private:
     Engine();
+    ~Engine();
     Engine(const Engine&) = delete;
     Engine& operator = (const Engine&) = delete;
     Engine(Engine&&) = delete;
