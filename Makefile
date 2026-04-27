@@ -4,7 +4,8 @@ LIB_TARGET				:= lib$(LIB_NAME).a
 GAME_TARGET				:= Game
 
 CXX						:= g++
-CXXFLAGS				:= -g -Wall -std=c++17
+# REMOVE -08 AFTER DEBUGGING
+CXXFLAGS				:= -g -Wall -std=c++17 -O0
 LDLIBS					:= -lncurses
 
 SRCDIR					:= Source

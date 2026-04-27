@@ -1,7 +1,8 @@
 
-#include "World.h"
+#include "World.hpp"
+#include "Debug/Debug.hpp"
 
-#include "GameInstance.h"
+#include "GameInstance.hpp"
 
 GameState::GameState() {
 
@@ -18,14 +19,18 @@ GameState::GameState() {
 }
 
 GameInstance::GameInstance() {
-    // LOG_DEFAULT(LogType::VITAL, "GameInstance instantiated");
+    LOG_DEFAULT(LogType::VITAL, "GameInstance constructed");
     
     state = GameState();
     world = new World();
 }
 
-GameInstance::~GameInstance() {
-    // LOG_DEFAULT(LogType::VITAL, "GameInstance destroying");
-    
+void GameInstance::Resolve() noexcept {
+    LOG_DEFAULT(LogType::VITAL, "Resolving GameInstance");
+
     delete world;
+}
+
+GameInstance::~GameInstance() {
+    LOG_DEFAULT(LogType::VITAL, "GameInstance destroying");
 }

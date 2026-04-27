@@ -1,22 +1,27 @@
 
 #include <memory>
 
-#include "Core/PotatoEngine.h"
-#include "Core/Datastore/PersistentLevel.h"
-#include "Debug/Debug.h"
-#include "Core/EventController.h"
+#include "Core/PotatoEngine.hpp"
+#include "Core/Datastore/PersistentLevel.hpp"
+#include "Debug/Debug.hpp"
+#include "Core/EventController.hpp"
+#include "Game/GameInstance.hpp"
+#include "Game/World.hpp"
+#include "Game/Actors/Player.hpp"
 
-#include "Game/Player.h"
 
 int main()
 {
-    PotatoEngine engine;
+    PotatoEngine& engine = PotatoEngine::Get();
+    
     PersistentLevel level("save.json");
-
-    engine.Initialize();
     level.LoadStaticActors();
 
+    GameInstance::get()->GetWorld()->SpawnActor<Player>();
+
     engine.BeginPlay();
+
+    engine.Resolve();
 
     return 0; 
 }

@@ -6,6 +6,10 @@
         ]
     },
 
+    "DynamicActors" : {
+
+    },
+
     "Data" : {
         "PlayerPosition" : [10.0, 10.0]
     }

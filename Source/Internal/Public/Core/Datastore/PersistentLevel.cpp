@@ -1,13 +1,13 @@
 
-#include "Util/Vector2.h"
-#include "Archivable.h"
-#include "Game/GameInstance.h"
-#include "Debug/Debug.h"
-#include "Game/World.h"
+#include "Util/Vector2.hpp"
+#include "Archivable.hpp"
+#include "Game/GameInstance.hpp"
+#include "Debug/Debug.hpp"
+#include "Game/World.hpp"
 
 #include "fmt/core.h"
 #include "nlohmann/json.hpp"
-#include "PersistentLevel.h"
+#include "PersistentLevel.hpp"
 
 using json = nlohmann::json;
 

@@ -2,15 +2,14 @@
 #include <chrono>
 #include <thread>
 
-#include "Debug/Debug.h"
-#include "Game/GameInstance.h"
-#include "Systems/IOController.h"
+#include "Debug/Debug.hpp"
+#include "Game/GameInstance.hpp"
+#include "Systems/IOController.hpp"
 
-#include "Engine.h"
+#include "Engine.hpp"
 
 
 [[maybe_unused]] Engine* Engine::get() {
-    // constructs on first call
     static Engine instance;
     
     return &instance;
@@ -19,20 +18,15 @@
 
 Engine::Engine() {
 
-    LOG_DEFAULT(LogType::VITAL, "Engine instantiated");
+    LOG_DEFAULT(LogType::VITAL, "Engine constructed");
 
-    GameInstance::get()->GetState().isMainTickRunning = true;
 }
 
 void Engine::Resolve() noexcept {
-    // engine class specific logic
-    LOG_DEFAULT(LogType::VITAL, "Resolve called to Engine");
-
+    LOG_DEFAULT(LogType::VITAL, "Resolving Engine");
 }
 
 Engine::~Engine() {
-    Resolve();
-
     LOG_DEFAULT(LogType::VITAL, "Engine Destroying");
 }
 
@@ -43,10 +37,13 @@ int Engine::main() {
     namespace stdc = std::chrono;
     using chronoUnit = stdc::milliseconds;
 
-    LOG_DEFAULT(LogType::VITAL, "Engine game loop started");
+    LOG_DEFAULT(LogType::VITAL, "Engine main loop started");
     
     IOController* Controller = IOController::get();
-    GameState& state = GameInstance::get()->GetState();
+    GameInstance* Instance = GameInstance::get();
+    GameState& state = Instance->GetState();
+
+    state.isMainTickRunning = true;
 
     const chronoUnit idealDelay = stdc::duration_cast<chronoUnit>( stdc::duration<double>(1.0 / Controller->FRAMES_PER_SECOND) );
     auto lastTick = stdc::steady_clock::now();
@@ -67,7 +64,7 @@ int Engine::main() {
         std::this_thread::sleep_for(correctionDelay);
     }
     
-    LOG_DEFAULT(LogType::VITAL, "Engine self-resolving");
+    LOG_DEFAULT(LogType::VITAL, "Engine main loop finished");
 
     return 0;
 }

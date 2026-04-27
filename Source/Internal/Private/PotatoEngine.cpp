@@ -1,29 +1,45 @@
 
-#include "Debug/Debug.h"
-#include "Game/GameInstance.h"
-#include "Engine.h"
-#include "Core/EventController.h"
-#include "Systems/IOController.h"
+#include "Debug/Debug.hpp"
+#include "Game/GameInstance.hpp"
+#include "Engine.hpp"
+#include "Core/EventController.hpp"
+#include "Systems/IOController.hpp"
 
-#include "Core/PotatoEngine.h"
+#include "Core/PotatoEngine.hpp"
 
 PotatoEngine::PotatoEngine() {
-    Impl = std::make_unique<InitImpl>();
-}
-
-PotatoEngine::~PotatoEngine() = default;
-
-struct PotatoEngine::InitImpl {};
-
-void PotatoEngine::Initialize()
-{
-    // Start of session
+    LOG_DEFAULT(LogType::VITAL, "PotatoEngine constructed");
 
     Debug::BindDebugLogs();
 
-    Engine::get();
-    InputController = IOController::get();;
-    GameInstance::get();
+    SubsystemStack.push( Engine::get() );
+    SubsystemStack.push( IOController::get() );
+    SubsystemStack.push( GameInstance::get() );
+
+    InputController = IOController::get();
+
+}
+
+PotatoEngine::~PotatoEngine() {
+    LOG_DEFAULT(LogType::VITAL, "PotatoEngine destroying");
+}
+
+PotatoEngine& PotatoEngine::Get()
+{
+    static PotatoEngine engine;
+    return engine;
+}
+
+void PotatoEngine::Resolve() noexcept {
+    LOG_DEFAULT(LogType::VITAL, "Resolving PotatoEngine");
+
+    while (!SubsystemStack.empty()) {
+        IEngineSubsystem* sys = SubsystemStack.top();
+        sys->Resolve();
+        // delete sys;
+
+        SubsystemStack.pop();
+    }
 
 }
 

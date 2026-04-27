@@ -3,15 +3,16 @@
 #include <iomanip>
 
 #include "fmt/chrono.h"
-#include "Debug.h"
+#include "Debug.hpp"
 
 Logger LOG_DEFAULT;
 
 static const std::unordered_map<LogType, std::string> LogColorMap = {
-        {LogType::INFO, "\e[1;37m"},
+        {LogType::INFO, "\e[0;37m"},
         {LogType::WARNING, "\e[0;33m"},
-        {LogType::ERROR, "\e[1;31m"},
-        {LogType::VITAL, "\e[1;35m"}
+        {LogType::ERROR, "\e[0;31m"},
+        {LogType::VITAL, "\e[1;35m"},
+        {LogType::DEBUG, "\e[0;34m"}
 };
 
 #define X(name) { LogType::name, std::string(#name) },
