@@ -1,5 +1,5 @@
 
-#include "Core/EventController.hpp"
+#include "Core/Input/InputController.hpp"
 #include "Core/PotatoEngine.hpp"
 #include "Debug/Debug.hpp"
 #include "Util/GameplayHelper.hpp"
@@ -7,22 +7,20 @@
 #include "Player.hpp"
 
 Player::Player() {
-    LOG_DEFAULT(LogType::DEBUG, "player1 instantiated");
 
     // setup input bindings
-    IEventController* controller = PotatoEngine::Get().GetInputController();
+    IInputController* controller = PotatoEngine::Get().GetInputController();
 
-    controller->RegisterInputBinding( InputBinding('a', "MoveLeft", this, &Player::MoveLeft) );
-    controller->RegisterInputBinding( InputBinding('d', "MoveRight", this, &Player::MoveRight) );
-    controller->RegisterInputBinding( InputBinding('w', "MoveUp", this, &Player::MoveUp) );
-    controller->RegisterInputBinding( InputBinding('s', "MoveDown", this, &Player::MoveDown) );
+    controller->RegisterInputBinding( InputBinding(Keycode::A, "MoveLeft", this, &Player::MoveLeft) );
+    controller->RegisterInputBinding( InputBinding(Keycode::D, "MoveRight", this, &Player::MoveRight) );
+    controller->RegisterInputBinding( InputBinding(Keycode::W, "MoveUp", this, &Player::MoveUp) );
+    controller->RegisterInputBinding( InputBinding(Keycode::S, "MoveDown", this, &Player::MoveDown) );
 
 }
 
 Player::~Player() {
-    LOG_DEFAULT(LogType::DEBUG, "player1 destroying");
 
-    IEventController* controller = PotatoEngine::Get().GetInputController();
+    IInputController* controller = PotatoEngine::Get().GetInputController();
 
     controller->UnregisterAllInputBindings(this);
 }

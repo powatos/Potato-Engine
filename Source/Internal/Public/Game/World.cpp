@@ -4,12 +4,10 @@
 #include "World.hpp"
 
 World::World() {
-    LOG_DEFAULT(LogType::DEBUG, "world1 instantiated");
     
 }
 
 World::~World() {
-    LOG_DEFAULT(LogType::DEBUG, "world1 destroying");
 
     while (!actorPool.empty()) {
         Actor* actor = actorPool.back();

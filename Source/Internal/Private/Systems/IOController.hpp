@@ -5,10 +5,10 @@
 #include <vector>
 
 #include "Core/EngineSubsystem.hpp"
-#include "Core/EventController.hpp"
+#include "Core/Input/InputController.hpp"
 
 
-class IOController : public IEventController, public IEngineSubsystem
+class IOController : public IInputController, public IEngineSubsystem
 {
 public:
     [[maybe_unused]] static IOController* get();
@@ -35,6 +35,6 @@ private:
     
 protected:
     
-    std::unordered_map<int , std::vector<InputBinding>> InputBindings;
+    std::unordered_map<Keycode , std::vector<InputBinding>, KeycodeHash> InputBindings;
     
 };

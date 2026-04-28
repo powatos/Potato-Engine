@@ -2,7 +2,7 @@
 #include "Debug/Debug.hpp"
 #include "Game/GameInstance.hpp"
 #include "Engine.hpp"
-#include "Core/EventController.hpp"
+#include "Core/Event/EventController.hpp"
 #include "Systems/IOController.hpp"
 
 #include "Core/PotatoEngine.hpp"
@@ -17,6 +17,7 @@ PotatoEngine::PotatoEngine() {
     SubsystemStack.push( GameInstance::get() );
 
     InputController = IOController::get();
+    EventController = InputController;
 
 }
 
@@ -50,6 +51,10 @@ void PotatoEngine::BeginPlay()
     engine->main();
 }
 
-IEventController* PotatoEngine::GetInputController() const {
+IInputController* PotatoEngine::GetInputController() const {
     return InputController;
+}
+
+IEventController* PotatoEngine::GetEventController() const {
+    return EventController;
 }

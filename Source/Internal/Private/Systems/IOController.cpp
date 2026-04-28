@@ -11,16 +11,9 @@
 #include "fmt/core.h"
 #include "IOController.hpp"
 
-static constexpr char toggleCase(char c) {
-    if (c >= 'a' && c <= 'z') { return c - 32; }
-    if (c >= 'A' && c <= 'Z') { return c + 32; }
-    return c;
-}
-
-void crashHandler(int) {
-    endwin();
-    exit(1);
-}
+static constexpr char toggleCase(char c);
+void crashHandler(int);
+static constexpr Keycode GetKeycode(int ch);
 
 [[maybe_unused]] IOController* IOController::get() {
     // constructed on first call
@@ -32,11 +25,14 @@ void crashHandler(int) {
 IOController::IOController() {
     LOG_DEFAULT(LogType::VITAL, "IOController constructed");
     
+    setenv("ESCDELAY", "25", 1); // disables escape delay (shorten if arrow/f keys not working)
+
     // initialize ncurses
     initscr(); // init ncurses
 	cbreak(); // disables line buffering
 	noecho(); // disables input feedback
-// 	keypad(stdscr, TRUE); // enables keypad input
+	keypad(stdscr, TRUE); // enables keypad input
+    nodelay(stdscr, TRUE); // disables input delay
 	curs_set(0); // disables cursor visibility
 	timeout(0); // Make getch() non-blocking IMMEDIATELY
 
@@ -50,11 +46,7 @@ IOController::IOController() {
 
 void IOController::RegisterInputBinding(InputBinding binding) {
 
-    InputBindings[static_cast<int>(binding.targetKey)].push_back( binding );
-
-    if (!binding.isCaseSensitive) {
-        InputBindings[static_cast<int>(toggleCase(binding.targetKey))].push_back( binding );
-    }
+    InputBindings[binding.key].push_back( binding );
 
 }
 
@@ -91,23 +83,22 @@ void IOController::UnregisterAllInputBindings(void* object) {
 }
 
 void IOController::HandleInput() const {
-    
-    int ch = getch();
-    
-    if (InputBindings.find(ch) != InputBindings.end()) {
-        // binding exists to pressed key
-        
-        for (const InputBinding& binding : InputBindings.at(ch) ) {
-            if (!binding.GetDelegate().Fire()) {
-                LOG_DEFAULT(LogType::WARNING, fmt::format("Input event could not fire for binding: {}", binding.name));
-            }
-        }
-        
-    }
+    int _ch = getch();
+    LOG_DEFAULT(LogType::DEBUG, std::to_string(_ch));    
+    Keycode key = GetKeycode(_ch);
 
     // DEBUG
-    if (ch == 't') { GameInstance::get()->GetState().isMainTickRunning = false; }
+    if (key == Keycode::Escape) { LOG_DEFAULT(LogType::DEBUG, "esc"); GameInstance::get()->GetState().isMainTickRunning = false; }
 
+    auto loc = InputBindings.find(key);
+    if (loc == InputBindings.end()) { return; } // no binding exists
+
+    for (const InputBinding& binding : loc->second ) {
+        if (!binding.GetDelegate().Fire()) {
+            LOG_DEFAULT(LogType::WARNING, fmt::format("Input event could not fire for binding: {}", binding.name));
+        }
+    }
+        
 }
 
 void IOController::Draw() const {
@@ -141,4 +132,62 @@ void IOController::Resolve() noexcept {
 
 IOController::~IOController() {
     LOG_DEFAULT(LogType::VITAL, "IOController destroying");
+}
+
+
+static constexpr char toggleCase(char c) {
+    if (c >= 'a' && c <= 'z') { return c - 32; }
+    if (c >= 'A' && c <= 'Z') { return c + 32; }
+    return c;
+}
+
+void crashHandler(int) {
+    endwin();
+    exit(1);
+}
+
+/// @returns Keycode from passed ASCII input
+static constexpr Keycode GetKeycode(int ch)
+{
+    // ASCII
+    if (ch >= 'a' && ch <= 'z') {
+        return static_cast<Keycode>(static_cast<int>(Keycode::A) + (ch - 'a'));
+    }
+    if (ch >= 'A' && ch <= 'Z') {
+        return static_cast<Keycode>(static_cast<int>(Keycode::A) + (ch - 'A'));
+    }
+    if (ch >= '0' && ch <= '9') {
+        return static_cast<Keycode>(static_cast<int>(Keycode::Num0) + (ch - '0'));
+    }
+
+    switch (ch)
+    {
+
+        case ' ': return Keycode::Space;
+        case '\n': return Keycode::Enter;
+        case 27: return Keycode::Escape;
+        case '\t': return Keycode::Tab;
+
+        case KEY_UP:    return Keycode::ArrowUp;
+        case KEY_DOWN:  return Keycode::ArrowDown;
+        case KEY_LEFT:  return Keycode::ArrowLeft;
+        case KEY_RIGHT: return Keycode::ArrowRight;
+
+        case KEY_F(1):  return Keycode::F1;
+        case KEY_F(2):  return Keycode::F2;
+        case KEY_F(3):  return Keycode::F3;
+        case KEY_F(4):  return Keycode::F4;
+        case KEY_F(5):  return Keycode::F5;
+        case KEY_F(6):  return Keycode::F6;
+        case KEY_F(7):  return Keycode::F7;
+        case KEY_F(8):  return Keycode::F8;
+        case KEY_F(9):  return Keycode::F9;
+        case KEY_F(10): return Keycode::F10;
+        case KEY_F(11): return Keycode::F11;
+        case KEY_F(12): return Keycode::F12;
+
+        default: return Keycode::UNKNOWN;
+
+    }
+
 }

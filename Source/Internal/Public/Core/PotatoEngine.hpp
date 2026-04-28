@@ -5,7 +5,7 @@
 
 #include "EngineSubsystem.hpp"
 
-class IEventController;
+class IInputController;
 
 class PotatoEngine // implementation in 'Internal/Private/PotatoEngine.cpp'
 {
@@ -17,11 +17,13 @@ public:
     void BeginPlay();
     void Resolve() noexcept;
 
-    IEventController* GetInputController() const;
+    IEventController* GetEventController() const;
+    IInputController* GetInputController() const;
 
 protected:    
     std::stack<IEngineSubsystem*> SubsystemStack;
 
-    IEventController* InputController;
+    IEventController* EventController;
+    IInputController* InputController;
 
 };
