@@ -1,5 +1,6 @@
 
 #include "Debug/Debug.hpp"
+#include "Game/Actors/Player.hpp"
 
 #include "World.hpp"
 

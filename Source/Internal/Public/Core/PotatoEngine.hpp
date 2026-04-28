@@ -5,6 +5,7 @@
 
 #include "EngineSubsystem.hpp"
 
+class IEventController;
 class IInputController;
 
 class PotatoEngine // implementation in 'Internal/Private/PotatoEngine.cpp'
@@ -14,6 +15,7 @@ public:
     ~PotatoEngine();
 
     static PotatoEngine& Get();
+    void LoadSubobjects();
     void BeginPlay();
     void Resolve() noexcept;
 

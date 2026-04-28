@@ -6,7 +6,7 @@
 #include "Util/Vector2.hpp"
 #include "Game/World.hpp"
 #include "Util/GameplayHelper.hpp"
-#include "Game/GameInstance.hpp"
+#include "Game/Control/GameInstance.hpp"
 
 #include "fmt/core.h"
 #include "IOController.hpp"
@@ -84,11 +84,10 @@ void IOController::UnregisterAllInputBindings(void* object) {
 
 void IOController::HandleInput() const {
     int _ch = getch();
-    LOG_DEFAULT(LogType::DEBUG, std::to_string(_ch));    
     Keycode key = GetKeycode(_ch);
 
     // DEBUG
-    if (key == Keycode::Escape) { LOG_DEFAULT(LogType::DEBUG, "esc"); GameInstance::get()->GetState().isMainTickRunning = false; }
+    if (key == Keycode::Escape) { LOG_DEFAULT(LogType::DEBUG, "esc"); GameInstance::get()->isMainTickRunning = false; }
 
     auto loc = InputBindings.find(key);
     if (loc == InputBindings.end()) { return; } // no binding exists

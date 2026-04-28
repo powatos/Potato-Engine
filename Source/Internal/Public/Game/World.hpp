@@ -8,6 +8,8 @@
 
 using ActorPool = std::vector<Actor*>;
 
+class Player;
+
 class World
 {
 public:
@@ -30,6 +32,7 @@ public:
     const ActorPool& GetAllActors() const;
 
 protected:
+    Player* ActivePlayer;
 
     ActorPool actorPool;
 
@@ -40,7 +43,7 @@ ActorClass* World::SpawnActor() {
     static_assert(std::is_base_of_v<Actor, ActorClass>, "Illegal class spawn to world");
 
     ActorClass* actor = new ActorClass();
-    actorPool.push_back(actor);
+    AddtoPool(actor);
 
     return actor;
 }

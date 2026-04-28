@@ -1,6 +1,6 @@
 
 #include "Debug/Debug.hpp"
-#include "Game/GameInstance.hpp"
+#include "Game/Control/GameInstance.hpp"
 #include "Engine.hpp"
 #include "Core/Event/EventController.hpp"
 #include "Systems/IOController.hpp"
@@ -16,13 +16,8 @@ PotatoEngine::PotatoEngine() {
     SubsystemStack.push( IOController::get() );
     SubsystemStack.push( GameInstance::get() );
 
-    InputController = IOController::get();
-    EventController = InputController;
+    
 
-}
-
-PotatoEngine::~PotatoEngine() {
-    LOG_DEFAULT(LogType::VITAL, "PotatoEngine destroying");
 }
 
 PotatoEngine& PotatoEngine::Get()
@@ -31,22 +26,16 @@ PotatoEngine& PotatoEngine::Get()
     return engine;
 }
 
-void PotatoEngine::Resolve() noexcept {
-    LOG_DEFAULT(LogType::VITAL, "Resolving PotatoEngine");
+void PotatoEngine::LoadSubobjects() {
+    InputController = IOController::get();
+    EventController = InputController;
 
-    while (!SubsystemStack.empty()) {
-        IEngineSubsystem* sys = SubsystemStack.top();
-        sys->Resolve();
-        // delete sys;
-
-        SubsystemStack.pop();
-    }
-
+    GameInstance::get()->LoadSubobjects();
 }
 
 void PotatoEngine::BeginPlay()
 {
-    [[maybe_unused]] Engine* engine = Engine::get();
+    Engine* engine = Engine::get();
 
     engine->main();
 }
@@ -57,4 +46,20 @@ IInputController* PotatoEngine::GetInputController() const {
 
 IEventController* PotatoEngine::GetEventController() const {
     return EventController;
+}
+
+void PotatoEngine::Resolve() noexcept {
+    LOG_DEFAULT(LogType::VITAL, "Resolving PotatoEngine (Subsystem stack resolve)");
+
+    while (!SubsystemStack.empty()) {
+        IEngineSubsystem* sys = SubsystemStack.top();
+        sys->Resolve();
+        SubsystemStack.pop();
+    }
+
+}
+
+
+PotatoEngine::~PotatoEngine() {
+    LOG_DEFAULT(LogType::VITAL, "PotatoEngine destroying");
 }

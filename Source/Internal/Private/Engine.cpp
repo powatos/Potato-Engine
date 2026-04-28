@@ -3,7 +3,7 @@
 #include <thread>
 
 #include "Debug/Debug.hpp"
-#include "Game/GameInstance.hpp"
+#include "Game/Control/GameInstance.hpp"
 #include "Systems/IOController.hpp"
 
 #include "Engine.hpp"
@@ -41,14 +41,13 @@ int Engine::main() {
     
     IOController* Controller = IOController::get();
     GameInstance* Instance = GameInstance::get();
-    GameState& state = Instance->GetState();
 
-    state.isMainTickRunning = true;
+    Instance->isMainTickRunning = true;
 
     const chronoUnit idealDelay = stdc::duration_cast<chronoUnit>( stdc::duration<double>(1.0 / Controller->FRAMES_PER_SECOND) );
     auto lastTick = stdc::steady_clock::now();
 
-    while (state.isMainTickRunning == true) {
+    while (Instance->isMainTickRunning == true) {
         Controller->HandleInput();
 
         Controller->Draw();

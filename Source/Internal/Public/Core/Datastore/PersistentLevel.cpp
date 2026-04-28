@@ -1,7 +1,7 @@
 
 #include "Util/Vector2.hpp"
 #include "Archivable.hpp"
-#include "Game/GameInstance.hpp"
+#include "Game/Control/GameInstance.hpp"
 #include "Debug/Debug.hpp"
 #include "Game/World.hpp"
 
