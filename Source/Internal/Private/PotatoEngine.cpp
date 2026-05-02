@@ -4,6 +4,7 @@
 #include "Engine.hpp"
 #include "Core/Event/EventController.hpp"
 #include "Systems/IOController.hpp"
+#include "Game/World.hpp"
 
 #include "Core/PotatoEngine.hpp"
 
@@ -16,8 +17,6 @@ PotatoEngine::PotatoEngine() {
     SubsystemStack.push( IOController::get() );
     SubsystemStack.push( GameInstance::get() );
 
-    
-
 }
 
 PotatoEngine& PotatoEngine::Get()
@@ -28,7 +27,7 @@ PotatoEngine& PotatoEngine::Get()
 
 void PotatoEngine::LoadSubobjects() {
     InputController = IOController::get();
-    EventController = InputController;
+    TickController = Engine::get();
 
     GameInstance::get()->LoadSubobjects();
 }
@@ -37,6 +36,13 @@ void PotatoEngine::BeginPlay()
 {
     Engine* engine = Engine::get();
 
+    // call BeginPlay on all actors
+    // TODO: put somewhere else more reasonable
+    for (Actor* actor : GameInstance::get()->GetWorld()->GetAllActors()) {
+        actor->DispatchBeginPlay();
+    }
+
+
     engine->main();
 }
 
@@ -44,8 +50,8 @@ IInputController* PotatoEngine::GetInputController() const {
     return InputController;
 }
 
-IEventController* PotatoEngine::GetEventController() const {
-    return EventController;
+ITickController* PotatoEngine::GetTickController() const {
+    return TickController;
 }
 
 void PotatoEngine::Resolve() noexcept {

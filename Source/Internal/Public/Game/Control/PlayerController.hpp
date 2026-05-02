@@ -9,6 +9,8 @@ public:
     PlayerController();
     virtual ~PlayerController();
 
+    void Initialize();
+
     void AssignPlayer(Player* player);
 
     Player* GetPlayer() const;

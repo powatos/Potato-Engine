@@ -7,6 +7,9 @@
 #include "Game/World.hpp"
 #include "Util/GameplayHelper.hpp"
 #include "Game/Control/GameInstance.hpp"
+#include "Game/Control/PlayerController.hpp"
+#include "Game/Actors/Player.hpp"
+#include "Game/Actors/Camera.hpp"
 
 #include "fmt/core.h"
 #include "IOController.hpp"
@@ -22,19 +25,22 @@ static constexpr Keycode GetKeycode(int ch);
     return &instance;
 }
 
-IOController::IOController() {
+IOController::IOController() : FRAMES_PER_SECOND(200.f) {
     LOG_DEFAULT(LogType::VITAL, "IOController constructed");
     
     setenv("ESCDELAY", "25", 1); // disables escape delay (shorten if arrow/f keys not working)
 
-    // initialize ncurses
     initscr(); // init ncurses
-	cbreak(); // disables line buffering
-	noecho(); // disables input feedback
-	keypad(stdscr, TRUE); // enables keypad input
-    nodelay(stdscr, TRUE); // disables input delay
-	curs_set(0); // disables cursor visibility
-	timeout(0); // Make getch() non-blocking IMMEDIATELY
+    cbreak(); // disable line buffering
+	noecho(); // disable input feedback
+
+    window = newwin(24, 80, 0, 0);
+    // box(window, 0, 0);
+
+	keypad(window, TRUE); // enable keypad input
+    nodelay(window, TRUE); // disable input delay
+	curs_set(0); // disable cursor visibility
+	timeout(0); // Make getch() non-blocking
 
     // crash handlers
     signal(SIGINT, crashHandler);
@@ -44,47 +50,20 @@ IOController::IOController() {
 
 }
 
-void IOController::RegisterInputBinding(InputBinding binding) {
-
-    InputBindings[binding.key].push_back( binding );
-
-}
-
-void IOController::UnregisterInputBinding(std::string deleteName) {
-
-    for (auto& pair : InputBindings) {
-        auto& vec = pair.second;
-
-        vec.erase(
-            std::remove_if(vec.begin(), vec.end(), [deleteName](const InputBinding& binding) {
-                return binding.name == deleteName;
-            }),
-            vec.end()
-        );
-
-    }
-
-}
-
-void IOController::UnregisterAllInputBindings(void* object) {
-
-    for (auto& pair : InputBindings) {
-        auto& vec = pair.second;
-
-        vec.erase(
-            std::remove_if(vec.begin(), vec.end(), [object](const InputBinding& binding) {
-                return binding.GetDelegate().GetInstance() == object;
-            }),
-            vec.end()
-        );
-
-    }
-
-}
-
 void IOController::HandleInput() const {
-    int _ch = getch();
-    Keycode key = GetKeycode(_ch);
+    // Flush input buffer to ignore old frame inputs
+    Keycode key = Keycode::UNKNOWN;
+
+    int _ch;
+    int _lCh = -1;
+
+
+    while ((_ch = wgetch(window)) != ERR) {
+        _lCh = _ch;
+    }
+    if (_lCh != -1) {
+        key = GetKeycode(_lCh);
+    }
 
     // DEBUG
     if (key == Keycode::Escape) { LOG_DEFAULT(LogType::DEBUG, "esc"); GameInstance::get()->isMainTickRunning = false; }
@@ -101,30 +80,79 @@ void IOController::HandleInput() const {
 }
 
 void IOController::Draw() const {
-    erase();
+    werase(window);
     
-    const World* world = GameInstance::get()->GetWorld();
+    const GameInstance* Instance = GameInstance::get();
+    const World* world = Instance->GetWorld();
+    const PlayerController* playerController = Instance->GetPlayerController();
+    const Camera* camera = playerController->GetCamera();
+    const ActorPool& renderActors = world->GetAllActors();
 
-    for ( Actor* actor : world->GetAllActors() ) {
+    for ( Actor* actor : renderActors ) {
         if (actor == nullptr) {
             LOG_DEFAULT(LogType::WARNING, "nullptr actor found in actor pool while drawing - skipped actor");
             continue; 
         }
-        Vector2 screenVector = GameplayHelper::WorldToScreenPos(actor->GetPosition());
+
+        if (!actor->isVisible()) { continue; }
+
+        Vector2 screenVector = GameplayHelper::WorldToScreenPos(actor->GetPosition(), camera);
         
-        mvaddch(static_cast<int>(screenVector.x), static_cast<int>(screenVector.y), actor->Texture);
+        mvwaddch(window, 
+            static_cast<int>(screenVector.x), 
+            static_cast<int>(screenVector.y), 
+            actor->Texture
+        );
 
     }
 
-    refresh();
+    wrefresh(window);
+}
+
+
+void IOController::RegisterInputBinding(InputBinding binding) {
+
+    InputBindings[binding.key].push_back( binding );
+
+}
+
+void IOController::UnregisterInputBinding(std::string deleteName) {
+
+    for (auto& [keycode, vec] : InputBindings) {
+
+        vec.erase(
+            std::remove_if(vec.begin(), vec.end(), [deleteName](const InputBinding& binding) {
+                return binding.name == deleteName;
+            }),
+            vec.end()
+        );
+
+    }
+
+}
+
+void IOController::UnregisterAllInputBindings(void* object) {
+
+    for (auto& [keycode, vec] : InputBindings) {
+
+        vec.erase(
+            std::remove_if(vec.begin(), vec.end(), [object](const InputBinding& binding) {
+                return binding.GetDelegate().GetInstance() == object;
+            }),
+
+            vec.end()
+        );
+
+    }
+
 }
 
 void IOController::Resolve() noexcept {
     LOG_DEFAULT(LogType::VITAL, "Resolving IOController");
 
-    refresh();
-    getch();
-
+    wrefresh(window);
+    wgetch(window);
+    delwin(window);
     curs_set(1);
     endwin();
 }

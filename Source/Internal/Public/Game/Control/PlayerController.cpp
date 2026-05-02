@@ -3,6 +3,7 @@
 #include "Game/Actors/Camera.hpp"
 #include "Core/PotatoEngine.hpp"
 #include "GameInstance.hpp"
+#include "Game/World.hpp"
 #include "Core/Input/InputController.hpp"
 #include "Util/GameplayHelper.hpp"
 #include "Debug/Debug.hpp"
@@ -13,6 +14,14 @@ SET_DEFAULT_SUBCLASS(PlayerController, PlayerController);
 
 PlayerController::PlayerController() {
 
+}
+
+void PlayerController::Initialize() {
+
+    World* world = GameInstance::get()->GetWorld();
+
+    // Create camera
+    ActiveCamera = world->SpawnActor<Camera>();
 
 }
 
@@ -32,22 +41,22 @@ Camera* PlayerController::GetCamera() const { return ActiveCamera; }
 
 void PlayerController::MoveLeft() {
     if (ActivePlayer == nullptr) { return; }
-    ActivePlayer->AddLocalOffset(GameplayHelper::WorldToScreenDir(Vector2(-1.f, 0.f))); // Move left by 1 unit
+    ActivePlayer->AddLocalOffset(Vector2(-1, 0)); // Move left by 1 unit
 }
 
 void PlayerController::MoveRight() {
     if (ActivePlayer == nullptr) { return; }
-    ActivePlayer->AddLocalOffset(GameplayHelper::WorldToScreenDir(Vector2(1.f, 0.f))); // Move right by 1 unit
+    ActivePlayer->AddLocalOffset(Vector2(1, 0)); // Move right by 1 unit
 }
 
 void PlayerController::MoveUp() {
     if (ActivePlayer == nullptr) { return; }
-    ActivePlayer->AddLocalOffset(GameplayHelper::WorldToScreenDir(Vector2(0.f, 1.f))); // Move left by 1 unit
+    ActivePlayer->AddLocalOffset(Vector2(0, 1)); // Move left by 1 unit
 }
 
 void PlayerController::MoveDown() {
     if (ActivePlayer == nullptr) { return; }
-    ActivePlayer->AddLocalOffset(GameplayHelper::WorldToScreenDir(Vector2(0.f, -1.f))); // Move left by 1 unit
+    ActivePlayer->AddLocalOffset(Vector2(0, -1)); // Move left by 1 unit
 }
 
 void PlayerController::SetupInputBindings() {

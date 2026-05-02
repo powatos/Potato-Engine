@@ -10,7 +10,7 @@ public:
     std::string name;
 
 private:
-    EventDelegate delegate;
+    EventDelegate<> delegate;
 
 public:
     Keycode key;
@@ -22,6 +22,6 @@ public:
         key(key)
     {}
 
-    inline const EventDelegate& GetDelegate() const { return delegate; }
+    inline const EventDelegate<>& GetDelegate() const { return delegate; }
 
 };

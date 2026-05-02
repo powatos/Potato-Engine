@@ -1,6 +1,10 @@
 
+#include <algorithm>
+
 #include "Util/Vector2.hpp"
 #include "Debug/Debug.hpp"
+#include "Game/World.hpp"
+// #include "Core/PotatoEngine.hpp"
 
 #include "Actor.hpp"
 
@@ -10,10 +14,22 @@ Actor::Actor() {
 
     Position = Vector2();
     Rotation = 0.f;
+    Visible = true;
     
 }
 
-Actor::~Actor() {
+void Actor::DispatchBeginPlay() {
+    if (isInPlay) { return; }
+    isInPlay = true;
+
+    BeginPlay();
+}
+
+void Actor::BeginPlay() {
+
+}
+
+void Actor::Tick(float dt) {
 
 }
 
@@ -21,8 +37,16 @@ Vector2 Actor::GetPosition() const {
     return Position; 
 }
 void Actor::SetPosition(const Vector2 &position) { 
-    Position = position; 
+    // TODO: enforce world bounds somewhere better later
+    Position = Vector2(
+        std::clamp(position.x, 0, World::EXTENT_X-1), 
+        std::clamp(position.y, 0, World::EXTENT_Y-1)
+    );
 }
+void Actor::AddLocalOffset(const Vector2& offset) {
+    SetPosition(Position + offset);
+}
+
 float Actor::GetRotation() const { 
     return Rotation; 
 }
@@ -33,13 +57,18 @@ void Actor::SetRotation(float rotation) {
     if (rotation < 0.0f) { rotation += 360.0f; }
     Rotation = rotation;
 }
-void Actor::AddLocalOffset(const Vector2& offset) {
-    SetPosition(Position + offset);
-}
 void Actor::AddLocalRotation(float rotation) {
     SetRotation(GetRotation() + rotation);
 }
 
-void Actor::Destroy() {
-    
+bool Actor::isVisible() const {
+    return Visible;
+}
+void Actor::SetVisibility(bool visibility) {
+    Visible = visibility;
+}
+
+
+Actor::~Actor() {
+
 }

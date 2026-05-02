@@ -49,3 +49,6 @@ Binaries
 
 # Log Files
 *.log
+
+
+*.env

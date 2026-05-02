@@ -14,7 +14,7 @@ class World
 {
 public:
     static constexpr int EXTENT_X = 1'000;
-    static constexpr int EXTENT_Y = 40;
+    static constexpr int EXTENT_Y = 24;
   
     World();
     ~World();
@@ -42,10 +42,13 @@ template<typename ActorClass>
 ActorClass* World::SpawnActor() {
     static_assert(std::is_base_of_v<Actor, ActorClass>, "Illegal class spawn to world");
 
-    ActorClass* actor = new ActorClass();
+    Actor* actor = new ActorClass();
     AddtoPool(actor);
 
-    return actor;
+    // post-spawn functionality here
+    actor->DispatchBeginPlay();
+
+    return static_cast<ActorClass*>(actor);
 }
 
 template<typename ActorClass>

@@ -4,5 +4,5 @@
 ARCHIVE_STATIC(Block);
 
 Block::Block() {
-    Texture = 'b';
+    Texture = 'B';
 }

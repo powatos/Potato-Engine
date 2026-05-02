@@ -4,5 +4,12 @@
 
 class Camera : public Actor
 {
-    
+
+public:
+    Camera();
+    ~Camera();
+
+    char texture = 'c';
+
+protected:
 };

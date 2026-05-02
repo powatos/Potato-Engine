@@ -7,8 +7,10 @@
 #include "Core/EngineSubsystem.hpp"
 #include "Core/Input/InputController.hpp"
 
+struct _win_st;
+typedef struct _win_st WINDOW;
 
-class IOController : public IInputController, public IEngineSubsystem
+class IOController : public IEngineSubsystem, public IInputController
 {
 public:
     [[maybe_unused]] static IOController* get();
@@ -21,8 +23,7 @@ public:
     virtual void UnregisterInputBinding(std::string deleteName) override;
     virtual void UnregisterAllInputBindings(void* object) override;
 
-    const int FRAMES_PER_SECOND = 24;
-
+    const float FRAMES_PER_SECOND;
 
 private:
     IOController();
@@ -34,7 +35,9 @@ private:
 
     
 protected:
-    
+    WINDOW* window;
+
     std::unordered_map<Keycode , std::vector<InputBinding>, KeycodeHash> InputBindings;
     
+
 };

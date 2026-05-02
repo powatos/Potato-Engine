@@ -12,7 +12,6 @@
 using json = nlohmann::json;
 
 static json safeGetJson(const std::filesystem::path& path);
-static Archivable* instantiateFromArchive(const std::string& ClassID);
 
 PersistentLevel::PersistentLevel(const std::string& saveFileName) {
     
@@ -26,10 +25,27 @@ bool PersistentLevel::LoadStaticActors() {
 
     bool allSuccessful = true;
 
-    LOG_DEFAULT(LogType::VITAL, "Loading static actors from persistent level");
+    World* world = GameInstance::get()->GetWorld();
+    __ArchiveType& Archive = __Archive::_GetArchive();
 
+    LOG_DEFAULT(LogType::INFO, "Loading static actors from persistent level");
 
     for (const auto& [ClassID, posList] : StaticActors.items()) {
+        
+        auto it = Archive.find(ClassID);
+        // if ClassID not found in archive, continue to skip
+        if (it == Archive.end()) {
+            LOG_DEFAULT(LogType::WARNING, fmt::format("Unkown ClassID in factory: {} - skipped loading", ClassID));
+            continue;
+        }
+
+        auto constructor = it->second;
+        // if constsructor not found, continue to skip
+        if (constructor == nullptr) {
+            LOG_DEFAULT(LogType::WARNING, fmt::format("Bad function reference in archive for class: {} - skipped loading", ClassID));
+            continue;
+        }
+        
         LOG_DEFAULT(LogType::INFO, fmt::format("Loading static actors of class: {}", ClassID));
 
         for (const auto& pos : posList) {
@@ -55,15 +71,16 @@ bool PersistentLevel::LoadStaticActors() {
                 continue;
             }
             
-            Archivable* obj = instantiateFromArchive(ClassID);
+            Archivable* obj = constructor();
 
             // if returns nullptr, skip
             if (obj == nullptr) {
+                LOG_DEFAULT(LogType::WARNING, fmt::format("Object could not be constructor for class: {} - skipped loading", ClassID));
                 allSuccessful = false;
                 continue;
             }
 
-            if (Actor* addedActor = GameInstance::get()->GetWorld()->AddtoPool(dynamic_cast<Actor*>(obj))) {
+            if (Actor* addedActor = world->AddtoPool(dynamic_cast<Actor*>(obj))) {
                 addedActor->SetPosition(Position);
             } else {
                 allSuccessful = false;
@@ -75,7 +92,7 @@ bool PersistentLevel::LoadStaticActors() {
     }
 
 
-    LOG_DEFAULT(LogType::VITAL, fmt::format("Static actors loaded {}", allSuccessful ? "successfully" : "unsuccessfully"));
+    LOG_DEFAULT(LogType::INFO, fmt::format("Static actors loaded {}", allSuccessful ? "successfully" : "unsuccessfully"));
     return allSuccessful;
 }
 
@@ -145,34 +162,8 @@ static json safeGetJson(const std::filesystem::path& path) {
 
     return parsed;
 
-} 
-
-static Archivable* instantiateFromArchive(const std::string& ClassID) {
-
-    auto& Archive = __Archive::_GetArchive();
-
-    // if ClassID not found in archive, return nullptr to skip
-    auto it = Archive.find(ClassID);
-    if (it == Archive.end()) {
-        LOG_DEFAULT(LogType::WARNING, fmt::format("Unkown ClassID in factory: {} - skipped loading", ClassID));
-        return nullptr;
-    }
-
-    const std::function<Archivable*()>& constructor = it->second;
-    if (constructor == nullptr) {
-        LOG_DEFAULT(LogType::WARNING, fmt::format("Bad function reference in archive for class: {} - skipped loading", ClassID));
-        return nullptr;
-    }
-
-    Archivable* obj = constructor();
-    if (obj == nullptr) {
-        LOG_DEFAULT(LogType::WARNING, fmt::format("Object could not be constructor for class: {} - skipped loading", ClassID));
-        return nullptr;
-    }
-    
-    return obj;
-
 }
+
 
 
 

@@ -11,6 +11,10 @@ public:
     Player();
     virtual ~Player();
 
+protected:
+    virtual void BeginPlay() override;
+    virtual void Tick(float dt) override;
+
 private:
     PlayerController* OwningController;
 

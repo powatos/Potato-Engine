@@ -1,13 +1,17 @@
 #pragma once
 
 #include "Core/EngineSubsystem.hpp"
+#include "Core/Event/TickController.hpp"
 
-class Engine : public IEngineSubsystem
+class Engine : public IEngineSubsystem, public ITickController
 {
 public:
     [[maybe_unused]] static Engine* get();
     
     int main();
+
+    virtual void RegisterTick(EventDelegate<float> delegate) override;
+    virtual void UnregisterTick(void* object) override;
 
 private:
     Engine();
@@ -19,7 +23,9 @@ private:
     
     void Resolve() noexcept;
 
-protected:
+    void FireTick(const float dt) const;
 
+protected:
+    std::vector<EventDelegate<float>> TickDelegates;
 
 };

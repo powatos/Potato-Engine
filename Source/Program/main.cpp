@@ -24,7 +24,7 @@ int main()
     PlayerController* playerController = instance->GetPlayerController();
     Player* player = playerController->GetPlayer();
 
-    player->Texture = 'P';
+    player->Texture = '0';
 
     engine.BeginPlay();
 

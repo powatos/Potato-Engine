@@ -5,11 +5,12 @@
 
 struct Vector2
 {
-    float x;
-    float y;
+    int x;
+    int y;
 
-    constexpr Vector2() : x{0.f}, y{0.f} {}
-    constexpr Vector2(float x, float y) : x{x}, y{y} {}
+    constexpr Vector2() : x{0}, y{0} {}
+    constexpr Vector2(int x, int y) : x(x), y(y) {}
+    constexpr Vector2(const Vector2& vec) : x(vec.x), y(vec.y) {} 
 
     inline Vector2 operator +(const Vector2& other) const {
         return Vector2(x + other.x, y + other.y);

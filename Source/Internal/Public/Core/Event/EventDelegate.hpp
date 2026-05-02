@@ -2,10 +2,11 @@
 
 #include <functional>
 
+template<typename... CallbackArgs>
 struct EventDelegate
 {
 private:
-    std::function<void()> callback;
+    std::function<void(CallbackArgs...)> callback;
     void* instance = nullptr;
 
 public:
@@ -14,15 +15,17 @@ public:
     ~EventDelegate() = default;
 
     template<typename BindingClass>
-    EventDelegate(BindingClass* obj, void(BindingClass::*method)()) {
+    EventDelegate(BindingClass* obj, void(BindingClass::*method)(CallbackArgs...)) {
         instance = obj;
-        callback = [obj, method]() { (obj->*method)(); };
+        callback = [obj, method](CallbackArgs... args) { 
+            (obj->*method)(std::forward<CallbackArgs>(args)...); // forward ensures value category preserved
+        };
     }
 
     // @returns if sucessfully fired
-    bool Fire() const {
+    bool Fire(CallbackArgs... args) const {
         if (callback == nullptr) { return false; }
-        callback();
+        callback( std::forward<CallbackArgs>(args)... );
         return true;
     }
 

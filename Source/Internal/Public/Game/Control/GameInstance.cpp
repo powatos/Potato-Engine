@@ -34,6 +34,7 @@ GameInstance::GameInstance() {
 }
 
 void GameInstance::LoadSubobjects() {
+    ActivePlayerController->Initialize();
     ActivePlayerController->SetupInputBindings();
 }
 
