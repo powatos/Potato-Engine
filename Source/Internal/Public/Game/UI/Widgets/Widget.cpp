@@ -3,10 +3,14 @@
 
 #include "Widget.hpp"
 
-Widget::Widget() {
+Widget::Widget(std::string UID) : UID(UID) {
     ScreenPosition = Vector2(0,0);
     Visible = true;
 
+}
+
+const std::string& Widget::GetUID() const {
+    return UID;
 }
 
 Vector2 Widget::GetScreenPosition() const { 
@@ -25,7 +29,6 @@ bool Widget::isVisible() const {
 void Widget::SetVisibility(bool visibility) {
     Visible = visibility;
 }
-
 
 Widget::~Widget() {
 

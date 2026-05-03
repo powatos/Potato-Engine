@@ -10,6 +10,8 @@
 #include "Game/Control/PlayerController.hpp"
 #include "Game/Actors/Player.hpp"
 #include "Game/Actors/Camera.hpp"
+#include "Game/UI/Widgets/Widget.hpp"
+#include "UIController.hpp"
 
 #include "fmt/core.h"
 #include "IOController.hpp"
@@ -34,11 +36,10 @@ IOController::IOController() : FRAMES_PER_SECOND(200.f) {
     cbreak(); // disable line buffering
 	noecho(); // disable input feedback
 
-    window = newwin(24, 80, 0, 0);
-    // box(window, 0, 0);
+    DisplayWindow = newwin(24, 80, 0, 0);
 
-	keypad(window, TRUE); // enable keypad input
-    nodelay(window, TRUE); // disable input delay
+	keypad(DisplayWindow, TRUE); // enable keypad input
+    nodelay(DisplayWindow, TRUE); // disable input delay
 	curs_set(0); // disable cursor visibility
 	timeout(0); // Make getch() non-blocking
 
@@ -58,7 +59,7 @@ void IOController::HandleInput() const {
     int _lCh = -1;
 
 
-    while ((_ch = wgetch(window)) != ERR) {
+    while ((_ch = wgetch(DisplayWindow)) != ERR) {
         _lCh = _ch;
     }
     if (_lCh != -1) {
@@ -79,8 +80,16 @@ void IOController::HandleInput() const {
         
 }
 
-void IOController::Draw() const {
-    werase(window);
+void IOController::Draw() {
+
+    DrawLevel();
+    DrawHUD();
+
+    doupdate();
+}
+
+void IOController::DrawLevel() {
+    werase(DisplayWindow);
     
     const GameInstance* Instance = GameInstance::get();
     const World* world = Instance->GetWorld();
@@ -98,7 +107,7 @@ void IOController::Draw() const {
 
         Vector2 screenVector = GameplayHelper::WorldToScreenPos(actor->GetPosition(), camera);
         
-        mvwaddch(window, 
+        mvwaddch(DisplayWindow, 
             static_cast<int>(screenVector.x), 
             static_cast<int>(screenVector.y), 
             actor->Texture
@@ -106,9 +115,28 @@ void IOController::Draw() const {
 
     }
 
-    wrefresh(window);
+    wnoutrefresh(DisplayWindow);
 }
 
+void IOController::DrawHUD() {
+
+    // for (Widget* widget :?()) {
+
+    // }
+
+}
+
+void IOController::RegisterWidget(Widget* widget) {
+
+    // WidgetWindows[widget->GetUID()] =
+
+}
+
+void IOController::UnregisterWidget(Widget* widget) {
+
+    for (auto& [UID, ])
+
+}
 
 void IOController::RegisterInputBinding(InputBinding binding) {
 
@@ -150,9 +178,9 @@ void IOController::UnregisterAllInputBindings(void* object) {
 void IOController::Resolve() noexcept {
     LOG_DEFAULT(LogType::VITAL, "Resolving IOController");
 
-    wrefresh(window);
-    wgetch(window);
-    delwin(window);
+    wrefresh(DisplayWindow);
+    wgetch(DisplayWindow);
+    delwin(DisplayWindow);
     curs_set(1);
     endwin();
 }
