@@ -1,6 +1,7 @@
 
 #include <ncurses.h>
 #include <signal.h>
+#include <string>
 
 #include "Debug/Debug.hpp"
 #include "Util/Vector2.hpp"
@@ -10,6 +11,9 @@
 #include "Game/Control/PlayerController.hpp"
 #include "Game/Actors/Player.hpp"
 #include "Game/Actors/Camera.hpp"
+#include "Game/UI/Widgets/Widget.hpp"
+#include "Game/UI/Widgets/TextElement.hpp"
+#include "UIController.hpp"
 
 #include "fmt/core.h"
 #include "IOController.hpp"
@@ -34,13 +38,12 @@ IOController::IOController() : FRAMES_PER_SECOND(200.f) {
     cbreak(); // disable line buffering
 	noecho(); // disable input feedback
 
-    window = newwin(24, 80, 0, 0);
-    // box(window, 0, 0);
+    DisplayWindow = newwin(24, 80, 0, 0);
 
-	keypad(window, TRUE); // enable keypad input
-    nodelay(window, TRUE); // disable input delay
+	keypad(DisplayWindow, TRUE); // enable keypad input
+    nodelay(DisplayWindow, TRUE); // disable input delay
 	curs_set(0); // disable cursor visibility
-	timeout(0); // Make getch() non-blocking
+	wtimeout(DisplayWindow, 0); // Make getch() non-blocking
 
     // crash handlers
     signal(SIGINT, crashHandler);
@@ -58,7 +61,7 @@ void IOController::HandleInput() const {
     int _lCh = -1;
 
 
-    while ((_ch = wgetch(window)) != ERR) {
+    while ((_ch = wgetch(DisplayWindow)) != ERR) {
         _lCh = _ch;
     }
     if (_lCh != -1) {
@@ -79,14 +82,22 @@ void IOController::HandleInput() const {
         
 }
 
-void IOController::Draw() const {
-    werase(window);
+void IOController::Draw() {
+
+    DrawLevel();
+    DrawHUD();
+
+    doupdate();
+}
+
+void IOController::DrawLevel() {
+    werase(DisplayWindow);
     
     const GameInstance* Instance = GameInstance::get();
     const World* world = Instance->GetWorld();
     const PlayerController* playerController = Instance->GetPlayerController();
     const Camera* camera = playerController->GetCamera();
-    const ActorPool& renderActors = world->GetAllActors();
+    const ActorPool& renderActors = world->GetAllActors(); // todo: try to make return const
 
     for ( Actor* actor : renderActors ) {
         if (actor == nullptr) {
@@ -96,9 +107,9 @@ void IOController::Draw() const {
 
         if (!actor->isVisible()) { continue; }
 
-        Vector2 screenVector = GameplayHelper::WorldToScreenPos(actor->GetPosition(), camera);
+        Vector2 screenVector = GameplayHelper::VecToScreenVec(actor->GetPosition());
         
-        mvwaddch(window, 
+        mvwaddch(DisplayWindow, 
             static_cast<int>(screenVector.x), 
             static_cast<int>(screenVector.y), 
             actor->Texture
@@ -106,9 +117,71 @@ void IOController::Draw() const {
 
     }
 
-    wrefresh(window);
+    touchwin(DisplayWindow);
+    wnoutrefresh(DisplayWindow);
 }
 
+void IOController::DrawHUD() {
+    using namespace std::string_literals;
+
+    // iterate through each widget
+    for (auto& [UID, map] : WidgetMaps) {
+        werase(map->window);
+
+        if (!map->widget->isVisible()) { continue; }
+    
+        box(map->window, 0, 0);
+        
+        // iterate through each ui element on the widget
+        for (auto [name, elem] : map->widget->GetAllElements()) {
+            if (!elem->isVisible()) { continue; }
+
+            const char* t  = elem->TYPE();
+
+            if (t == "TextElement"s) {
+                const TextElement* e = dynamic_cast<const TextElement*>(elem);
+                Vector2 pos = e->GetPosition() + Vector2(1,1);
+                mvwprintw(map->window,
+                    pos.y,
+                    pos.x,
+                    e->field.c_str()
+                );
+            }
+            
+        }
+        touchwin(map->window);
+        wnoutrefresh(map->window);
+    }
+
+}
+
+void IOController::RegisterWidget(Widget* widget) {
+    if (DisplayWindow == nullptr) { return; }
+
+    Vector2 widgetSize = widget->GetScreenSize();
+    Vector2 widgetPos = widget->GetScreenPosition();
+
+    WINDOW* win = derwin(DisplayWindow, widgetSize.y, widgetSize.x, widgetPos.y, widgetPos.x);
+    
+    WidgetMaps.emplace(widget->GetUID(), new WidgetMapper(widget, win));
+
+}
+
+void IOController::RemoveWidget(std::string UID) {
+
+    for (auto it = WidgetMaps.begin(); it != WidgetMaps.end(); ) {
+        if (it->second->window == nullptr) { continue; } // can happen if IOController resolve is called before UIController resolve
+        if (it->second->widget->GetUID() == UID) {
+            delwin(it->second->window);
+            it->second->window = nullptr;
+
+            delete it->second;
+            WidgetMaps.erase(it);
+            break;
+        } else { it++; }
+    }
+
+}
 
 void IOController::RegisterInputBinding(InputBinding binding) {
 
@@ -150,9 +223,15 @@ void IOController::UnregisterAllInputBindings(void* object) {
 void IOController::Resolve() noexcept {
     LOG_DEFAULT(LogType::VITAL, "Resolving IOController");
 
-    wrefresh(window);
-    wgetch(window);
-    delwin(window);
+    for (auto& [UID, map] : WidgetMaps) {
+        delwin(map->window);
+        map->window = nullptr;
+        delete map;
+    }
+
+    wrefresh(DisplayWindow);
+    wgetch(DisplayWindow);
+    delwin(DisplayWindow);
     curs_set(1);
     endwin();
 }

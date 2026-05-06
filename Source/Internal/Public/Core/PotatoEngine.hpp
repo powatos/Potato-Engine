@@ -7,6 +7,7 @@
 
 class IInputController;
 class ITickController;
+class IHUDController;
 
 class PotatoEngine // implementation in 'Internal/Private/PotatoEngine.cpp'
 {
@@ -21,11 +22,13 @@ public:
 
     IInputController* GetInputController() const;
     ITickController* GetTickController() const;
+    IHUDController* GetHUDController() const;
 
 protected:    
     std::stack<IEngineSubsystem*> SubsystemStack;
 
     IInputController* InputController;
     ITickController* TickController;
+    IHUDController* HUDController;
 
 };

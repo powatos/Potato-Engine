@@ -4,7 +4,7 @@
 
 #include "GameplayHelper.hpp"
 
-Vector2 GameplayHelper::WorldToScreenPos(Vector2 worldPos, const Camera* camera) {
+Vector2 GameplayHelper::VecToScreenVec(Vector2 worldPos) {
     // TODO
     Vector2 vec = Vector2(worldPos.x, worldPos.y).Swizzled();
     vec.x = 23 - vec.x;
