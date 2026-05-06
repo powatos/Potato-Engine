@@ -19,6 +19,7 @@ DebugInfo::DebugInfo(std::string UID) : Widget(std::move(UID)) {
     SetScreenPosition(Vector2(0,0));
 
     SetTicking(true);
+    SetVisibility(false);
 }
 
 void DebugInfo::Tick(float dt) {

@@ -28,7 +28,15 @@ void PlayerController::Initialize() {
 
 void PlayerController::Tick(float dt) {
 
-    ActiveCamera->SetPosition(ActivePlayer->GetPosition());
+    Vector2 newCamPos = ActivePlayer->GetPosition();
+
+    // camera x is median of player
+    // camera y fills screen (top)
+
+    newCamPos.x -= ActiveCamera->GetSize().x/2;
+    newCamPos.y = ActiveCamera->GetSize().y-1;
+
+    ActiveCamera->SetPosition(newCamPos);
 
 }
 

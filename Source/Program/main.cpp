@@ -10,6 +10,7 @@
 #include "Game/Actors/Player.hpp"
 #include "Util/Vector2.hpp"
 #include "Game/UI/HUDController.hpp"
+#include "Core/Input/InputController.hpp"
 #include "Game/UI/Widgets/Objects/DebugInfo.hpp"
 
 // todo: make level rendering relative to player

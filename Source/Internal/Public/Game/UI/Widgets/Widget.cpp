@@ -21,8 +21,6 @@ WidgetElement* Widget::GetElement(std::string id) {
         return Elements.at(id);
     }
 
-    LOG_DEFAULT(LogType::ERROR, "Unkown widget element try accessed");
-
     return nullptr;
 }
 Vector2 Widget::GetScreenSize() const {

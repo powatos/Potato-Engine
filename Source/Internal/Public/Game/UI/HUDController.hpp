@@ -12,6 +12,8 @@ public:
     
     template<typename WidgetClass>
     WidgetClass* AddWidget(std::string UID);
+
+    virtual Widget* GetWidget(std::string UID) const = 0;
     
 protected:
     virtual void RegisterWidget(Widget* widget) = 0;
