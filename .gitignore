@@ -51,4 +51,12 @@ Binaries
 # Log Files
 *.log
 
+# jekyll files
+*.jekyll-cache/
+_site/
+.bundle/
+vendor/
+
+
+
 !libPotatoEngine.a

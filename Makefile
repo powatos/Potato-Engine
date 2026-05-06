@@ -1,18 +1,17 @@
 # Targets
 LIB_NAME				:= PotatoEngine
 LIB_TARGET				:= lib$(LIB_NAME).a
-GAME_TARGET				:= Game
+GAME_TARGET				:= Program
 
 CXX						:= g++
 # REMOVE -08 AFTER DEBUGGING
-CXXFLAGS				:= -g -Wall -std=c++17 -O0
+CXXFLAGS				:= -g -Wall -std=c++17 -O0 -MMD -MP
 LDLIBS					:= -lncurses
 
 SRCDIR					:= Source
 OBJDIR					:= Binaries
 THIRDPARTYDIR			:= $(SRCDIR)/ThirdParty
 LOGDIR					:= logs/debug.log
-
 
 # Both Engine and Game can see ThirdParty
 ENGINE_INCLUDES			:= -I$(SRCDIR)/Internal/Public -I$(SRCDIR)/Internal/Private -I$(THIRDPARTYDIR)
@@ -33,6 +32,8 @@ ALL_LIB_OBJECTS			:= $(ENGINE_OBJECTS) $(THIRDPARTY_OBJECTS)
 # Game logic
 GAME_SOURCES			:= $(shell find $(SRCDIR)/Program -name '*.cpp')
 GAME_OBJECTS			:= $(GAME_SOURCES:$(SRCDIR)/Program/%.cpp=$(OBJDIR)/Program/%.o)
+
+DEPENDENCIES			:= $(ALL_LIB_OBJECTS:.o=.d) $(GAME_OBJECTS:.o=.d)
 
 all: $(GAME_TARGET)
 
@@ -66,17 +67,6 @@ $(OBJDIR)/Program/%.o: $(SRCDIR)/Program/%.cpp
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) $(GAME_INCLUDES) -c $< -o $@
 
-flush:
-	@mkdir -p $(dir $(LOGDIR))
-	@> ${LOGDIR}
-	@echo "Flushed ${LOGDIR}"
+-include $(DEPENDENCIES)
 
-clean:
-	@rm -rf $(OBJDIR) $(LIB_TARGET) $(GAME_TARGET)
-	@echo "Cleaned Binaries and Targets"
-	@$(MAKE) --no-print-directory flush
-
-run: all
-	@./$(GAME_TARGET)
-
-.PHONY: all clean run flush
+.PHONY: all
