@@ -1,2 +1,15 @@
-title: Potato Engine API Reference
-theme: minima
+title: Potato Engine API
+description: Documentation for the Potato Game Engine.
+
+theme: "just-the-docs"
+remote_theme: just-the-docs/just-the-docs
+
+color_scheme: dark 
+nav_enabled: true
+
+search:
+  heading_level: 2 # limit search results to h1/h2
+  preview: 1 # previews set to 1
+  tokenizer_seperator: '/[\s\-]+/' # keep search to title
+  rel_url: false # hide url
+  show_extra_fields: false # hide html
