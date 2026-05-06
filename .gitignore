@@ -45,10 +45,10 @@
 .vscode
 
 # Local Data
+*.env
 Binaries
 
 # Log Files
 *.log
 
-
-*.env
+!libPotatoEngine.a

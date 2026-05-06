@@ -37,6 +37,7 @@ public:
     // add widget happens in HUDController -> calls register
     virtual void RemoveWidget(std::string UID) override;
     virtual void RegisterWidget(Widget* widget) override;
+    virtual Widget* GetWidget(std::string UID) const override;
 
 private:
     UIController();

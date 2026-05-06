@@ -23,6 +23,38 @@ void PlayerController::Initialize() {
     // Create camera
     ActiveCamera = world->SpawnActor<Camera>();
 
+    SetTicking(true);
+}
+
+void PlayerController::Tick(float dt) {
+
+    Vector2 newCamPos = ActivePlayer->GetPosition();
+
+    // camera x is median of player
+    // camera y fills screen (top)
+
+    newCamPos.x -= ActiveCamera->GetSize().x/2;
+    newCamPos.y = ActiveCamera->GetSize().y-1;
+
+    ActiveCamera->SetPosition(newCamPos);
+
+}
+
+void PlayerController::MoveLeft() {
+    if (ActivePlayer == nullptr) { return; }
+    ActivePlayer->AddLocalOffset(Vector2(-1, 0)); // Move left by 1 unit
+}
+void PlayerController::MoveRight() {
+    if (ActivePlayer == nullptr) { return; }
+    ActivePlayer->AddLocalOffset(Vector2(1, 0)); // Move right by 1 unit
+}
+void PlayerController::MoveUp() {
+    if (ActivePlayer == nullptr) { return; }
+    ActivePlayer->AddLocalOffset(Vector2(0, 1)); // Move left by 1 unit
+}
+void PlayerController::MoveDown() {
+    if (ActivePlayer == nullptr) { return; }
+    ActivePlayer->AddLocalOffset(Vector2(0, -1)); // Move left by 1 unit
 }
 
 void PlayerController::AssignPlayer(Player* player) {
@@ -32,32 +64,8 @@ void PlayerController::AssignPlayer(Player* player) {
     }
 }
 
-PlayerController::~PlayerController() {
-    PotatoEngine::Get().GetInputController()->UnregisterAllInputBindings(this);
-}
-
 Player* PlayerController::GetPlayer() const { return ActivePlayer; }
 Camera* PlayerController::GetCamera() const { return ActiveCamera; }
-
-void PlayerController::MoveLeft() {
-    if (ActivePlayer == nullptr) { return; }
-    ActivePlayer->AddLocalOffset(Vector2(-1, 0)); // Move left by 1 unit
-}
-
-void PlayerController::MoveRight() {
-    if (ActivePlayer == nullptr) { return; }
-    ActivePlayer->AddLocalOffset(Vector2(1, 0)); // Move right by 1 unit
-}
-
-void PlayerController::MoveUp() {
-    if (ActivePlayer == nullptr) { return; }
-    ActivePlayer->AddLocalOffset(Vector2(0, 1)); // Move left by 1 unit
-}
-
-void PlayerController::MoveDown() {
-    if (ActivePlayer == nullptr) { return; }
-    ActivePlayer->AddLocalOffset(Vector2(0, -1)); // Move left by 1 unit
-}
 
 void PlayerController::SetupInputBindings() {
 
@@ -68,4 +76,8 @@ void PlayerController::SetupInputBindings() {
     controller->RegisterInputBinding( InputBinding(Keycode::D, "MoveRight", this, &PlayerController::MoveRight) );
     controller->RegisterInputBinding( InputBinding(Keycode::W, "MoveUp", this, &PlayerController::MoveUp) );
     controller->RegisterInputBinding( InputBinding(Keycode::S, "MoveDown", this, &PlayerController::MoveDown) );
+}
+
+PlayerController::~PlayerController() {
+    PotatoEngine::Get().GetInputController()->UnregisterAllInputBindings(this);
 }

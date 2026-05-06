@@ -29,6 +29,18 @@ void UIController::RemoveWidget(std::string UID) {
     IOController::get()->RemoveWidget(UID);
 }
 
+Widget* UIController::GetWidget(std::string UID) const {
+    
+    auto it = std::find_if(ActiveWidgets.begin(), ActiveWidgets.end(), [UID](Widget* widget){
+        return widget->GetUID() == UID;
+    });
+
+    if (it != ActiveWidgets.end()) { return *it; }
+
+    return nullptr;
+
+}
+
 const std::vector<Widget*>& UIController::GetActiveWidgets() {
     return ActiveWidgets;
 }

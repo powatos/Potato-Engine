@@ -29,7 +29,7 @@ static constexpr Keycode GetKeycode(int ch);
     return &instance;
 }
 
-IOController::IOController() : FRAMES_PER_SECOND(200.f) {
+IOController::IOController() : FRAMES_PER_SECOND(30.f) {
     LOG_DEFAULT(LogType::VITAL, "IOController constructed");
     
     setenv("ESCDELAY", "25", 1); // disables escape delay (shorten if arrow/f keys not working)
@@ -70,6 +70,7 @@ void IOController::HandleInput() const {
 
     // DEBUG
     if (key == Keycode::Escape) { LOG_DEFAULT(LogType::DEBUG, "esc"); GameInstance::get()->isMainTickRunning = false; }
+    if (key == Keycode::T) { auto* _ = UIController::get()->GetWidget("W_DebugInfo"); _->SetVisibility(!_->isVisible()); }
 
     auto loc = InputBindings.find(key);
     if (loc == InputBindings.end()) { return; } // no binding exists
@@ -94,10 +95,8 @@ void IOController::DrawLevel() {
     werase(DisplayWindow);
     
     const GameInstance* Instance = GameInstance::get();
-    const World* world = Instance->GetWorld();
-    const PlayerController* playerController = Instance->GetPlayerController();
-    const Camera* camera = playerController->GetCamera();
-    const ActorPool& renderActors = world->GetAllActors(); // todo: try to make return const
+    const Vector2 cameraPos = Instance->GetPlayerController()->GetCamera()->GetPosition();
+    const ActorPool& renderActors = Instance->GetWorld()->GetAllActors(); // todo: try to make return const
 
     for ( Actor* actor : renderActors ) {
         if (actor == nullptr) {
@@ -107,7 +106,12 @@ void IOController::DrawLevel() {
 
         if (!actor->isVisible()) { continue; }
 
-        Vector2 screenVector = GameplayHelper::VecToScreenVec(actor->GetPosition());
+        Vector2 actorPos = actor->GetPosition();
+
+        if (!GameplayHelper::IsPositionInCameraFrame(actorPos, cameraPos)) { continue; }
+
+        Vector2 camOffsetActorPos = Vector2(actorPos.x - cameraPos.x, actorPos.y);
+        Vector2 screenVector = GameplayHelper::VecToScreenVec(camOffsetActorPos);
         
         mvwaddch(DisplayWindow, 
             static_cast<int>(screenVector.x), 

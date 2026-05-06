@@ -13,6 +13,9 @@ public:
 
     Vector2 GetPosition() const;
     void SetPosition(const Vector2& position);
+
+    Vector2 GetSize() const;
+    void SetSize(const Vector2& size);
     
     float GetRotation() const;
     void SetRotation(float rotation);
@@ -34,7 +37,9 @@ protected:
 private:
 
     bool Visible;
+
     Vector2 Position;
+    Vector2 Size;
     float Rotation;
 
     bool isInPlay;

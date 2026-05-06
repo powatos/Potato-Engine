@@ -9,7 +9,5 @@ public:
     Camera();
     ~Camera();
 
-    char texture = 'c';
-
 protected:
 };
