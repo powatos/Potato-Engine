@@ -1,7 +1,8 @@
 #pragma once
 
-class Player;
-class Camera;
+#include "Game/Actors/Player.hpp"
+#include "Game/Actors/Camera.hpp"
+
 
 class PlayerController
 {

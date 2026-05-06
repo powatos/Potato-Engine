@@ -3,10 +3,11 @@
 #include <functional>
 #include <type_traits>
 
-#include "Game/Actors/Player.hpp"
+// #include "Game/Actors/Player.hpp"
 #include "PlayerController.hpp"
 #include "Core/EngineSubsystem.hpp"
 
+class Player;
 class World;
 
 #define SET_DEFAULT_SUBCLASS(def, set) \

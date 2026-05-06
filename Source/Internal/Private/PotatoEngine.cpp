@@ -4,7 +4,7 @@
 #include "Engine.hpp"
 #include "Core/Event/EventController.hpp"
 #include "Systems/IOController.hpp"
-#include "UIController.hpp"
+#include "Systems/UIController.hpp"
 #include "Game/UI/HUDController.hpp"
 #include "Game/World.hpp"
 
@@ -31,6 +31,7 @@ PotatoEngine& PotatoEngine::Get()
 void PotatoEngine::LoadSubobjects() {
     InputController = IOController::get();
     TickController = Engine::get();
+    HUDController = UIController::get();
 
     GameInstance::get()->LoadSubobjects();
 }

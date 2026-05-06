@@ -1,6 +1,7 @@
 
 #include "Debug/Debug.hpp"
 #include "Game/UI/Widgets/Widget.hpp"
+#include "IOController.hpp"
 
 #include "UIController.hpp"
 
@@ -15,15 +16,32 @@
 UIController::UIController() {
     LOG_DEFAULT(LogType::VITAL, "UIController constructed");
 
+}
+
+void UIController::RegisterWidget(Widget* widget) {
+
+    IOController::get()->RegisterWidget(widget);
+    ActiveWidgets.push_back(widget);
 
 }
 
-std::vector<Widget*> UIController::GetActiveWidgets() {
+void UIController::RemoveWidget(std::string UID) {
+    IOController::get()->RemoveWidget(UID);
+}
+
+const std::vector<Widget*>& UIController::GetActiveWidgets() {
     return ActiveWidgets;
 }
 
 void UIController::Resolve() noexcept {
     LOG_DEFAULT(LogType::VITAL, "Resolving UIController");
+
+    IOController* controller = IOController::get();
+
+    for (Widget* widget : ActiveWidgets) {
+        controller->RemoveWidget(widget->GetUID()); // cleans up ncurses window
+        delete widget;
+    }
 
 }
 

@@ -10,6 +10,7 @@
 struct _win_st;
 typedef struct _win_st WINDOW;
 struct WidgetMapper;
+class Widget;
 
 class IOController : public IEngineSubsystem, public IInputController
 {
@@ -21,7 +22,7 @@ public:
     void Draw();
 
     void RegisterWidget(Widget* widget);
-    void UnregisterWidget(Widget* widget);
+    void RemoveWidget(std::string UID);
 
     virtual void RegisterInputBinding(InputBinding binding) override;
     virtual void UnregisterInputBinding(std::string deleteName) override;
@@ -43,7 +44,7 @@ private:
 protected:
     WINDOW* DisplayWindow;
 
-    std::unordered_map<std::string, WidgetMapper&> WidgetMaps;
+    std::unordered_map<std::string, WidgetMapper*> WidgetMaps;
 
     std::unordered_map<Keycode , std::vector<InputBinding>, KeycodeHash> InputBindings;
     
