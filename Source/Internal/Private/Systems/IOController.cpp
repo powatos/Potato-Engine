@@ -29,7 +29,7 @@ static constexpr Keycode GetKeycode(int ch);
     return &instance;
 }
 
-IOController::IOController() : FRAMES_PER_SECOND(200.f) {
+IOController::IOController() : FRAMES_PER_SECOND(30.f) {
     LOG_DEFAULT(LogType::VITAL, "IOController constructed");
     
     setenv("ESCDELAY", "25", 1); // disables escape delay (shorten if arrow/f keys not working)

@@ -2,9 +2,9 @@
 
 #include "Game/Actors/Player.hpp"
 #include "Game/Actors/Camera.hpp"
+#include "Core/Event/Tickable.hpp"
 
-
-class PlayerController
+class PlayerController : public Tickable
 {
 public:
     PlayerController();
@@ -22,6 +22,8 @@ public:
 protected:
     Player* ActivePlayer;
     Camera* ActiveCamera;
+
+    virtual void Tick(float dt) override;
 
 private:
     void MoveLeft();

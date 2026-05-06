@@ -12,6 +12,7 @@
 #include "Game/UI/HUDController.hpp"
 #include "Game/UI/Widgets/Objects/DebugInfo.hpp"
 
+// todo: make level rendering relative to player
 
 int main()
 {
