@@ -39,8 +39,8 @@ Vector2 Actor::GetPosition() const {
 void Actor::SetPosition(const Vector2 &position) { 
     // TODO: enforce world bounds somewhere better later
     Position = Vector2(
-        std::clamp(position.x, 0, World::EXTENT_X-1 - Size.x), 
-        std::clamp(position.y, 0, World::EXTENT_Y-1) // TODO: enforce position restriction for Y based on size
+        std::clamp(position.x, 0.f, static_cast<float>(World::EXTENT_X-1) - Size.x), 
+        std::clamp(position.y, 0.f, static_cast<float>(World::EXTENT_Y-1)) // TODO: enforce position restriction for Y based on size
     );
 }
 void Actor::AddLocalOffset(const Vector2& offset) {
