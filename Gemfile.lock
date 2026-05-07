@@ -166,7 +166,8 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  jekyll
+  jekyll (~> 4.4)
+  jekyll-seo-tag
   just-the-docs
 
 CHECKSUMS
