@@ -197,6 +197,9 @@ void IOController::RegisterInputBinding(InputBinding binding) {
     InputBindings[binding.key].push_back( binding );
 
 }
+void IOController::RegisterInputBinding(std::initializer_list<InputBinding> bindings) {
+    for (InputBinding binding : bindings) { RegisterInputBinding(binding); }
+}
 
 void IOController::UnregisterInputBinding(std::string deleteName) {
 

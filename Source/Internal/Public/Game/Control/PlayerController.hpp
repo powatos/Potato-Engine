@@ -26,8 +26,8 @@ protected:
     virtual void Tick(float dt) override;
 
 private:
-    void MoveLeft();
-    void MoveRight();
-    void MoveUp();
-    void MoveDown();
+    void sMvL(); void eMvL();
+    void sMvR(); void eMvR();
+    void sMvU(); void eMvU();
+    void sMvD(); void eMvD();
 };

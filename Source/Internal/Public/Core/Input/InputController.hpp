@@ -8,7 +8,8 @@ class IInputController : public IEventController
 public:
     virtual ~IInputController() = default;
 
-    virtual void RegisterInputBinding(InputBinding binding) = 0; 
+    virtual void RegisterInputBinding(InputBinding binding) = 0;
+    virtual void RegisterInputBinding(std::initializer_list<InputBinding> bindings) = 0;
     virtual void UnregisterInputBinding(std::string name) = 0;
     virtual void UnregisterAllInputBindings(void* object) = 0;
 };

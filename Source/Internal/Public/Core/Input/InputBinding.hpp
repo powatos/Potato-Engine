@@ -14,12 +14,14 @@ private:
 
 public:
     Keycode key;
+    InputType type;
 
     template<typename T>
-    InputBinding(Keycode key, std::string name, T* obj, void(T::*callback)()) : 
+    InputBinding(Keycode key, InputType type, std::string name, T* obj, void(T::*callback)()) : 
         name(name),
         delegate(obj, callback),
-        key(key)
+        key(key),
+        type(type)
     {}
 
     inline const EventDelegate<>& GetDelegate() const { return delegate; }

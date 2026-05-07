@@ -25,6 +25,7 @@ public:
     void RemoveWidget(std::string UID);
 
     virtual void RegisterInputBinding(InputBinding binding) override;
+    virtual void RegisterInputBinding(std::initializer_list<InputBinding> bindings) override;
     virtual void UnregisterInputBinding(std::string deleteName) override;
     virtual void UnregisterAllInputBindings(void* object) override;
 

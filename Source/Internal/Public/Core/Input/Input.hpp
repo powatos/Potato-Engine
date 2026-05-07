@@ -32,3 +32,9 @@ struct KeycodeHash {
         return static_cast<size_t>(key);
     }
 };
+
+enum class InputType
+{
+    Triggered,
+    Completed,
+};

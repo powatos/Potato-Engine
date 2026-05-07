@@ -40,19 +40,19 @@ void PlayerController::Tick(float dt) {
 
 }
 
-void PlayerController::MoveLeft() {
+void PlayerController::sMvL() {
     if (ActivePlayer == nullptr) { return; }
     ActivePlayer->AddLocalOffset(Vector2(-1.0, 0.0)); // Move left by 1 unit
 }
-void PlayerController::MoveRight() {
+void PlayerController::sMvR() {
     if (ActivePlayer == nullptr) { return; }
     ActivePlayer->AddLocalOffset(Vector2(1.0, 0.0)); // Move right by 1 unit
 }
-void PlayerController::MoveUp() {
+void PlayerController::sMvU() {
     if (ActivePlayer == nullptr) { return; }
     ActivePlayer->AddLocalOffset(Vector2(0.0, 1.0)); // Move left by 1 unit
 }
-void PlayerController::MoveDown() {
+void PlayerController::sMvD() {
     if (ActivePlayer == nullptr) { return; }
     ActivePlayer->AddLocalOffset(Vector2(0.0, -1.0)); // Move left by 1 unit
 }
@@ -72,10 +72,17 @@ void PlayerController::SetupInputBindings() {
     // setup input bindings
     IInputController* controller = PotatoEngine::Get().GetInputController();
 
-    controller->RegisterInputBinding( InputBinding(Keycode::A, "MoveLeft", this, &PlayerController::MoveLeft) );
-    controller->RegisterInputBinding( InputBinding(Keycode::D, "MoveRight", this, &PlayerController::MoveRight) );
-    controller->RegisterInputBinding( InputBinding(Keycode::W, "MoveUp", this, &PlayerController::MoveUp) );
-    controller->RegisterInputBinding( InputBinding(Keycode::S, "MoveDown", this, &PlayerController::MoveDown) );
+    controller->RegisterInputBinding({
+            InputBinding(Keycode::A, InputType::Triggered, "StartMoveLeftK", this, &PlayerController::sMvL),
+            InputBinding(Keycode::D, InputType::Triggered, "StartMoveRightK", this, &PlayerController::sMvR),
+            InputBinding(Keycode::W, InputType::Triggered, "StartMoveUpK", this, &PlayerController::sMvU),
+            InputBinding(Keycode::S, InputType::Triggered, "StartMoveDownK", this, &PlayerController::sMvD),
+            
+            InputBinding(Keycode::ArrowLeft, InputType::Triggered, "StartMoveLeftA", this, &PlayerController::sMvL),
+            InputBinding(Keycode::ArrowRight, InputType::Triggered, "StartMoveRightA", this, &PlayerController::sMvR),
+            InputBinding(Keycode::ArrowUp, InputType::Triggered, "StartMoveUpA", this, &PlayerController::sMvU),
+            InputBinding(Keycode::ArrowDown, InputType::Triggered, "StartMoveDownA", this, &PlayerController::sMvD)
+        });
 }
 
 PlayerController::~PlayerController() {
