@@ -42,19 +42,19 @@ void PlayerController::Tick(float dt) {
 
 void PlayerController::MoveLeft() {
     if (ActivePlayer == nullptr) { return; }
-    ActivePlayer->AddLocalOffset(Vector2(-1, 0)); // Move left by 1 unit
+    ActivePlayer->AddLocalOffset(Vector2(-1.0, 0.0)); // Move left by 1 unit
 }
 void PlayerController::MoveRight() {
     if (ActivePlayer == nullptr) { return; }
-    ActivePlayer->AddLocalOffset(Vector2(1, 0)); // Move right by 1 unit
+    ActivePlayer->AddLocalOffset(Vector2(1.0, 0.0)); // Move right by 1 unit
 }
 void PlayerController::MoveUp() {
     if (ActivePlayer == nullptr) { return; }
-    ActivePlayer->AddLocalOffset(Vector2(0, 1)); // Move left by 1 unit
+    ActivePlayer->AddLocalOffset(Vector2(0.0, 1.0)); // Move left by 1 unit
 }
 void PlayerController::MoveDown() {
     if (ActivePlayer == nullptr) { return; }
-    ActivePlayer->AddLocalOffset(Vector2(0, -1)); // Move left by 1 unit
+    ActivePlayer->AddLocalOffset(Vector2(0.0, -1.0)); // Move left by 1 unit
 }
 
 void PlayerController::AssignPlayer(Player* player) {

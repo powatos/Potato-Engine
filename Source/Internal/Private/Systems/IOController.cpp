@@ -146,8 +146,8 @@ void IOController::DrawHUD() {
                 const TextElement* e = dynamic_cast<const TextElement*>(elem);
                 Vector2 pos = e->GetPosition() + Vector2(1,1);
                 mvwprintw(map->window,
-                    pos.y,
-                    pos.x,
+                    static_cast<int>(pos.y),
+                    static_cast<int>(pos.x),
                     e->field.c_str()
                 );
             }
@@ -165,7 +165,12 @@ void IOController::RegisterWidget(Widget* widget) {
     Vector2 widgetSize = widget->GetScreenSize();
     Vector2 widgetPos = widget->GetScreenPosition();
 
-    WINDOW* win = derwin(DisplayWindow, widgetSize.y, widgetSize.x, widgetPos.y, widgetPos.x);
+    WINDOW* win = derwin(DisplayWindow, 
+        static_cast<int>(widgetSize.y), 
+        static_cast<int>(widgetSize.x), 
+        static_cast<int>(widgetPos.y), 
+        static_cast<int>(widgetPos.x)
+    );
     
     WidgetMaps.emplace(widget->GetUID(), new WidgetMapper(widget, win));
 

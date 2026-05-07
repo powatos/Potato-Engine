@@ -5,11 +5,11 @@
 
 struct Vector2
 {
-    int x;
-    int y;
+    float x;
+    float y;
 
-    constexpr Vector2() : x{0}, y{0} {}
-    constexpr Vector2(int x, int y) : x(x), y(y) {}
+    constexpr Vector2() : x{0.f}, y{0.f} {}
+    constexpr Vector2(float x, float y) : x(x), y(y) {}
     constexpr Vector2(const Vector2& vec) : x(vec.x), y(vec.y) {} 
 
     inline Vector2 operator +(const Vector2& other) const {
@@ -43,12 +43,12 @@ struct Vector2
     }
     inline Vector2 Normalized() const {
         float mag = Magnitude();
-        if (mag == 0) return Vector2(0, 0);
+        if (mag == 0.f) return Vector2(0.f, 0.f);
         return Vector2(x / mag, y / mag);
     }
 
     inline std::string ToString() const {
-        return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
+        return "(" + std::to_string((int)x) + ", " + std::to_string((int)y) + ")";
     }
 
 };
