@@ -15,8 +15,16 @@ struct Vector2
     inline Vector2 operator +(const Vector2& other) const {
         return Vector2(x + other.x, y + other.y);
     }
+    inline void operator +=(const Vector2& other) {
+        x += other.x;
+        y += other.y;
+    }
     inline Vector2 operator -(const Vector2& other) const {
         return Vector2(x - other.x, y - other.y);
+    }
+    inline void operator -=(const Vector2& other) {
+        x -= other.x;
+        y -= other.y;
     }
     inline Vector2 operator *(float scalar) const {
         return Vector2(x * scalar, y * scalar);

@@ -144,7 +144,7 @@ void IOController::DrawHUD() {
 
             if (t == "TextElement"s) {
                 const TextElement* e = dynamic_cast<const TextElement*>(elem);
-                Vector2 pos = e->GetPosition() + Vector2(1,1);
+                Vector2 pos = e->GetScreenPosition() + Vector2(1.f,1.f);
                 mvwprintw(map->window,
                     static_cast<int>(pos.y),
                     static_cast<int>(pos.x),
