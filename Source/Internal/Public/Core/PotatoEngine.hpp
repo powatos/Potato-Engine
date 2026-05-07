@@ -16,6 +16,7 @@ public:
     ~PotatoEngine();
 
     static PotatoEngine& Get();
+
     void LoadSubobjects();
     void BeginPlay();
     void Resolve() noexcept;

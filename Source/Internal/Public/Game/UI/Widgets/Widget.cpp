@@ -1,10 +1,11 @@
 
 #include "Debug/Debug.hpp"
 #include "Widget.hpp"
+#include "WidgetElement.hpp"
 
 Widget::Widget(std::string UID) : UID(UID) {
     ScreenPosition = Vector2(0,0);
-    Size = Vector2(16,4);
+    ScreenSize = Vector2(16,4);
     Visible = true;
 
 }
@@ -22,28 +23,6 @@ WidgetElement* Widget::GetElement(std::string id) {
     }
 
     return nullptr;
-}
-Vector2 Widget::GetScreenSize() const {
-    return Size;
-}
-void Widget::SetScreenSize(const Vector2& size) {
-    Size = size;
-}
-Vector2 Widget::GetScreenPosition() const { 
-    return ScreenPosition; 
-}
-void Widget::SetScreenPosition(const Vector2 &ScreenPos) { 
-    ScreenPosition = ScreenPos;
-}
-void Widget::AddScreenOffset(const Vector2& ScreenOffset) {
-    SetScreenPosition(ScreenPosition + ScreenOffset);
-}
-
-bool Widget::isVisible() const {
-    return Visible;
-}
-void Widget::SetVisibility(bool visibility) {
-    Visible = visibility;
 }
 
 Widget::~Widget() {

@@ -3,10 +3,11 @@
 #include <vector>
 
 #include "Core/Event/Tickable.hpp"
-#include "Util/Vector2.hpp"
-#include "WidgetElement.hpp"
+#include "Game/UI/UIElement.hpp"
 
-class Widget : public Tickable
+class WidgetElement;
+
+class Widget : public Tickable, public UIElement
 {
 public:
     Widget(std::string UID);
@@ -19,28 +20,13 @@ public:
     const std::unordered_map<std::string, WidgetElement*>& GetAllElements() const;
     WidgetElement* GetElement(std::string id);
 
-    Vector2 GetScreenSize() const;
-    void SetScreenSize(const Vector2& size);
-
-    Vector2 GetScreenPosition() const;
-    void SetScreenPosition(const Vector2& ScreenPosition); // make virtual to override for post-visibility change functionality (always call base method in first line)
-    
-    void AddScreenOffset(const Vector2& offset);
-    
-    bool isVisible() const;
-    void SetVisibility(bool visibility); // make virtual to override for post-visibility change functionality (always call base method in first line)
-
-
 protected:
-    Vector2 Size;
-    Vector2 ScreenPosition;
+
 
     std::unordered_map<std::string, WidgetElement*> Elements;
 
 private:
     const std::string UID;
-
-    bool Visible;
 
 };
 
