@@ -6,19 +6,22 @@
 
 #include "Core/EngineSubsystem.hpp"
 #include "Core/Input/InputController.hpp"
+#include "Core/Event/Tickable.hpp"
+
+using BindingMap = std::unordered_map<Keycode, std::vector<InputBinding>, KeycodeHash>;
 
 struct _win_st;
 typedef struct _win_st WINDOW;
 struct WidgetMapper;
 class Widget;
 
-class IOController : public IEngineSubsystem, public IInputController
+class IOController : public IEngineSubsystem, public IInputController, public Tickable
 {
 public:
     [[maybe_unused]] static IOController* get();
     virtual void Resolve() noexcept override;
 
-    void HandleInput() const;
+    void HandleInput();
     void Draw();
 
     void RegisterWidget(Widget* widget);
@@ -30,6 +33,7 @@ public:
     virtual void UnregisterAllInputBindings(void* object) override;
 
     const float FRAMES_PER_SECOND;
+    int MS_REPEAT_THRESHOLD;
 
 private:
     IOController();
@@ -39,15 +43,25 @@ private:
     IOController(IOController&&) = delete;
     IOController& operator = (IOController&&) = delete;
 
+    void UnregisterBindingFrom(BindingMap&, std::string deleteName);
+    void UnregisterAllBindingsFrom(BindingMap&, void* object);
+    void FireBinding(BindingMap&, Keycode key);
+
     void DrawLevel();
     void DrawHUD();
     
 protected:
+    virtual void Tick(float dt) override;
+
     WINDOW* DisplayWindow;
 
     std::unordered_map<std::string, WidgetMapper*> WidgetMaps;
 
-    std::unordered_map<Keycode , std::vector<InputBinding>, KeycodeHash> InputBindings;
+    BindingMap InputBindingsTriggered;
+    BindingMap InputBindingsOngoing;
+    BindingMap InputBindingsCompleted;
+
+    Keycode ActiveKey;
     
 };
 

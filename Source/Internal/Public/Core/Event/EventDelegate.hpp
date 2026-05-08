@@ -22,6 +22,10 @@ public:
         };
     }
 
+    EventDelegate(void(*func)(CallbackArgs...)) {
+        callback = func;
+    }
+
     // @returns if sucessfully fired
     bool Fire(CallbackArgs... args) const {
         if (callback == nullptr) { return false; }

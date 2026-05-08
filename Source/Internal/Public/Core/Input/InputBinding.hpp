@@ -24,6 +24,13 @@ public:
         type(type)
     {}
 
+    InputBinding(Keycode key, InputType type, std::string name, void(*callback)()) : 
+        name(name),
+        delegate(callback),
+        key(key),
+        type(type)
+    {}
+
     inline const EventDelegate<>& GetDelegate() const { return delegate; }
 
 };

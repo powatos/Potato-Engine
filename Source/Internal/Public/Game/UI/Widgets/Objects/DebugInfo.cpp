@@ -8,14 +8,17 @@ DebugInfo::DebugInfo(std::string UID) : Widget(std::move(UID)) {
     
     TextElement* playerPosElem = AddElement<TextElement>("PlayerPosText");
     TextElement* cameraPosElem = AddElement<TextElement>("CameraPosText");
+    TextElement* keyDisplay = AddElement<TextElement>("KeyDisplay");
 
     playerPosElem->SetScreenPosition(Vector2(0.0,0.0));
     cameraPosElem->SetScreenPosition(Vector2(0.0,1.0));
+    keyDisplay->SetScreenPosition(Vector2(0.0,2.0));
 
     playerPosElem->SetVisibility(true);
     cameraPosElem->SetVisibility(true);
+    keyDisplay->SetVisibility(true);
 
-    SetScreenSize(Vector2(30.0, 4.0));
+    SetScreenSize(Vector2(30.0, 5.0));
     SetScreenPosition(Vector2(0.0, 0.0));
 
     SetTicking(true);

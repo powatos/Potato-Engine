@@ -31,6 +31,7 @@ int Engine::main() {
     GameInstance* Instance = GameInstance::get();
 
     Instance->isMainTickRunning = true;
+    Controller->SetTicking(true);
 
     const ms idealDelay(static_cast<int>(1000.f / Controller->FRAMES_PER_SECOND));
 

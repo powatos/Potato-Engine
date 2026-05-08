@@ -36,5 +36,6 @@ struct KeycodeHash {
 enum class InputType
 {
     Triggered,
-    Completed,
+    Ongoing,
+    Completed
 };

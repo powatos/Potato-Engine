@@ -2,6 +2,7 @@
 #include <ncurses.h>
 #include <signal.h>
 #include <string>
+#include <chrono>
 
 #include "Debug/Debug.hpp"
 #include "Util/Vector2.hpp"
@@ -31,6 +32,9 @@ static constexpr Keycode GetKeycode(int ch);
 
 IOController::IOController() : FRAMES_PER_SECOND(30.f) {
     LOG_DEFAULT(LogType::VITAL, "IOController constructed");
+
+    ActiveKey = Keycode::UNKNOWN;
+    MS_REPEAT_THRESHOLD = 250;
     
     setenv("ESCDELAY", "25", 1); // disables escape delay (shorten if arrow/f keys not working)
 
@@ -53,34 +57,51 @@ IOController::IOController() : FRAMES_PER_SECOND(30.f) {
 
 }
 
-void IOController::HandleInput() const {
+void IOController::HandleInput() {
+    static auto lastValidInput = std::chrono::steady_clock::now();
+
     // Flush input buffer to ignore old frame inputs
     Keycode key = Keycode::UNKNOWN;
 
     int _ch;
-    int _lCh = -1;
-
-
-    while ((_ch = wgetch(DisplayWindow)) != ERR) {
-        _lCh = _ch;
-    }
-    if (_lCh != -1) {
-        key = GetKeycode(_lCh);
-    }
+    key = GetKeycode(wgetch(DisplayWindow));
 
     // DEBUG
     if (key == Keycode::Escape) { LOG_DEFAULT(LogType::DEBUG, "esc"); GameInstance::get()->isMainTickRunning = false; }
     if (key == Keycode::T) { auto* _ = UIController::get()->GetWidget("W_DebugInfo"); _->SetVisibility(!_->isVisible()); }
 
-    auto loc = InputBindings.find(key);
-    if (loc == InputBindings.end()) { return; } // no binding exists
+    auto now = std::chrono::steady_clock::now();
 
-    for (const InputBinding& binding : loc->second ) {
-        if (!binding.GetDelegate().Fire()) {
-            LOG_DEFAULT(LogType::WARNING, fmt::format("Input event could not fire for binding: {}", binding.name));
+
+    if (key != Keycode::UNKNOWN) {
+        // key pressed
+
+        if (ActiveKey != key) {
+            ActiveKey = key;
+            FireBinding(InputBindingsTriggered, ActiveKey);
+        }
+        
+        lastValidInput = now;
+
+    } else {
+        // maybe key released, maybe mid repeat
+
+        auto unkownInputElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastValidInput);
+
+        if (unkownInputElapsed > std::chrono::milliseconds(MS_REPEAT_THRESHOLD)) {
+            // input completed
+
+            Keycode k = ActiveKey;
+            ActiveKey = Keycode::UNKNOWN;
+
+            FireBinding(InputBindingsCompleted, k);
+
         }
     }
-        
+
+
+    dynamic_cast<TextElement*>(UIController::get()->GetWidget("W_DebugInfo")->GetElement("KeyDisplay"))->field = std::to_string(static_cast<int>(ActiveKey));
+
 }
 
 void IOController::Draw() {
@@ -159,6 +180,23 @@ void IOController::DrawHUD() {
 
 }
 
+void IOController::Tick(float dt) {
+
+    FireBinding(InputBindingsOngoing, ActiveKey);    
+
+}
+
+void IOController::FireBinding(BindingMap& map, Keycode key) {
+    auto loc = map.find(key);
+    if (loc == map.end()) { return; } // no binding yet
+
+    for (const InputBinding& binding : loc->second ) {
+        if (!binding.GetDelegate().Fire()) {
+            LOG_DEFAULT(LogType::WARNING, fmt::format("Input event could not fire for binding: {}", binding.name));
+        }
+    }
+}
+
 void IOController::RegisterWidget(Widget* widget) {
     if (DisplayWindow == nullptr) { return; }
 
@@ -175,7 +213,6 @@ void IOController::RegisterWidget(Widget* widget) {
     WidgetMaps.emplace(widget->GetUID(), new WidgetMapper(widget, win));
 
 }
-
 void IOController::RemoveWidget(std::string UID) {
 
     for (auto it = WidgetMaps.begin(); it != WidgetMaps.end(); ) {
@@ -194,16 +231,24 @@ void IOController::RemoveWidget(std::string UID) {
 
 void IOController::RegisterInputBinding(InputBinding binding) {
 
-    InputBindings[binding.key].push_back( binding );
+    switch (binding.type) {
+        case InputType::Triggered:
+            InputBindingsTriggered[binding.key].push_back( binding );
+            break;
+        case InputType::Completed:
+            InputBindingsCompleted[binding.key].push_back( binding );
+            break;
+        case InputType::Ongoing:
+            InputBindingsOngoing[binding.key].push_back( binding );
+            break;
+    }
 
 }
 void IOController::RegisterInputBinding(std::initializer_list<InputBinding> bindings) {
     for (InputBinding binding : bindings) { RegisterInputBinding(binding); }
 }
-
-void IOController::UnregisterInputBinding(std::string deleteName) {
-
-    for (auto& [keycode, vec] : InputBindings) {
+void IOController::UnregisterBindingFrom(BindingMap& map, std::string deleteName) {
+    for (auto& [keycode, vec] : map) {
 
         vec.erase(
             std::remove_if(vec.begin(), vec.end(), [deleteName](const InputBinding& binding) {
@@ -213,12 +258,9 @@ void IOController::UnregisterInputBinding(std::string deleteName) {
         );
 
     }
-
 }
-
-void IOController::UnregisterAllInputBindings(void* object) {
-
-    for (auto& [keycode, vec] : InputBindings) {
+void IOController::UnregisterAllBindingsFrom(BindingMap& map, void* object) {
+    for (auto& [keycode, vec] : map) {
 
         vec.erase(
             std::remove_if(vec.begin(), vec.end(), [object](const InputBinding& binding) {
@@ -229,6 +271,19 @@ void IOController::UnregisterAllInputBindings(void* object) {
         );
 
     }
+}
+void IOController::UnregisterInputBinding(std::string deleteName) {
+
+    UnregisterBindingFrom(InputBindingsTriggered, deleteName);
+    UnregisterBindingFrom(InputBindingsCompleted, deleteName);
+    UnregisterBindingFrom(InputBindingsOngoing, deleteName);
+
+}
+void IOController::UnregisterAllInputBindings(void* object) {
+
+    UnregisterAllBindingsFrom(InputBindingsTriggered, object);
+    UnregisterAllBindingsFrom(InputBindingsCompleted, object);
+    UnregisterAllBindingsFrom(InputBindingsOngoing, object);
 
 }
 

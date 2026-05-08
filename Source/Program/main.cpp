@@ -13,7 +13,16 @@
 #include "Core/Input/InputController.hpp"
 #include "Game/UI/Widgets/Objects/DebugInfo.hpp"
 
-// todo: make level rendering relative to player
+
+void t() {
+    LOG_DEFAULT(LogType::INFO, "e triggered");
+}
+void o() {
+    LOG_DEFAULT(LogType::INFO, "e ongoing");
+}
+void c() {
+    LOG_DEFAULT(LogType::INFO, "e ended");
+}
 
 int main()
 {
