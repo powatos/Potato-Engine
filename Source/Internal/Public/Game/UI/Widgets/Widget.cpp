@@ -17,9 +17,9 @@ std::string Widget::GetUID() const {
 const std::unordered_map<std::string, WidgetElement*>& Widget::GetAllElements() const {
     return Elements;
 }
-WidgetElement* Widget::GetElement(std::string id) {
-    if (Elements.find(id) != Elements.end()) {
-        return Elements.at(id);
+WidgetElement* Widget::GetElement(std::string name) {
+    if (Elements.find(name) != Elements.end()) {
+        return Elements.at(name);
     }
 
     return nullptr;

@@ -16,9 +16,9 @@ public:
     std::string GetUID() const; 
 
     template<typename ElemType>
-    ElemType* AddElement(std::string id);
+    ElemType* AddElement(std::string name);
     const std::unordered_map<std::string, WidgetElement*>& GetAllElements() const;
-    WidgetElement* GetElement(std::string id);
+    WidgetElement* GetElement(std::string name);
 
 protected:
 
@@ -31,9 +31,9 @@ private:
 };
 
 template<typename ElemType>
-ElemType* Widget::AddElement(std::string id) {
+ElemType* Widget::AddElement(std::string name) {
     ElemType* elem = new ElemType();
-    Elements[id] = elem;
+    Elements[name] = elem;
 
     return elem;
 }
