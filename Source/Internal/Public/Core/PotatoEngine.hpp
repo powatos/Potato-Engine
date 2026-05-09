@@ -1,7 +1,7 @@
 // no pragma once; promote one time inclusion
 
 #include <memory>
-#include <stack>
+#include <vector>
 
 #include "EngineSubsystem.hpp"
 
@@ -26,7 +26,7 @@ public:
     IHUDController* GetHUDController() const;
 
 protected:    
-    std::stack<IEngineSubsystem*> SubsystemStack;
+    std::vector<IEngineSubsystem*> SubsystemStack;
 
     IInputController* InputController;
     ITickController* TickController;

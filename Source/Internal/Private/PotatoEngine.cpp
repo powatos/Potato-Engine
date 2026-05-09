@@ -15,10 +15,10 @@ PotatoEngine::PotatoEngine() {
 
     Debug::BindDebugLogs();
 
-    SubsystemStack.push( Engine::get() );
-    SubsystemStack.push( IOController::get() );
-    SubsystemStack.push( UIController::get() );
-    SubsystemStack.push( GameInstance::get() );
+    SubsystemStack.push_back( Engine::get() );
+    SubsystemStack.push_back( IOController::get() );
+    SubsystemStack.push_back( UIController::get() );
+    SubsystemStack.push_back( GameInstance::get() );
 
 }
 
@@ -65,10 +65,10 @@ IHUDController* PotatoEngine::GetHUDController() const {
 void PotatoEngine::Resolve() noexcept {
     LOG_DEFAULT(LogType::VITAL, "Resolving PotatoEngine (Subsystem stack resolve)");
 
-    while (!SubsystemStack.empty()) {
-        IEngineSubsystem* sys = SubsystemStack.top();
-        sys->Resolve();
-        SubsystemStack.pop();
+    for (auto it = SubsystemStack.end(); it != SubsystemStack.begin(); ) {
+        --it;
+        (*it)->Resolve();
+        SubsystemStack.erase(it);
     }
 
 }
