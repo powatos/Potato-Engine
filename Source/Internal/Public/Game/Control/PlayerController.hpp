@@ -26,6 +26,8 @@ protected:
     virtual void Tick(float dt) override;
 
 private:
+    Vector2 playerMoveVec;
+
     void sMvL(); void eMvL();
     void sMvR(); void eMvR();
     void sMvU(); void eMvU();
