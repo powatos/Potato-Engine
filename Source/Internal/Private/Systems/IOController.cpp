@@ -75,7 +75,6 @@ void IOController::HandleInput() {
     // Flush input buffer to ignore old frame inputs
     Keycode key = Keycode::UNKNOWN;
 
-    int _ch;
     key = GetKeycode(wgetch(DisplayWindow));
 
     // DEBUG
@@ -89,6 +88,7 @@ void IOController::HandleInput() {
         // key pressed
 
         if (ActiveKey != key) {
+            FireBinding(InputBindingsCompleted, ActiveKey);
             ActiveKey = key;
             FireBinding(InputBindingsTriggered, ActiveKey);
         }
@@ -97,7 +97,6 @@ void IOController::HandleInput() {
 
     } else {
         // maybe key released, maybe mid repeat
-
         auto unkownInputElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastValidInput);
 
         if (unkownInputElapsed > std::chrono::milliseconds(MS_REPEAT_THRESHOLD)) {
@@ -117,7 +116,6 @@ void IOController::HandleInput() {
 }
 
 void IOController::Draw() {
-    // static int _ = [this]()->int{ wrefresh(BoxWindow); return 0; }();
 
     DrawLevel();
     DrawHUD();
