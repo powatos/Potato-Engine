@@ -7,7 +7,9 @@ class Engine : public IEngineSubsystem, public ITickController
 {
 public:
     [[maybe_unused]] static Engine* get();
-    
+    virtual void Resolve() noexcept override;
+    virtual void _BeginPlay() override;
+
     int main();
 
     virtual void RegisterTick(EventDelegate<float> delegate) override;
@@ -21,7 +23,6 @@ private:
     Engine(Engine&&) = delete;
     Engine& operator = (Engine&&) = delete;
     
-    void Resolve() noexcept;
 
     void FireTick(const float dt) const;
 

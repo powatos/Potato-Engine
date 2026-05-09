@@ -21,6 +21,15 @@ Engine::Engine() {
 
 }
 
+void Engine::_BeginPlay() {
+    IOController* Controller = IOController::get();
+    GameInstance* Instance = GameInstance::get();
+
+    Instance->isMainTickRunning = true;
+    Controller->SetTicking(true);
+
+}
+
 int Engine::main() {
     namespace stdc = std::chrono;
     using ms = stdc::milliseconds;
@@ -30,11 +39,7 @@ int Engine::main() {
     IOController* Controller = IOController::get();
     GameInstance* Instance = GameInstance::get();
 
-    Instance->isMainTickRunning = true;
-    Controller->SetTicking(true);
-
     const ms idealDelay(static_cast<int>(1000.f / Controller->FRAMES_PER_SECOND));
-
     auto lastTick = stdc::steady_clock::now();
 
     while (Instance->isMainTickRunning == true) {

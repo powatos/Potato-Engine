@@ -40,8 +40,10 @@ void PotatoEngine::BeginPlay()
 {
     Engine* engine = Engine::get();
 
-    // call BeginPlay on all actors
-    // TODO: put somewhere else more reasonable
+    for (IEngineSubsystem* sys : SubsystemStack) {
+        sys->_BeginPlay();
+    }
+
     for (Actor* actor : GameInstance::get()->GetWorld()->GetAllActors()) {
         actor->DispatchBeginPlay();
     }
