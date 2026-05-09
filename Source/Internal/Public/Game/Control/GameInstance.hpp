@@ -3,7 +3,6 @@
 #include <functional>
 #include <type_traits>
 
-// #include "Game/Actors/Player.hpp"
 #include "PlayerController.hpp"
 #include "Core/EngineSubsystem.hpp"
 
@@ -27,11 +26,11 @@ public:
     void LoadSubobjects();
 
     World* GetWorld() const;
-
     PlayerController* GetPlayerController() const;
 
     bool isMainTickRunning;
-
+    float FRAMES_PER_SECOND;
+    int MS_REPEAT_THRESHOLD;
 
 private:
     GameInstance();
@@ -44,7 +43,6 @@ private:
 protected:
 
     PlayerController* ActivePlayerController;
-
     World* world;
 
 };

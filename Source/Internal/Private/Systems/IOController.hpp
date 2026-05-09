@@ -33,7 +33,7 @@ public:
     virtual void UnregisterInputBinding(std::string deleteName) override;
     virtual void UnregisterAllInputBindings(void* object) override;
 
-    const float FRAMES_PER_SECOND;
+    float FRAMES_PER_SECOND;
     int MS_REPEAT_THRESHOLD;
 
 private:

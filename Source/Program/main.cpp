@@ -31,6 +31,8 @@ int main()
     engine.LoadSubobjects();
     GameInstance* instance = GameInstance::get();
     
+    instance->MS_REPEAT_THRESHOLD = 250;
+
     /// LEVEL SETUP
     PersistentLevel level("save.json");
     level.LoadStaticActors();
@@ -42,7 +44,9 @@ int main()
     player->Texture = '0';
 
     /// UI SETUP
-    DebugInfo* debugInfoWidget = engine.GetHUDController()->AddWidget<DebugInfo>("W_DebugInfo");
+    IHUDController* HUDController = engine.GetHUDController();
+
+    DebugInfo *debugInfoWidget = HUDController->AddWidget<DebugInfo>("W_DebugInfo");
 
     /// PLAY
     engine.BeginPlay();

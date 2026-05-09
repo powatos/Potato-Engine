@@ -34,7 +34,6 @@ IOController::IOController() : FRAMES_PER_SECOND(30.f) {
     LOG_DEFAULT(LogType::VITAL, "IOController constructed");
 
     ActiveKey = Keycode::UNKNOWN;
-    MS_REPEAT_THRESHOLD = 250;
     
     setenv("ESCDELAY", "25", 1); // disables escape delay (shorten if arrow/f keys not working)
 
@@ -62,6 +61,11 @@ void IOController::_BeginPlay() {
     
     box(BoxWindow, 0, 0);
     wrefresh(BoxWindow);
+
+    GameInstance* instance = GameInstance::get();
+
+    FRAMES_PER_SECOND = instance->FRAMES_PER_SECOND;
+    MS_REPEAT_THRESHOLD = instance->MS_REPEAT_THRESHOLD;
 
 }
 

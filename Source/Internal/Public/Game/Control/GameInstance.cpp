@@ -15,6 +15,8 @@ GameInstance::GameInstance() {
     LOG_DEFAULT(LogType::VITAL, "GameInstance constructed");
     
     isMainTickRunning = false;
+    FRAMES_PER_SECOND = 24.f;
+    MS_REPEAT_THRESHOLD = 250;
 
     world = new World();
 
