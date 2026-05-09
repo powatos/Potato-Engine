@@ -5,6 +5,8 @@
 class UIElement
 {
 public:
+    virtual ~UIElement() = default;
+
     Vector2 GetScreenSize() const;
     void SetScreenSize(const Vector2& size);
 

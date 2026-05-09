@@ -27,9 +27,9 @@ WidgetElement* Widget::GetElement(std::string name) {
 
 Widget::~Widget() {
 
-    for (auto it = Elements.begin(); it != Elements.end(); it++ ) {
+    for (auto it = Elements.begin(); it != Elements.end(); ) {
         delete it->second;
-        Elements.erase(it);
+        it = Elements.erase(it);
     }
 
 }
