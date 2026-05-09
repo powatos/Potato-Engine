@@ -20,6 +20,7 @@ class IOController : public IEngineSubsystem, public IInputController, public Ti
 public:
     [[maybe_unused]] static IOController* get();
     virtual void Resolve() noexcept override;
+    virtual void _BeginPlay() override;
 
     void HandleInput();
     void Draw();
@@ -53,6 +54,7 @@ private:
 protected:
     virtual void Tick(float dt) override;
 
+    WINDOW* BoxWindow;
     WINDOW* DisplayWindow;
 
     std::unordered_map<std::string, WidgetMapper*> WidgetMaps;

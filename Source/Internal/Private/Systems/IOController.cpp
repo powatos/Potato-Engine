@@ -42,7 +42,8 @@ IOController::IOController() : FRAMES_PER_SECOND(30.f) {
     cbreak(); // disable line buffering
 	noecho(); // disable input feedback
 
-    DisplayWindow = newwin(24, 80, 0, 0);
+    DisplayWindow = newwin(24, 80, 1, 1);
+    BoxWindow = newwin(24+2,80+2, 0, 0);
 
 	keypad(DisplayWindow, TRUE); // enable keypad input
     nodelay(DisplayWindow, TRUE); // disable input delay
@@ -53,7 +54,14 @@ IOController::IOController() : FRAMES_PER_SECOND(30.f) {
     signal(SIGINT, crashHandler);
     signal(SIGSEGV, crashHandler);
     
-    LOG_DEFAULT(LogType::VITAL, "ncurses window initialized");
+    LOG_DEFAULT(LogType::INFO, "ncurses window initialized");
+
+}
+
+void IOController::_BeginPlay() {
+    
+    box(BoxWindow, 0, 0);
+    wrefresh(BoxWindow);
 
 }
 
@@ -100,11 +108,12 @@ void IOController::HandleInput() {
     }
 
 
-    dynamic_cast<TextElement*>(UIController::get()->GetWidget("W_DebugInfo")->GetElement("KeyDisplay"))->field = std::to_string(static_cast<int>(ActiveKey));
+    //dynamic_cast<TextElement*>(UIController::get()->GetWidget("W_DebugInfo")->GetElement("KeyDisplay"))->field = std::to_string(static_cast<int>(ActiveKey));
 
 }
 
 void IOController::Draw() {
+    // static int _ = [this]()->int{ wrefresh(BoxWindow); return 0; }();
 
     DrawLevel();
     DrawHUD();
@@ -295,6 +304,8 @@ void IOController::Resolve() noexcept {
         map->window = nullptr;
         delete map;
     }
+
+    delwin(BoxWindow);
 
     wrefresh(DisplayWindow);
     wgetch(DisplayWindow);
