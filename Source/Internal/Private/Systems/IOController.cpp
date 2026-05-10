@@ -138,12 +138,12 @@ void IOController::DrawLevel() {
 
         if (!actor->isVisible()) { continue; }
 
-        Vector2 actorPos = actor->GetPosition();
+        const Vector2 actorPos = actor->GetPosition();
 
         if (!GameplayHelper::IsPositionInCameraFrame(actorPos, cameraPos)) { continue; }
 
-        Vector2 camOffsetActorPos = Vector2(actorPos.x - cameraPos.x, actorPos.y);
-        Vector2 screenVector = GameplayHelper::VecToScreenVec(camOffsetActorPos);
+        const Vector2 camOffsetActorPos = Vector2(actorPos.x - cameraPos.x, actorPos.y);
+        const Vector2 screenVector = GameplayHelper::VecToScreenVec(camOffsetActorPos);
         
         mvwaddch(DisplayWindow, 
             static_cast<int>(screenVector.x), 
@@ -176,7 +176,7 @@ void IOController::DrawHUD() {
 
             if (t == "TextElement"s) {
                 const TextElement* e = dynamic_cast<const TextElement*>(elem);
-                Vector2 pos = e->GetScreenPosition() + Vector2(1.f,1.f);
+                const Vector2 pos = e->GetScreenPosition() + Vector2(1.f,1.f);
                 mvwprintw(map->window,
                     static_cast<int>(pos.y),
                     static_cast<int>(pos.x),
@@ -198,7 +198,7 @@ void IOController::Tick(float dt) {
 }
 
 void IOController::FireBinding(BindingMap& map, Keycode key) {
-    auto loc = map.find(key);
+    const auto loc = map.find(key);
     if (loc == map.end()) { return; } // no binding yet
 
     for (const InputBinding& binding : loc->second ) {
@@ -211,8 +211,8 @@ void IOController::FireBinding(BindingMap& map, Keycode key) {
 void IOController::RegisterWidget(Widget* widget) {
     if (DisplayWindow == nullptr) { return; }
 
-    Vector2 widgetSize = widget->GetScreenSize();
-    Vector2 widgetPos = widget->GetScreenPosition();
+    const Vector2 widgetSize = widget->GetScreenSize();
+    const Vector2 widgetPos = widget->GetScreenPosition();
 
     WINDOW* win = derwin(DisplayWindow, 
         static_cast<int>(widgetSize.y), 
