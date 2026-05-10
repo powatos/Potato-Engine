@@ -73,45 +73,61 @@ void IOController::HandleInput() {
     static auto lastValidInput = std::chrono::steady_clock::now();
 
     // Flush input buffer to ignore old frame inputs
-    Keycode key = Keycode::UNKNOWN;
+    int _ch;
+    int _lch;
+    while ((_ch = wgetch(DisplayWindow)) != ERR) {
+        _lch = _ch;
+    }
 
-    key = GetKeycode(wgetch(DisplayWindow));
+    const Keycode key = GetKeycode(_lch);
 
     // DEBUG
     if (key == Keycode::Escape) { LOG_DEFAULT(LogType::DEBUG, "esc"); GameInstance::get()->isMainTickRunning = false; }
     if (key == Keycode::T) { auto* _ = UIController::get()->GetWidget("W_DebugInfo"); _->SetVisibility(!_->isVisible()); }
 
-    auto now = std::chrono::steady_clock::now();
+    if (MS_REPEAT_THRESHOLD == 0) {
 
-
-    if (key != Keycode::UNKNOWN) {
-        // key pressed
-
-        if (ActiveKey != key) {
-            FireBinding(InputBindingsCompleted, ActiveKey);
-            ActiveKey = key;
-            FireBinding(InputBindingsTriggered, ActiveKey);
-        }
-        
-        lastValidInput = now;
+        ActiveKey = Keycode::UNKNOWN;
+        FireBinding(InputBindingsTriggered, key);
 
     } else {
-        // maybe key released, maybe mid repeat
-        auto unkownInputElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastValidInput);
 
-        if (unkownInputElapsed > std::chrono::milliseconds(MS_REPEAT_THRESHOLD)) {
-            // input completed
+        const auto now = std::chrono::steady_clock::now();
 
-            Keycode k = ActiveKey;
-            ActiveKey = Keycode::UNKNOWN;
+        if (key != Keycode::UNKNOWN) {
+            // key pressed
 
-            FireBinding(InputBindingsCompleted, k);
+            if (ActiveKey != key) {
 
+                if (ActiveKey != Keycode::UNKNOWN) {
+                    FireBinding(InputBindingsCompleted, ActiveKey);
+                }
+
+                ActiveKey = key;
+                FireBinding(InputBindingsTriggered, ActiveKey);
+            }
+            
+            lastValidInput = now;
+
+        } else {
+            // maybe key released, maybe mid repeat
+            const auto unkownInputElapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastValidInput);
+
+            if (unkownInputElapsed > std::chrono::milliseconds(MS_REPEAT_THRESHOLD)) {
+                // input completed
+
+                const Keycode k = ActiveKey;
+                ActiveKey = Keycode::UNKNOWN;
+
+                if (k != Keycode::UNKNOWN) {
+                    FireBinding(InputBindingsCompleted, k);
+                }
+
+            }
         }
     }
 
-
-    //dynamic_cast<TextElement*>(UIController::get()->GetWidget("W_DebugInfo")->GetElement("KeyDisplay"))->field = std::to_string(static_cast<int>(ActiveKey));
+    // dynamic_cast<TextElement*>(UIController::get()->GetWidget("W_DebugInfo")->GetElement("KeyDisplay"))->field = std::to_string(static_cast<int>(ActiveKey));
 
 }
 
