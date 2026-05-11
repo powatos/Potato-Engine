@@ -38,7 +38,7 @@ jobs:
         run: |
           wget https://github.com/matusnovak/doxybook2/releases/download/v1.5.0/doxybook2-linux-amd64-v1.5.0.zip
           unzip doxybook2-linux-amd64-v1.5.0.zip
-          sudo mv doxybook2 /usr/local/bin/
+          sudo mv bin/doxybook2 /usr/local/bin/
           doxybook2 --version
 
       - name: Generate docs
