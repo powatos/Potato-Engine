@@ -28,6 +28,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install Doxygen
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen
+
+      - name: Setup Doxybook2
+        run: |
+          wget wget https://github.com/matusnovak/doxybook2/releases/download/v1.5.0/doxybook2-linux-amd64.zip
+          unzip doxybook2-linux-amd64.zip
+          sudo mv doxybook2 /usr/local/bin/
+          doxybook2 --version
+
+      - name: Generate docs
+        run: |
+          chmod +x ./gen_api.sh
+          ./gen_api.sh
         
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1

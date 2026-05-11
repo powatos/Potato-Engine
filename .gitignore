@@ -57,6 +57,10 @@ _site/
 .bundle/
 vendor/
 
+# doxygen/doxybook2 files
+xml/
+latex/
+docs/API/*
 
 
 !libPotatoEngine.a
