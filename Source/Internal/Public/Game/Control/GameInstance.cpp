@@ -20,16 +20,16 @@ GameInstance::GameInstance() {
 
     world = new World();
 
-    if (DEFAULT_INSTANTIATORS::get_PlayerController() == nullptr) {
+    if (__DEFAULT_INSTANTIATORS::get_PlayerController() == nullptr) {
         LOG_DEFAULT(LogType::ERROR, "No PlayerController default instantiator on GameInstance");
     } else { 
-        ActivePlayerController = DEFAULT_INSTANTIATORS::get_PlayerController()();
+        ActivePlayerController = __DEFAULT_INSTANTIATORS::get_PlayerController()();
     }
 
-    if (DEFAULT_INSTANTIATORS::get_Player() == nullptr) {
+    if (__DEFAULT_INSTANTIATORS::get_Player() == nullptr) {
         LOG_DEFAULT(LogType::ERROR, "No Player default instantiator on GameInstance");
     } else {
-        Player* p = DEFAULT_INSTANTIATORS::get_Player()();
+        Player* p = __DEFAULT_INSTANTIATORS::get_Player()();
         world->AddtoPool(p);
         ActivePlayerController->AssignPlayer(p);
     }

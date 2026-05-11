@@ -12,7 +12,7 @@ class World;
 #define SET_DEFAULT_SUBCLASS(def, set) \
 static struct __##set##_DEFAULT_SUBCLASS_REGISTER { \
     __##set##_DEFAULT_SUBCLASS_REGISTER() { \
-        DEFAULT_INSTANTIATORS::get_##def() = []() -> def* { return new set(); }; \
+        __DEFAULT_INSTANTIATORS::get_##def() = []() -> def* { return new set(); }; \
     } \
 } __##set##_DEFAULT_SUBCLASS_REGISTER_i;
 
@@ -47,7 +47,7 @@ protected:
 
 };
 
-namespace DEFAULT_INSTANTIATORS {
+namespace __DEFAULT_INSTANTIATORS {
     inline std::function<Player*()>& get_Player() {
         static std::function<Player*()> f;
         return f;
