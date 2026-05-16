@@ -60,7 +60,7 @@ vendor/
 # doxygen/doxybook2 files
 xml/
 latex/
-docs/API/*
+docs/
 
 
 !libPotatoEngine.a
