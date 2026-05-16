@@ -26,7 +26,7 @@ void Actor::DispatchBeginPlay() {
 }
 
 void Actor::BeginPlay() {
-
+    
 }
 
 void Actor::Tick(float dt) {

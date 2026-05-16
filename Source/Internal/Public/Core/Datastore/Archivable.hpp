@@ -1,16 +1,20 @@
+/** @file Archivable.hpp */
 #pragma once
 
 #include <unordered_map>
 #include <functional>
 
-// called in each cpp of archivable classes to register into static archive
-#define ARCHIVE_STATIC(type) \
-static struct __##type##_Register { \
-    __##type##_Register() { \
-        __Archive::_GetArchive()[#type] = []() -> Archivable* { return new type(); }; \
-    } \
-} __##type##_register;
+/**
+ * @defgroup test
+ * @brief testergroup
+ */
 
+/**
+ * @brief Abstract factory class inherited by all classes that should be archived
+ * @details This class is an abstract wrapper to streamline saving and loading objects
+ * @note This class \em must be inherited from for object classes that should archive objects.
+ * This class has no inherent functionality.   
+ */
 class Archivable
 {
 public:
@@ -26,3 +30,17 @@ namespace __Archive {
         return archive;
     }
 }
+
+/**
+ * @fn ARCHIVE_STATIC(type)
+ * @ingroup test
+ * @brief Registers classes to be archived as a static actor
+ * @remark Call this macro at the top of source files for archivable classes
+ * @param type Literal name of the class
+ */
+#define ARCHIVE_STATIC(type) \
+static struct __##type##_Register { \
+    __##type##_Register() { \
+        __Archive::_GetArchive()[#type] = []() -> Archivable* { return new type(); }; \
+    } \
+} __##type##_register;

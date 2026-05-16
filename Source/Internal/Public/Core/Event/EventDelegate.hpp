@@ -2,6 +2,11 @@
 
 #include <functional>
 
+/**
+ * @brief A wrapper that carries response delegate information
+ * @details Used to subscribe to events in a binding struct/method
+ * @tparam CallbackArgs... arguments to pass when notifying the callback function
+ */
 template<typename... CallbackArgs>
 struct EventDelegate
 {
@@ -14,6 +19,12 @@ public:
     EventDelegate() = default;
     ~EventDelegate() = default;
 
+    /**
+     * @brief Constructs delegate with class method binding
+     * * @tparam BindingClass Class for binding
+     * @param obj object to bind to
+     * @param method callback with additional arguments 
+     */
     template<typename BindingClass>
     EventDelegate(BindingClass* obj, void(BindingClass::*method)(CallbackArgs...)) {
         instance = obj;
@@ -22,17 +33,25 @@ public:
         };
     }
 
+    /**
+     * @brief Constructs bare delegate
+     * @param func callback with additional arguments
+     */
     EventDelegate(void(*func)(CallbackArgs...)) {
         callback = func;
     }
 
-    // @returns if sucessfully fired
+    /**
+     * @brief Fires event and forwards arguments to callback
+     * @returns true if the fire was sucessfull
+     */
     bool Fire(CallbackArgs... args) const {
         if (callback == nullptr) { return false; }
         callback( std::forward<CallbackArgs>(args)... );
         return true;
     }
 
+    /** @brief Gets binded object @returns `void*` object */
     inline void* GetInstance() const { return instance; }
 
 };

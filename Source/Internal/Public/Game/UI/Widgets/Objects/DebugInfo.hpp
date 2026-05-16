@@ -4,6 +4,10 @@
 
 struct Vector2;
 
+/**
+ * @internal
+ * @brief Displays debug information on screen updating in real time
+ */
 class DebugInfo : public Widget
 {
 public:

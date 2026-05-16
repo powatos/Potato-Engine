@@ -5,8 +5,8 @@ PWD=$(pwd)
 rm -rf xml/ docs/API/*
 # mkdir -p docs/API/
 
-doxygen Doxyfile
-doxybook2 --input xml --output docs/API --config $PWD/doxybook2.config.json
+doxygen Doxyfile2
+doxybook2 --input xml --output docs/API #--config $PWD/doxybook2.config.json
 
 find docs/API -type f -name "*.md" | while read -r file; do
     if [[ "$file" == "docs/API/index.md" ]]; then continue; fi

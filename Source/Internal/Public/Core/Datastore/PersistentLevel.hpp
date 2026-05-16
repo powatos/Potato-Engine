@@ -5,20 +5,45 @@
 
 struct Vector2;
 
+/** 
+ * @brief Level object that stores persistent save data
+ * @details This object serves as a wrapper around a save state file and manages read/write
+ * operations, as well as persistent game object loading.
+*/
 struct PersistentLevel
 {
+    /**
+     * @brief Construct level object
+     * @param saveFileName Name of save file (under `saves/`)
+     */
     PersistentLevel(const std::string& saveFileName);
     ~PersistentLevel() = default;
 
-    // @returns if all static actors were loaded successfully
+    /**
+     * @brief Loads all static actors into the world
+     * @returns true if all static actors were loaded successfully
+     */
     bool LoadStaticActors();
 
+    /**
+     * @brief Get save data from a key
+     * * @tparam Type Type of data to get
+     * @param key Key to get data from
+     * @returns Data
+     */
     template <typename Type>
     Type GetData(std::string key) const;
 
+    /**
+     * @brief Write save data to a key
+     * * @tparam Type Type of data to write
+     * @param key Key to write data to
+     * @param value Data
+     */
     template <typename Type>
     void WriteData(std::string key, Type value);
 
+private:
     int GetIntData( std::string key );
     float GetFloatData( std::string key );
     std::string GetStringData( std::string key );

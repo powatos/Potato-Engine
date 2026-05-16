@@ -4,10 +4,17 @@
 
 class PlayerController;
 
+/**
+ * @brief User controllable character
+ */
 class Player : public Entity
 {
 
 public:
+    /**
+     * @internal
+     * @brief Constructs player
+     */
     Player();
     virtual ~Player();
 

@@ -70,16 +70,16 @@ void PlayerController::SetupInputBindings() {
     IInputController* controller = PotatoEngine::Get().GetInputController();
 
     controller->RegisterInputBinding({
-            InputBinding(Keycode::A, InputType::Triggered, "StartMoveLeft", this, &PlayerController::sMvL),
-            InputBinding(Keycode::D, InputType::Triggered, "StartMoveRight", this, &PlayerController::sMvR),
-            InputBinding(Keycode::W, InputType::Triggered, "StartMoveUp", this, &PlayerController::sMvU),
-            InputBinding(Keycode::S, InputType::Triggered, "StartMoveDown", this, &PlayerController::sMvD),
-            
-            InputBinding(Keycode::A, InputType::Completed, "CompleteMoveLeft", this, &PlayerController::eMvL),
-            InputBinding(Keycode::D, InputType::Completed, "CompleteMoveRight", this, &PlayerController::eMvR),
-            InputBinding(Keycode::W, InputType::Completed, "CompleteMoveUp", this, &PlayerController::eMvU),
-            InputBinding(Keycode::S, InputType::Completed, "CompleteMoveDown", this, &PlayerController::eMvD)
-        });
+        InputBinding(Keycode::A, InputType::Triggered, "StartMoveLeft", this, &PlayerController::sMvL),
+        InputBinding(Keycode::D, InputType::Triggered, "StartMoveRight", this, &PlayerController::sMvR),
+        InputBinding(Keycode::W, InputType::Triggered, "StartMoveUp", this, &PlayerController::sMvU),
+        InputBinding(Keycode::S, InputType::Triggered, "StartMoveDown", this, &PlayerController::sMvD),
+        
+        InputBinding(Keycode::A, InputType::Completed, "CompleteMoveLeft", this, &PlayerController::eMvL),
+        InputBinding(Keycode::D, InputType::Completed, "CompleteMoveRight", this, &PlayerController::eMvR),
+        InputBinding(Keycode::W, InputType::Completed, "CompleteMoveUp", this, &PlayerController::eMvU),
+        InputBinding(Keycode::S, InputType::Completed, "CompleteMoveDown", this, &PlayerController::eMvD)
+    });
 }
 
 PlayerController::~PlayerController() {

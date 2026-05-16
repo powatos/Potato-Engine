@@ -1,5 +1,10 @@
 #pragma once
 
+/**
+ * @enum Keycode
+ * @brief Enum representing input keys
+ * @details Keycode::UNKOWN and Keycode::Mouse are intended for internal use
+ */
 enum class Keycode
 {
     UNKNOWN = 0,
@@ -33,6 +38,10 @@ struct KeycodeHash {
     }
 };
 
+/**
+ * @enum InputType
+ * @brief Enum representing input states
+ */
 enum class InputType
 {
     Triggered,

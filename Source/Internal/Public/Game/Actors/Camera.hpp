@@ -2,6 +2,12 @@
 
 #include "Actor.hpp"
 
+/**
+ * @brief Camera wrapper for rendering
+ * @details This class is a wrapper used for rendering logic. Assigned to controller
+ * while @ref PotatoEngine::LoadSubobjects "loading subobjects". A player cannot render
+ * the level without a camera assigned to the controller
+ */
 class Camera : public Actor
 {
 

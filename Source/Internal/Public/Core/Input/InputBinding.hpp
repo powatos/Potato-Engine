@@ -3,6 +3,9 @@
 #include "Core/Event/EventController.hpp"
 #include "Input.hpp"
 
+/**
+ * @brief Wrapper for input bindings
+ */
 struct InputBinding
 {
 // optimized declaration order 
@@ -16,6 +19,15 @@ public:
     Keycode key;
     InputType type;
 
+    /**
+     * @brief Constructs binding with method callback
+     * * @tparam T
+     * @param key Keycode to bind to
+     * @param type InputType to bind to
+     * @param name Identifier for binding
+     * @param obj Object to bind to
+     * @param callback Function to notify
+     */
     template<typename T>
     InputBinding(Keycode key, InputType type, std::string name, T* obj, void(T::*callback)()) : 
         name(name),
@@ -24,6 +36,13 @@ public:
         type(type)
     {}
 
+    /**
+     * @brief Constructs binding with standalone callback
+     * @param key Keycode to bind to
+     * @param type InputType to bind to
+     * @param name Identifier for binding
+     * @param callback Function to notify
+     */
     InputBinding(Keycode key, InputType type, std::string name, void(*callback)()) : 
         name(name),
         delegate(callback),
@@ -31,6 +50,7 @@ public:
         type(type)
     {}
 
+    /** @brief Gets EventDelegate reference @returns Delegate */
     inline const EventDelegate<>& GetDelegate() const { return delegate; }
 
 };
