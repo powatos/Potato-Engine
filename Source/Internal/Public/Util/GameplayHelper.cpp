@@ -1,3 +1,4 @@
+/** @file GameplayHelper.cpp */
 
 #include "Game/Actors/Camera.hpp"
 #include "Util/Vector2.hpp"

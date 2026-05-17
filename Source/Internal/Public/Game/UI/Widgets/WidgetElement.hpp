@@ -1,3 +1,4 @@
+/** @file WidgetElement.hpp */
 #pragma once
 
 #include "Game/UI/UIElement.hpp"

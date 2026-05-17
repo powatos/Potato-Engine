@@ -1,3 +1,4 @@
+/** @file DebugInfo.hpp */
 #pragma once
 
 #include "Game/UI/Widgets/Widget.hpp"

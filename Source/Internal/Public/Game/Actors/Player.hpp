@@ -1,3 +1,4 @@
+/** @file Player.hpp */
 #pragma once
 
 #include "Game/Actors/Entity.hpp"

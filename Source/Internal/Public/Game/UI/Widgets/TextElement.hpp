@@ -1,3 +1,4 @@
+/** @file TextElement.hpp */
 #pragma once
 
 #include "WidgetElement.hpp"

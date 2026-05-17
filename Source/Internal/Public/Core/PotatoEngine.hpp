@@ -1,3 +1,4 @@
+/** @file PotatoEngine.hpp */
 // no pragma once; promote one time inclusion
 
 #include <memory>
@@ -22,6 +23,7 @@ public:
 
     /**
      * @brief Global access to engine object
+     * @note This class has an uppercased get method. Note that all other engine singletons have undercased get methods
      * @returns Engine reference
      */
     static PotatoEngine& Get();

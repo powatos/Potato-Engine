@@ -1,7 +1,7 @@
+/** @file EngineSubsystem.hpp */
 #pragma once
 
 /**
- * @interface IEngineSubsystem
  * @brief Interface for internal engine classes
  * @note This class is intended for internal use
  */

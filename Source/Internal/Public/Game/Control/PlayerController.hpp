@@ -1,3 +1,4 @@
+/** @file PlayerController.hpp */
 #pragma once
 
 #include "Game/Actors/Player.hpp"

@@ -1,3 +1,4 @@
+/** @file Entity.cpp */
 
 #include <algorithm>
 

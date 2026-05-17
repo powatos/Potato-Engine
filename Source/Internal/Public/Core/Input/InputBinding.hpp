@@ -1,3 +1,4 @@
+/** @file InputBinding.hpp */
 #pragma once
 
 #include "Core/Event/EventController.hpp"

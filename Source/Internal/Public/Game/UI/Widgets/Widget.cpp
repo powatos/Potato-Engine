@@ -1,3 +1,4 @@
+/** @file Widget.cpp */
 
 #include "Debug/Debug.hpp"
 #include "Widget.hpp"

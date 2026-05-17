@@ -1,3 +1,4 @@
+/** @file Camera.cpp */
 
 #include "Camera.hpp"
 

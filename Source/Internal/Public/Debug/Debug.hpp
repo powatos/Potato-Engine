@@ -1,3 +1,4 @@
+/** @file Debug.hpp */
 #pragma once
 
 #include <fstream>
@@ -9,17 +10,13 @@ enum class LogType;
 /**
  * @brief Default log object
  * @details This is a Logger object reference. Use as function call: `LOG_DEFAULT(...)`
- * To use a custom logger:
- * - extern logger: `extern Logger {logger}`
- * - add to @ref Debug::BindDebugLogs "bindings"
- * - instantiate at the top of source file: `Logger {logger}`
  * @see Logger::operator()
  */
 extern Logger LOG_DEFAULT;
 
 /**
  * @brief Logging functionality
- * @details Use engine externed Logger objects for logging
+ * @details Use engine externed Logger objects for logging \n To create a custom logger, see Debug
  */
 class Logger
 {
@@ -50,6 +47,11 @@ enum class LogType { logtypes };
 /**
  * @brief Contains global debug functionality
  * @details Ensure all Logger objects are initialized under the @ref BindDebugLogs() "binding".
+ * 
+ * To use a custom logger:
+ * - extern logger: `extern Logger {logger}`
+ * - add to @ref Debug::BindDebugLogs "bindings"
+ * - instantiate at the top of source file: `Logger {logger}`
  */
 namespace Debug
 {

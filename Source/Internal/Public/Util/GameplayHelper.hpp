@@ -1,3 +1,4 @@
+/** @file GameplayHelper.hpp */
 #pragma once
 
 class Camera;

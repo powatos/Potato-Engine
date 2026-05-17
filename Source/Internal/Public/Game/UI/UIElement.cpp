@@ -1,3 +1,4 @@
+/** @file UIElement.cpp */
 
 #include "UIElement.hpp"
 

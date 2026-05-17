@@ -1,3 +1,4 @@
+/** @file EventDelegate.hpp */
 #pragma once
 
 #include <functional>

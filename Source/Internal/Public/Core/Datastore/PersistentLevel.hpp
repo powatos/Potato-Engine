@@ -1,3 +1,4 @@
+/** @file PersistentLevel.hpp */
 #pragma once
 
 #include <fstream>
@@ -8,7 +9,8 @@ struct Vector2;
 /** 
  * @brief Level object that stores persistent save data
  * @details This object serves as a wrapper around a save state file and manages read/write
- * operations, as well as persistent game object loading.
+ * operations, as well as persistent game object loading. Note that the level manages all save data,
+ * not only world data.
 */
 struct PersistentLevel
 {

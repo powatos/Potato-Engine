@@ -1,3 +1,4 @@
+/** @file Actor.hpp */
 #pragma once
 
 #include "Core/Datastore/Archivable.hpp"

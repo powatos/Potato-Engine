@@ -1,3 +1,4 @@
+/** @file GameInstance.hpp */
 #pragma once
 
 #include <functional>
@@ -28,8 +29,9 @@ static struct __##set##_DEFAULT_SUBCLASS_REGISTER { \
 } __##set##_DEFAULT_SUBCLASS_REGISTER_i;
 
 /**
- * @brief Singleton with various game properties and functions
- * @details Set global constants and get objects using the @ref get() "instance".   
+ * @brief Singleton with various game properties and functions. This class also manages game subobjects
+ * @details Set global constants and get objects using the @ref get() "instance". \n Subclasses must be registered 
+ * using @ref SET_DEFAULT_SUBCLASS(def, set) "SET_DEFAULT_SUBCLASS".
  */
 class GameInstance : public IEngineSubsystem
 {

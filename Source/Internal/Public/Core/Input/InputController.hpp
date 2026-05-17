@@ -1,10 +1,10 @@
+/** @file InputController.hpp */
 #pragma once
 
 #include "InputBinding.hpp"
 #include "Core/Event/EventController.hpp"
 
 /**
- * @interface IInputController
  * @brief Interface to manage input binding operations
  */
 class IInputController : public IEventController

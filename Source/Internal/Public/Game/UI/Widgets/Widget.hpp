@@ -1,3 +1,4 @@
+/** @file Widget.hpp */
 #pragma once
 
 #include <vector>

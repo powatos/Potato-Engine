@@ -1,3 +1,4 @@
+/** @file Entity.hpp */
 #pragma once
 
 #include "Actor.hpp"

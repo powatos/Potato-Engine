@@ -1,4 +1,10 @@
+/** @file Input.hpp */
 #pragma once
+
+/**
+ * @file Input.hpp
+ * @brief Global input enum definitions
+ */
 
 /**
  * @enum Keycode
@@ -32,6 +38,7 @@ enum class Keycode
     Mouse
 };
 
+// TODO: hide from doxygen
 struct KeycodeHash {
     size_t operator ()(const Keycode& key) const noexcept{
         return static_cast<size_t>(key);

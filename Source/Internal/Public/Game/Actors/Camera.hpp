@@ -1,3 +1,4 @@
+/** @file Camera.hpp */
 #pragma once
 
 #include "Actor.hpp"

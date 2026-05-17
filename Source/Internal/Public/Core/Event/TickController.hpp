@@ -1,9 +1,9 @@
+/** @file TickController.hpp */
 #pragma once
 
 #include "EventController.hpp"
 
 /**
- * @interface ITickController
  * @note This class is intended for internal use. @sa Tickable
  * @brief Interface to handle tick events
  */
