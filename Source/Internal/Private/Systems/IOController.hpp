@@ -9,7 +9,7 @@
 #include "Core/Input/InputController.hpp"
 #include "Core/Event/Tickable.hpp"
 
-using BindingMap = std::unordered_map<Keycode, std::vector<InputBinding>, KeycodeHash>;
+using BindingMap = std::unordered_map<Keycode, std::vector<InputBinding>, __KeycodeHash>;
 
 struct _win_st;
 typedef struct _win_st WINDOW;

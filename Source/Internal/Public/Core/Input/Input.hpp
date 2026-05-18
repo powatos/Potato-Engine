@@ -38,8 +38,7 @@ enum class Keycode
     Mouse
 };
 
-// TODO: hide from doxygen
-struct KeycodeHash {
+struct __KeycodeHash {
     size_t operator ()(const Keycode& key) const noexcept{
         return static_cast<size_t>(key);
     }
