@@ -16,8 +16,9 @@ public:
      * @brief Registers a delegate to recieve tick updates
      * @note Must use method binded delegate in order to unregister
      * @param delegate Delegate
+     * @returns true if delegate was successfully registered 
      */
-    virtual void RegisterTick(EventDelegate<float> delegate) = 0;
+    virtual bool RegisterTick(EventDelegate<float> delegate) = 0;
     
     /**
      * @brief Unregisters an object from receiving tick events

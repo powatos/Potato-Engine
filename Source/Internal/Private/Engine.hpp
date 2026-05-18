@@ -13,7 +13,7 @@ public:
 
     int main();
 
-    virtual void RegisterTick(EventDelegate<float> delegate) override;
+    virtual bool RegisterTick(EventDelegate<float> delegate) override;
     virtual void UnregisterTick(void* object) override;
 
 private:

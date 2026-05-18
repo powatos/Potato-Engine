@@ -83,9 +83,18 @@ int Engine::main() {
     return 0;
 }
 
-void Engine::RegisterTick(EventDelegate<float> delegate) {
-    // TODO: check if matching delegate already exists (only one delegate per instance allowed for tick binding)
+bool Engine::RegisterTick(EventDelegate<float> delegate) {
+
+    if (delegate.GetInstance() == nullptr) { return false; }
+
+    for (const EventDelegate<float>& del : TickDelegates) {
+        if (del.GetInstance() == delegate.GetInstance()) {
+            return false;
+        }
+    }
+
     TickDelegates.push_back(delegate);
+    return true;
 }
 
 void Engine::UnregisterTick(void *object) {
