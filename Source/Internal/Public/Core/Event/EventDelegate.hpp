@@ -21,10 +21,11 @@ public:
     ~EventDelegate() = default;
 
     /**
+     * @anchor event-delegate-template-constructor
      * @brief Constructs delegate with class method binding
      * * @tparam BindingClass Class for binding
      * @param obj object to bind to
-     * @param method callback with additional arguments 
+     * @param method callback with additional arguments
      */
     template<typename BindingClass>
     EventDelegate(BindingClass* obj, void(BindingClass::*method)(CallbackArgs...)) {
@@ -36,6 +37,7 @@ public:
 
     /**
      * @brief Constructs bare delegate
+     * @warning This construction is not recommended. @sa @ref event-delegate-template-constructor "EventDelegate<...>(...)"
      * @param func callback with additional arguments
      */
     EventDelegate(void(*func)(CallbackArgs...)) {
