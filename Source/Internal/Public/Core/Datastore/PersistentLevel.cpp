@@ -97,22 +97,22 @@ bool PersistentLevel::LoadStaticActors() {
     return allSuccessful;
 }
 
-int PersistentLevel::GetIntData( std::string key ) {
+int PersistentLevel::GetIntData( std::string key ) const {
     json Save = safeGetJson(saveFileAbsPath);
 
     return Save["Data"][key].get<int>();
 }
-float PersistentLevel::GetFloatData( std::string key ) {
+float PersistentLevel::GetFloatData( std::string key ) const {
     json Save = safeGetJson(saveFileAbsPath);
 
     return Save["Data"][key].get<float>();
 }
-std::string PersistentLevel::GetStringData( std::string key ) {
+std::string PersistentLevel::GetStringData( std::string key ) const {
     json Save = safeGetJson(saveFileAbsPath);
 
     return Save["Data"][key].get<std::string>();
 }
-Vector2 PersistentLevel::GetVector2Data( std::string key ) {
+Vector2 PersistentLevel::GetVector2Data( std::string key ) const {
     json Save = safeGetJson(saveFileAbsPath);
 
     json vecJson = Save["Data"][key];

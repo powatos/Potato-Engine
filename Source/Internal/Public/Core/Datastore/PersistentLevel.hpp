@@ -46,10 +46,10 @@ struct PersistentLevel
     void WriteData(std::string key, Type value);
 
 private:
-    int GetIntData( std::string key );
-    float GetFloatData( std::string key );
-    std::string GetStringData( std::string key );
-    Vector2 GetVector2Data( std::string key );
+    int GetIntData( std::string key ) const;
+    float GetFloatData( std::string key ) const;
+    std::string GetStringData( std::string key ) const;
+    Vector2 GetVector2Data( std::string key ) const;
 
 
     void WriteIntData( std::string key, int value );
