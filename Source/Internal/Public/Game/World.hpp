@@ -64,7 +64,7 @@ public:
     /** @brief Gets ActorPool @returns actor pool */
     const ActorPool& GetAllActors() const;
 
-protected: // TODO: make private
+private:
     Player* ActivePlayer;
     ActorPool actorPool;
 

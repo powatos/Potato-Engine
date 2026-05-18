@@ -41,7 +41,7 @@ public:
     /** @brief Gets specific element by name @param name name of element @returns element */
     WidgetElement* GetElement(std::string name);
 
-protected: // TODO: make private
+private:
 
     std::unordered_map<std::string, WidgetElement*> Elements;
 

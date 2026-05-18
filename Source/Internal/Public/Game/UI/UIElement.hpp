@@ -31,7 +31,7 @@ public:
     /** @brief Sets visibility of UI @param visibility Visibility to set */
     void SetVisibility(bool visibility); // make virtual to override for post-visibility change functionality (always call base method in first line)
 
-protected: // TODO: make private
+private:
     Vector2 ScreenSize;
     Vector2 ScreenPosition;
     bool Visible;

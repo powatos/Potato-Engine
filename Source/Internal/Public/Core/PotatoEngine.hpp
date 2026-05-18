@@ -17,10 +17,9 @@ class IHUDController;
  */
 class PotatoEngine // implementation in 'Internal/Private/PotatoEngine.cpp'
 {
-public:
-    PotatoEngine(); // TODO: make private
+    PotatoEngine();
     ~PotatoEngine();
-
+public:
     /**
      * @brief Global access to engine object
      * @note This class has an uppercased get method. Note that all other engine singletons have undercased get methods

@@ -82,7 +82,7 @@ private:
     GameInstance(GameInstance&&) = delete;
     GameInstance& operator = (GameInstance&&) = delete;
 
-protected: // TODO: make private
+private:
 
     PlayerController* ActivePlayerController;
     World* world;

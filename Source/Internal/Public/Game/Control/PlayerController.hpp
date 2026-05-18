@@ -51,13 +51,13 @@ public:
      */
     virtual void SetupInputBindings();
 
-protected: // todo: make private
-    Player* ActivePlayer;
-    Camera* ActiveCamera;
 
+protected:
     virtual void Tick(float dt) override;
 
 private:
+    Player* ActivePlayer;
+    Camera* ActiveCamera;
     Vector2 playerMoveVec;
 
     void sMvL(); void eMvL();

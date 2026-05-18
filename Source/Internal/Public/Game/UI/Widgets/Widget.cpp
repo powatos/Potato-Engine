@@ -5,9 +5,9 @@
 #include "WidgetElement.hpp"
 
 Widget::Widget(std::string UID) : UID(UID) {
-    ScreenPosition = Vector2(0.0, 0.0);
-    ScreenSize = Vector2(16.0, 4.0);
-    Visible = true;
+    SetScreenPosition(Vector2(0.f,0.f));
+    SetScreenSize(Vector2(16.f, 4.f));
+    SetVisibility(true);
 
 }
 
