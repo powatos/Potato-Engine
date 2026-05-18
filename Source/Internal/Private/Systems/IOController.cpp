@@ -145,7 +145,7 @@ void IOController::DrawLevel() {
     
     const GameInstance* Instance = GameInstance::get();
     const Vector2 cameraPos = Instance->GetPlayerController()->GetCamera()->GetPosition();
-    const ActorPool& renderActors = Instance->GetWorld()->GetAllActors(); // todo: try to make return const
+    const ActorPool& renderActors = Instance->GetWorld()->GetAllActors();
 
     for ( Actor* actor : renderActors ) {
         if (actor == nullptr) {

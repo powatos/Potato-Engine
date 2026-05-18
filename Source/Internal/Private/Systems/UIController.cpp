@@ -28,7 +28,7 @@ void UIController::RegisterWidget(Widget* widget) {
 
 void UIController::RemoveWidget(std::string UID) {
     IOController::get()->RemoveWidget(UID);
-    // todo: also remove from active
+    ActiveWidgets.erase(std::remove(ActiveWidgets.begin(), ActiveWidgets.end(), GetWidget(UID)), ActiveWidgets.end());
 }
 
 Widget* UIController::GetWidget(std::string UID) const {
