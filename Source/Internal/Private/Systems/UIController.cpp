@@ -28,7 +28,10 @@ void UIController::RegisterWidget(Widget* widget) {
 
 void UIController::RemoveWidget(std::string UID) {
     IOController::get()->RemoveWidget(UID);
-    ActiveWidgets.erase(std::remove(ActiveWidgets.begin(), ActiveWidgets.end(), GetWidget(UID)), ActiveWidgets.end());
+
+    Widget* w = GetWidget(UID);
+    ActiveWidgets.erase(std::remove(ActiveWidgets.begin(), ActiveWidgets.end(), w), ActiveWidgets.end());
+    delete w;
 }
 
 Widget* UIController::GetWidget(std::string UID) const {
@@ -50,10 +53,7 @@ const std::vector<Widget*>& UIController::GetActiveWidgets() {
 void UIController::Resolve() noexcept {
     LOG_DEFAULT(LogType::VITAL, "Resolving UIController");
 
-    IOController* controller = IOController::get();
-
     for (Widget* widget : ActiveWidgets) {
-        controller->RemoveWidget(widget->GetUID()); // cleans up ncurses window
         delete widget;
     }
 

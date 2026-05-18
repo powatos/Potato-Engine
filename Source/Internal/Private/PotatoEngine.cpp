@@ -74,6 +74,7 @@ void PotatoEngine::Resolve() noexcept {
         SubsystemStack.erase(it);
     }
 
+    LOG_DEFAULT(LogType::VITAL, "Subsystem stack resolved");
 }
 
 

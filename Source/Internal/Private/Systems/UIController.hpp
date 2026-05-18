@@ -18,9 +18,8 @@
  * 
  * Resolving
  * --> Resolve calls to UIController
- * --> Resolve calls remove to IOController to clean up windows
- * ----> Sometimes redundant if IOController resolves before UIController (usually doesn't)
- * ----> TODO: ensure subsystem stack resolve chain is consistent
+ * --> Resolve DOES NOT call IOController remove on all widgets because 
+ *     IOController resolve (called after UIController resolve) does that already
  * --> Frees widget pointers
  * --> returns resolve
  */
