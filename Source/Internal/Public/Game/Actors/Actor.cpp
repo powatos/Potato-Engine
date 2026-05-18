@@ -31,6 +31,7 @@ void Actor::BeginPlay() {
 }
 
 void Actor::Tick(float dt) {
+    Tickable::Tick(dt);
 
 }
 

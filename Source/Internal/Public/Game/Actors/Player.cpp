@@ -14,10 +14,13 @@ Player::Player() {
 }
 
 void Player::BeginPlay() {
+    Actor::BeginPlay();
+
     SetTicking(true);
 }
 
 void Player::Tick(float dt) {
+    Entity::Tick(dt);
 
     Texture = ((Texture - '0') + 1) % 10 + '0';
 

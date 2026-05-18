@@ -27,6 +27,8 @@ DebugInfo::DebugInfo(std::string UID) : Widget(std::move(UID)) {
 }
 
 void DebugInfo::Tick(float dt) {
+    Widget::Tick(dt);
+
     PlayerController* plrCtrl = GameInstance::get()->GetPlayerController();
     Vector2 playerPos = plrCtrl->GetPlayer()->GetPosition();
     Vector2 cameraPos = plrCtrl->GetCamera()->GetPosition();

@@ -24,7 +24,7 @@ protected:
      * @details This function is called every tick on the update step. Put all gameplay
      * functionality that should run every update here (custom movement logic, etc.)
      * @param dt Deltatime; time elapsed since last frame in ms
-     * @note Always call base method when overriding: TODO
+     * @note Always call base method when overriding: 
      * @code
      * void Class::Tick() {
      *     BaseClass::Tick();

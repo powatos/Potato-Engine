@@ -209,6 +209,7 @@ void IOController::DrawHUD() {
 }
 
 void IOController::Tick(float dt) {
+    Tickable::Tick(dt);
 
     FireBinding(InputBindingsOngoing, ActiveKey);    
 

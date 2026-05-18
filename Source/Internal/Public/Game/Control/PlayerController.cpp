@@ -28,6 +28,8 @@ void PlayerController::Initialize() {
 }
 
 void PlayerController::Tick(float dt) {
+    Tickable::Tick(dt);
+
     if (ActivePlayer == nullptr) { return; }
 
     Vector2 newCamPos = ActivePlayer->GetPosition();
