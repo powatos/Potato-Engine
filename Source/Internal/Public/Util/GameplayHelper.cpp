@@ -11,8 +11,10 @@ Vector2 GameplayHelper::VecToScreenVec(const Vector2& worldPos) {
     return vec;
 }
 
-bool GameplayHelper::IsPositionInCameraFrame(const Vector2& pos, const Vector2& cameraPos) {
+bool GameplayHelper::IsPositionInCameraFrame(const Vector2& pos, Camera* camera) {
     
-    return pos.x - cameraPos.x >= 0.f && pos.x - cameraPos.x < 80.f;
+    return pos.x - camera->GetPosition().x >= 0.f && pos.x - camera->GetPosition().x < camera->GetSize().x;
+
+
 
 }

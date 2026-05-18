@@ -144,8 +144,9 @@ void IOController::DrawLevel() {
     werase(DisplayWindow);
     
     const GameInstance* Instance = GameInstance::get();
-    const Vector2 cameraPos = Instance->GetPlayerController()->GetCamera()->GetPosition();
     const ActorPool& renderActors = Instance->GetWorld()->GetAllActors();
+
+    Camera* camera = Instance->GetPlayerController()->GetCamera();
 
     for ( Actor* actor : renderActors ) {
         if (actor == nullptr) {
@@ -157,9 +158,9 @@ void IOController::DrawLevel() {
 
         const Vector2 actorPos = actor->GetPosition();
 
-        if (!GameplayHelper::IsPositionInCameraFrame(actorPos, cameraPos)) { continue; }
+        if (!GameplayHelper::IsPositionInCameraFrame(actorPos, camera)) { continue; }
 
-        const Vector2 camOffsetActorPos = Vector2(actorPos.x - cameraPos.x, actorPos.y);
+        const Vector2 camOffsetActorPos = Vector2(actorPos.x - camera->GetPosition().x, actorPos.y);
         const Vector2 screenVector = GameplayHelper::VecToScreenVec(camOffsetActorPos);
         
         mvwaddch(DisplayWindow, 

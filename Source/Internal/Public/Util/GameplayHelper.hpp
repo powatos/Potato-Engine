@@ -23,9 +23,8 @@ public:
     /**
      * @brief Checks if a position is visible in the view of a camera object
      * @param pos Position to check
-     * @param cameraPos Position of camera
+     * @param camera Camera to check for visibility
      * @returns true if is in frame
      */
-    static bool IsPositionInCameraFrame(const Vector2& pos, const Vector2& cameraPos);
-    // TODO: do camera relative
+    static bool IsPositionInCameraFrame(const Vector2& pos, Camera* camera);
 };
