@@ -15,7 +15,7 @@
 GameInstance::GameInstance() {
     LOG_DEFAULT(LogType::VITAL, "GameInstance constructed");
     
-    isMainTickRunning = false;
+    _isMainTickRunning = false;
     FRAMES_PER_SECOND = 24.f;
     MS_REPEAT_THRESHOLD = 250;
 
@@ -34,6 +34,10 @@ GameInstance::GameInstance() {
         world->AddtoPool(p);
         ActivePlayerController->AssignPlayer(p);
     }
+}
+
+void GameInstance::RequestShutdown() {
+    _isMainTickRunning = false;
 }
 
 void GameInstance::LoadSubobjects() {

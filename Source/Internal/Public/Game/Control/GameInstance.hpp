@@ -50,13 +50,17 @@ public:
     /** @brief Gets @ref PlayerController "player controller" object @returns @ref PlayerController "player controller" object */
     PlayerController* GetPlayerController() const;
 
-    // TODO: make requestshutdown function instead of property
+    /**
+     * @brief Requests to queue engine shutdown
+     * @details Engine will be shutdown at the end of the current tick when this function is called
+     */
+    void RequestShutdown();
 
     /**
-     * @brief State of game loop
-     * @details Set to false to queue engine shutdown immediately
+     * @warning NEVER MODIFY THIS VALUE DIRECTLY
+     * @sa RequestShutdown()
      */
-    bool isMainTickRunning;
+    bool _isMainTickRunning;
     /**
      * @brief Global FPS constant for screen refresh
      * @note Reassignment after global @ref PotatoEngine::BeginPlay "BeginPlay" has no affect on refresh rate

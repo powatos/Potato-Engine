@@ -26,7 +26,7 @@ void Engine::_BeginPlay() {
     IOController* Controller = IOController::get();
     GameInstance* Instance = GameInstance::get();
 
-    Instance->isMainTickRunning = true;
+    Instance->_isMainTickRunning = true;
     Controller->SetTicking(true);
 
 }
@@ -43,7 +43,7 @@ int Engine::main() {
     const ms idealDelay(static_cast<int>(1000.f / Controller->FRAMES_PER_SECOND));
     auto lastTick = stdc::steady_clock::now();
 
-    while (Instance->isMainTickRunning == true) {
+    while (Instance->_isMainTickRunning == true) {
         auto currentTick = stdc::steady_clock::now();
 
         const stdc::duration<float> elapsed = currentTick - lastTick;

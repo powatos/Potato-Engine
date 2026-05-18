@@ -83,7 +83,7 @@ void IOController::HandleInput() {
     const Keycode key = GetKeycode(_lch);
 
     // DEBUG
-    if (key == Keycode::Escape) { LOG_DEFAULT(LogType::DEBUG, "esc"); GameInstance::get()->isMainTickRunning = false; }
+    if (key == Keycode::Escape) { LOG_DEFAULT(LogType::DEBUG, "esc"); GameInstance::get()->RequestShutdown(); }
     if (key == Keycode::T) { auto* _ = UIController::get()->GetWidget("W_DebugInfo"); _->SetVisibility(!_->isVisible()); }
 
     if (MS_REPEAT_THRESHOLD == 0) {
