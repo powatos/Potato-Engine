@@ -58,7 +58,7 @@ protected:
 
     /**
      * @brief Gameplay start
-     * @details Put all pre-gameplay functionality here TODO: examples
+     * @details Put all pre-gameplay functionality here
      * @note Always call base method when overriding:
      * @code
      * void ActorClass::BeginPlay() {

@@ -3,7 +3,6 @@
 
 #include "WidgetElement.hpp"
 
-// TODO: implement color text (ideally using Enum -> could make public for other stuff like debug streamlining)
 /**
  * @brief Element that displays text on a widget
  */
