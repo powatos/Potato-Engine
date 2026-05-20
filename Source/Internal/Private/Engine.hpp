@@ -2,9 +2,9 @@
 #pragma once
 
 #include "Core/EngineSubsystem.hpp"
-#include "Core/Event/TickController.hpp"
+#include "Core/Event/EventDelegate.hpp"
 
-class Engine : public IEngineSubsystem, public ITickController
+class Engine : public IEngineSubsystem
 {
 public:
     [[maybe_unused]] static Engine* get();
@@ -12,9 +12,6 @@ public:
     virtual void _BeginPlay() override;
 
     int main();
-
-    virtual bool RegisterTick(EventDelegate<float> delegate) override;
-    virtual void UnregisterTick(void* object) override;
 
 private:
     Engine();

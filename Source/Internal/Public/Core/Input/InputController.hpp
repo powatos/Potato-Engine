@@ -2,12 +2,11 @@
 #pragma once
 
 #include "InputBinding.hpp"
-#include "Core/Event/EventController.hpp"
 
 /**
  * @brief Interface to manage input binding operations
  */
-class IInputController : public IEventController
+class IInputController
 {
 public:
     virtual ~IInputController() = default;

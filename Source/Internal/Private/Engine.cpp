@@ -83,37 +83,9 @@ int Engine::main() {
     return 0;
 }
 
-bool Engine::RegisterTick(EventDelegate<float> delegate) {
-
-    if (delegate.GetInstance() == nullptr) { return false; }
-
-    for (const EventDelegate<float>& del : TickDelegates) {
-        if (del.GetInstance() == delegate.GetInstance()) {
-            return false;
-        }
-    }
-
-    TickDelegates.push_back(delegate);
-    return true;
-}
-
-void Engine::UnregisterTick(void *object) {
-
-    TickDelegates.erase(
-        std::remove_if(TickDelegates.begin(), TickDelegates.end(), [object](const EventDelegate<float>& delegate){
-            return delegate.GetInstance() == object;
-        }),
-
-        TickDelegates.end()
-    );
-    
-}
-
 void Engine::FireTick(const float dt) const {
 
-    for (const EventDelegate<float>& delegate : TickDelegates) {
-        delegate.Fire(dt);
-    }
+    EventController::get()->FireNativeEvent<float>("__ENGINE_TICK", dt);
 
 }
 

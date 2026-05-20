@@ -5,6 +5,8 @@
 #include "Util/Vector2.hpp"
 #include "Debug/Debug.hpp"
 #include "Game/World.hpp"
+#include "Core/PotatoEngine.hpp"
+#include "Core/Event/EventController.hpp"
 
 #include "Actor.hpp"
 
@@ -44,6 +46,17 @@ void Actor::SetPosition(const Vector2 &position) {
         std::clamp(position.x, 0.f, static_cast<float>(World::EXTENT_X-1) - Size.x), 
         std::clamp(position.y, 0.f, static_cast<float>(World::EXTENT_Y-1)) // TODO: enforce position restriction for Y based on size
     );
+
+    if (Position.x > 40) {
+        PotatoEngine::Get().GetNativeEventController()->FireNativeEvent<int>(
+            "PositionOver40",
+            (int)Position.y
+        );
+    }
+
+    if (Position.x > 60) {
+        PotatoEngine::Get().GetNativeEventController()->UnregisterNativeEvent<int>("testBinding");
+    }
 }
 void Actor::AddLocalOffset(const Vector2& offset) {
     SetPosition(Position + offset);

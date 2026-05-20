@@ -6,7 +6,7 @@
 /**
  * @brief A wrapper that carries response delegate information
  * @details Used to subscribe to events in a binding struct/method
- * @tparam CallbackArgs... arguments to pass when notifying the callback function
+ * * @tparam CallbackArgs... arguments to pass when notifying the callback function
  */
 template<typename... CallbackArgs>
 struct EventDelegate

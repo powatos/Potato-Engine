@@ -20,6 +20,7 @@ PotatoEngine::PotatoEngine() {
     SubsystemStack.push_back( IOController::get() );
     SubsystemStack.push_back( UIController::get() );
     SubsystemStack.push_back( GameInstance::get() );
+    SubsystemStack.push_back( EventController::get() );
 
 }
 
@@ -31,8 +32,8 @@ PotatoEngine& PotatoEngine::Get()
 
 void PotatoEngine::LoadSubobjects() {
     InputController = IOController::get();
-    TickController = Engine::get();
     HUDController = UIController::get();
+    NativeEventController = EventController::get();
 
     GameInstance::get()->LoadSubobjects();
 }
@@ -57,13 +58,14 @@ IInputController* PotatoEngine::GetInputController() const {
     return InputController;
 }
 
-ITickController* PotatoEngine::GetTickController() const {
-    return TickController;
-}
-
 IHUDController* PotatoEngine::GetHUDController() const {
     return HUDController;
 }
+
+EventController* PotatoEngine::GetNativeEventController() const {
+    return NativeEventController;
+}
+
 
 void PotatoEngine::Resolve() noexcept {
     LOG_DEFAULT(LogType::VITAL, "Resolving PotatoEngine (Subsystem stack resolve)");

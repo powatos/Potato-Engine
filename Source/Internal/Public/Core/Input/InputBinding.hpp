@@ -22,7 +22,7 @@ public:
 
     /**
      * @brief Constructs binding with method callback
-     * * @tparam T
+     * * @tparam T Class of binding object
      * @param key Keycode to bind to
      * @param type InputType to bind to
      * @param name Identifier for binding

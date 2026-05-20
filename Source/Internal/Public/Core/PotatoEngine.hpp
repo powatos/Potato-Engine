@@ -7,7 +7,8 @@
 #include "EngineSubsystem.hpp"
 
 class IInputController;
-class ITickController;
+// class ITickController;
+class EventController;
 class IHUDController;
 
 /**
@@ -48,15 +49,17 @@ public:
     /** @brief Gets @ref IInputController "input controller" @returns @ref IInputController "input controller" */
     IInputController* GetInputController() const;
     /** @brief Gets @ref ITickController "tick controller" @returns @ref ITickController "tick controller" */
-    ITickController* GetTickController() const;
+    // ITickController* GetTickController() const;
     /** @brief Gets @ref IHUDController "HUD controller" @returns @ref IHUDController "HUD controller" */
     IHUDController* GetHUDController() const;
+    /** @brief Gets @ref EventController "Native event controller" @returns @ref EventController "Native event controller" */
+    EventController* GetNativeEventController() const;
 
 protected:    
     std::vector<IEngineSubsystem*> SubsystemStack;
 
     IInputController* InputController;
-    ITickController* TickController;
+    // ITickController* TickController;
     IHUDController* HUDController;
-
+    EventController* NativeEventController;
 };

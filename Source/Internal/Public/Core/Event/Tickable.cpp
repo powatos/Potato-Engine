@@ -1,7 +1,7 @@
 /** @file Tickable.cpp */
 
 #include "Core/PotatoEngine.hpp"
-#include "Core/Event/TickController.hpp"
+#include "Core/Event/EventController.hpp"
 
 #include "Tickable.hpp"
 
@@ -14,12 +14,16 @@ void Tickable::SetTicking(bool isEnabled) {
 
     bTicking = isEnabled;
 
-    ITickController* tickController = PotatoEngine::Get().GetTickController();
+    EventController* controller = PotatoEngine::Get().GetNativeEventController();
 
     if (isEnabled) {
-        tickController->RegisterTick(EventDelegate<float>(this, &Tickable::Tick));
+        controller->RegisterNativeEvent(
+            "__ENGINE_TICK",
+            NativeEventBinding<float>("__engine_tick_binding", this, &Tickable::Tick)
+        );
+        
     } else {
-        tickController->UnregisterTick(this);
+        controller->UnregisterNativeEvent<float>("__ENGINE_TICK", this);
     }
 }
 

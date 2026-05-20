@@ -64,4 +64,6 @@ private:
     void sMvR(); void eMvR();
     void sMvU(); void eMvU();
     void sMvD(); void eMvD();
+
+    void test(int);
 };

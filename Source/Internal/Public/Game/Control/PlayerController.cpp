@@ -6,8 +6,11 @@
 #include "GameInstance.hpp"
 #include "Game/World.hpp"
 #include "Core/Input/InputController.hpp"
+#include "Core/Event/EventController.hpp"
 #include "Util/GameplayHelper.hpp"
 #include "Debug/Debug.hpp"
+
+#include "fmt/core.h"
 
 #include "PlayerController.hpp"
 
@@ -25,6 +28,16 @@ void PlayerController::Initialize() {
     ActiveCamera = world->SpawnActor<Camera>();
 
     SetTicking(true);
+
+    // test
+    PotatoEngine::Get().GetNativeEventController()->RegisterNativeEvent(
+        "PositionOver40",
+        NativeEventBinding<int>("testBinding", this, &PlayerController::test)
+    );
+}
+
+void PlayerController::test(int a) {
+    LOG_DEFAULT(LogType::DEBUG, fmt::format("{}", a));
 }
 
 void PlayerController::Tick(float dt) {
