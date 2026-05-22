@@ -9,10 +9,9 @@
  */
 struct Vector2
 {
-    /** @brief X Component */
-    float x;
-    /** @brief Y Component */
-    float y;
+    
+    float x; /**< @brief X Component */
+    float y; /**< @brief Y Component */
 
     /** @brief Constructs zero vector */
     constexpr Vector2() : x{0.f}, y{0.f} {}

@@ -237,6 +237,7 @@ void IOController::Tick(float dt) {
     ImpulseKey = Keycode::UNKNOWN;
 
 }
+#pragma region Binding management
 
 void IOController::FireBinding(BindingMap& map, Keycode key) {
     const auto loc = map.find(key);
@@ -247,38 +248,6 @@ void IOController::FireBinding(BindingMap& map, Keycode key) {
             LOG_DEFAULT(LogType::WARNING, "Input event could not fire for binding: {}", binding.name);
         }
     }
-}
-
-void IOController::RegisterWidget(Widget* widget) {
-    if (DisplayWindow == nullptr) { return; }
-
-    const Vector2 widgetSize = widget->GetScreenSize();
-    const Vector2 widgetPos = widget->GetScreenPosition();
-
-    WINDOW* win = derwin(DisplayWindow, 
-        static_cast<int>(widgetSize.y), 
-        static_cast<int>(widgetSize.x), 
-        static_cast<int>(widgetPos.y), 
-        static_cast<int>(widgetPos.x)
-    );
-    
-    WidgetMaps.emplace(widget->GetUID(), new WidgetMapper(widget, win));
-
-}
-void IOController::RemoveWidget(std::string UID) {
-
-    for (auto it = WidgetMaps.begin(); it != WidgetMaps.end(); ) {
-        if (it->second->window == nullptr) { continue; } // can happen if IOController resolve is called before UIController resolve
-        if (it->second->widget->GetUID() == UID) {
-            delwin(it->second->window);
-            it->second->window = nullptr;
-
-            delete it->second;
-            WidgetMaps.erase(it);
-            break;
-        } else { it++; }
-    }
-
 }
 
 void IOController::RegisterInputBinding(InputBinding binding) {
@@ -348,6 +317,44 @@ void IOController::UnregisterAllInputBindings(void* object) {
     UnregisterAllBindingsFrom(InputBindingsOngoing, object);
 
 }
+
+#pragma endregion
+
+#pragma region Widget management
+
+void IOController::RegisterWidget(Widget* widget) {
+    if (DisplayWindow == nullptr) { return; }
+
+    const Vector2 widgetSize = widget->GetScreenSize();
+    const Vector2 widgetPos = widget->GetScreenPosition();
+
+    WINDOW* win = derwin(DisplayWindow, 
+        static_cast<int>(widgetSize.y), 
+        static_cast<int>(widgetSize.x), 
+        static_cast<int>(widgetPos.y), 
+        static_cast<int>(widgetPos.x)
+    );
+    
+    WidgetMaps.emplace(widget->GetUID(), new WidgetMapper(widget, win));
+
+}
+void IOController::RemoveWidget(std::string UID) {
+
+    for (auto it = WidgetMaps.begin(); it != WidgetMaps.end(); ) {
+        if (it->second->window == nullptr) { continue; } // can happen if IOController resolve is called before UIController resolve
+        if (it->second->widget->GetUID() == UID) {
+            delwin(it->second->window);
+            it->second->window = nullptr;
+
+            delete it->second;
+            WidgetMaps.erase(it);
+            break;
+        } else { it++; }
+    }
+
+}
+
+#pragma endregion
 
 void IOController::Resolve() noexcept {
     LOG_DEFAULT(LogType::VITAL, "Resolving IOController");

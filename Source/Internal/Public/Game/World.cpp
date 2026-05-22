@@ -54,7 +54,7 @@ void World::__TickPhysics(float dt) {
         const Vector2 acceleration = forces / actor->GetMass();
         const Vector2 dVelocity = acceleration * dt;
 
-        actor->AddVelocity(dVelocity);
+        actor->AddImpulse(dVelocity);
 
         actor->AddLocalOffset(actor->GetVelocity() * dt);
         actor->ClearForces();

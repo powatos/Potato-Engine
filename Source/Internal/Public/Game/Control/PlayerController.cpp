@@ -54,15 +54,6 @@ void PlayerController::Tick(float dt) {
 
 }
 
-void PlayerController::sMvL() { playerMoveVec.x = -1; }
-void PlayerController::sMvR() { playerMoveVec.x =  1; }
-
-void PlayerController::jump() { ActivePlayer->AddImpulse(Vector2(0, JumpForce)); }
-
-void PlayerController::eMvL() { playerMoveVec.x = 0; }
-void PlayerController::eMvR() { playerMoveVec.x = 0; }
-
-
 void PlayerController::AssignPlayer(Player* player) {
     ActivePlayer = player;
     if (ActivePlayer == nullptr) {
@@ -88,6 +79,18 @@ void PlayerController::SetupInputBindings() {
         InputBinding(Keycode::D, InputType::Completed, "CompleteMoveRight", this, &PlayerController::eMvR),
     });
 }
+
+#pragma region Move functions
+
+void PlayerController::sMvL() { playerMoveVec.x = -1; }
+void PlayerController::sMvR() { playerMoveVec.x =  1; }
+
+void PlayerController::jump() { ActivePlayer->AddImpulse(Vector2(0, JumpForce)); }
+
+void PlayerController::eMvL() { playerMoveVec.x = 0; }
+void PlayerController::eMvR() { playerMoveVec.x = 0; }
+
+#pragma endregion
 
 PlayerController::~PlayerController() {
     PotatoEngine::Get().GetInputController()->UnregisterAllInputBindings(this);

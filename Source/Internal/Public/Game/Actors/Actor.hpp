@@ -28,7 +28,6 @@ public:
      */
     Actor();
     virtual ~Actor();
-
     
     Vector2 GetPosition() const; /**< @brief Gets position @returns Position */
     void SetPosition(const Vector2& position); /**< @brief Sets position @param position Position to set */

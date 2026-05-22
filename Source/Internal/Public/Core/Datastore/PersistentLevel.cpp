@@ -97,6 +97,8 @@ bool PersistentLevel::LoadStaticActors() {
     return allSuccessful;
 }
 
+#pragma region Data getters and writers
+
 int PersistentLevel::GetIntData( std::string key ) const {
     json Save = safeGetJson(saveFileAbsPath);
 
@@ -139,6 +141,8 @@ void PersistentLevel::WriteVector2Data( std::string key, const Vector2& value ) 
 
     Save["Data"][key] = { value.x, value.y };
 }
+
+#pragma endregion
 
 static json safeGetJson(const std::filesystem::path& path) {
     json parsed;
