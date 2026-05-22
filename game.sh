@@ -7,11 +7,11 @@ OBJDIR=Binaries/
 LOGDIR=logs/debug.log
 
 case "$1" in
-    "build")
+    "build"|"b")
         make
         echo "Build complete"
         ;;
-    "run")
+    "run"|"r")
         if  [[ -f $GAME_TARGET ]]; then
             ./$GAME_TARGET
         else
@@ -19,11 +19,11 @@ case "$1" in
             exit 1
         fi
         ;;
-    "clean")
+    "clean"|"-c")
         rm -rf $OBJDIR $LIB_TARGET $GAME_TARGET
         echo "Cleaned up binaries"
         ;;
-    "flush")
+    "flush"|"-f")
         > $LOGDIR
 	    echo "Flushed $LOGDIR"
         ;;

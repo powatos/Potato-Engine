@@ -11,7 +11,7 @@
 
 #include "Actor.hpp"
 
-ARCHIVE_STATIC(Actor);
+ARCHIVE_STATIC(Actor)
 
 Actor::Actor() {
 
@@ -39,25 +39,49 @@ void Actor::BeginPlay() {
 
 void Actor::Tick(float dt) {
     Tickable::Tick(dt);
+}
 
+Actor::~Actor() {
 
 }
+
+#pragma region Accessors and Mutators
 
 Vector2 Actor::GetPosition() const { 
     return Position; 
 }
 void Actor::SetPosition(const Vector2 &position) { 
-    // TODO: enforce world bounds somewhere better later
-    // World* world = GameInstance::get()->GetWorld();
-    // Position = Vector2(
-    //     std::clamp(position.x, 0.f, static_cast<float>(world->Settings.Size.x-1) - Size.x), 
-    //     std::clamp(position.y, 0.f, static_cast<float>(world->Settings.Size.y-1)) // TODO: enforce position restriction for Y based on size
-    // );
     Position = position;
-
 }
 void Actor::AddLocalOffset(const Vector2& offset) {
     SetPosition(Position + offset);
+}
+
+Vector2 Actor::GetSize() const { 
+    return Size; 
+}
+void Actor::SetSize(const Vector2 &size) { 
+    Size = size;
+}
+
+float Actor::GetRotation() const { 
+    return Rotation; 
+}
+void Actor::SetRotation(float rotation) {
+    // Normalize rotation to [0, 360)
+    rotation = fmodf(rotation, 360.0f);
+    if (rotation < 0.0f) { rotation += 360.0f; }
+    Rotation = rotation;
+}
+void Actor::AddLocalRotation(float rotation) {
+    SetRotation(GetRotation() + rotation);
+}
+
+bool Actor::isVisible() const {
+    return Visible;
+}
+void Actor::SetVisibility(bool visibility) {
+    Visible = visibility;
 }
 
 Vector2 Actor::GetVelocity() const { 
@@ -66,41 +90,15 @@ Vector2 Actor::GetVelocity() const {
 void Actor::SetVelocity(const Vector2& velocity) { 
     Velocity = velocity;
 }
-void Actor::AddVelocity(const Vector2& velocity) {
-    Velocity += velocity;
-}
-
-bool Actor::IsUsingAsymmetricGravity() const {
-    return UseAsymmetricGravity;
-}
-void Actor::SetUseAsymmetricGravity(bool useAsymmetricGravity) {
-    UseAsymmetricGravity = useAsymmetricGravity;
+void Actor::AddImpulse(const Vector2& force) {
+    Velocity += force;
 }
 
 float Actor::GetMass() const {
     return Mass;
 }
-
-Vector2 Actor::GetSize() const { 
-    return Size; 
-}
-void Actor::SetSize(const Vector2 &size) { 
-    // TODO: enforce size restrictions
-    Size = size;
-}
-
-float Actor::GetRotation() const { 
-    return Rotation; 
-}
-void Actor::SetRotation(float rotation) {
-
-    // Normalize rotation to [0, 360)
-    rotation = fmodf(rotation, 360.0f);
-    if (rotation < 0.0f) { rotation += 360.0f; }
-    Rotation = rotation;
-}
-void Actor::AddLocalRotation(float rotation) {
-    SetRotation(GetRotation() + rotation);
+void Actor::SetMass(float mass) {
+    Mass = mass;
 }
 
 bool Actor::isSimulatingPhysics() const {
@@ -113,29 +111,18 @@ void Actor::SetSimulatingPhysics(bool enabled) {
 Vector2 Actor::GetForces() const {
     return Forces;
 }
-void Actor::AddForce(Vector2 force) {
+void Actor::AddForce(const Vector2& force) {
     Forces += force;
 }
 void Actor::ClearForces() {
     Forces = Vector2(0.f, 0.f);
 }
 
-void Actor::AddImpulse(Vector2 force) {
-    Velocity += force;
+bool Actor::IsUsingAsymmetricGravity() const {
+    return UseAsymmetricGravity;
 }
-
-bool Actor::isVisible() const {
-    return Visible;
-}
-void Actor::SetVisibility(bool visibility) {
-    Visible = visibility;
-}
-
-float Actor::GetBounce() const {
-    return Bounciness;
-}
-void Actor::SetBounce(float bounce) {
-    Bounciness = bounce;
+void Actor::SetUseAsymmetricGravity(bool useAsymmetricGravity) {
+    UseAsymmetricGravity = useAsymmetricGravity;
 }
 
 ActorMovability Actor::GetMovability() const {
@@ -145,7 +132,13 @@ void Actor::SetMovability(ActorMovability movability) {
     Movability = movability;
 }
 
-
-Actor::~Actor() {
-
+float Actor::GetBounce() const {
+    return Bounciness;
 }
+void Actor::SetBounce(float bounce) {
+    Bounciness = bounce;
+}
+
+#pragma endregion
+
+

@@ -67,5 +67,4 @@ private:
     void sMvR(); void eMvR();
     void jump();
 
-    void test(int);
 };

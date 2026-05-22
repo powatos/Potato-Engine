@@ -14,7 +14,7 @@
 
 #include "PlayerController.hpp"
 
-SET_DEFAULT_SUBCLASS(PlayerController, PlayerController);
+SET_DEFAULT_SUBCLASS(PlayerController, PlayerController)
 
 PlayerController::PlayerController() {
 
@@ -31,10 +31,6 @@ void PlayerController::Initialize() {
     TargetMovementVelocity = 1000.f;
     JumpForce = 20.f;
 
-}
-
-void PlayerController::test(int a) {
-    LOG_DEFAULT(LogType::DEBUG, fmt::format("{}", a));
 }
 
 void PlayerController::Tick(float dt) {

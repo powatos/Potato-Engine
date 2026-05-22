@@ -8,7 +8,7 @@
 
 #include "Player.hpp"
 
-SET_DEFAULT_SUBCLASS(Player, Player);
+SET_DEFAULT_SUBCLASS(Player, Player)
 
 Player::Player() {
     Texture = 'P';

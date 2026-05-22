@@ -29,54 +29,43 @@ public:
     Actor();
     virtual ~Actor();
 
-    /** @brief Gets position @returns Position */
-    Vector2 GetPosition() const;
-    /** @brief Sets position @param position Position to set */
-    void SetPosition(const Vector2& position);
-
-    Vector2 GetVelocity() const;
-    void SetVelocity(const Vector2& velocity);
-    void AddVelocity(const Vector2& velocity);
-
-    /** @brief Gets size @returns Size */
-    Vector2 GetSize() const;
-    /** @brief Sets size @param size Size to set */
-    void SetSize(const Vector2& size);
     
-    /** @brief Gets rotation @returns rotation */
-    float GetRotation() const;
-    /** @brief Sets rotation @param rotation Rotation to set (degrees) */
-    void SetRotation(float rotation);
+    Vector2 GetPosition() const; /**< @brief Gets position @returns Position */
+    void SetPosition(const Vector2& position); /**< @brief Sets position @param position Position to set */
+    void AddLocalOffset(const Vector2& offset); /**< @brief Adds to location vector @param offset Offset to add */
 
-    /** @brief Adds to location vector @param offset Offset to add */
-    void AddLocalOffset(const Vector2& offset);
-    /** @brief Adds to rotation value @param rotation Rotation to add */
-    void AddLocalRotation(float rotation);
+    Vector2 GetSize() const; /**< @brief Gets size @returns Size */
+    void SetSize(const Vector2& size); /**< @brief Sets size @param size Size to set */
 
-    bool isSimulatingPhysics() const;
-    void SetSimulatingPhysics(bool enabled);
+    float GetRotation() const; /**< @brief Gets rotation @returns rotation */
+    void SetRotation(float rotation); /**< @brief Sets rotation @param rotation Rotation to set (degrees) */
+    void AddLocalRotation(float rotation); /**< @brief Adds to rotation value @param rotation Rotation to add */
 
-    Vector2 GetForces() const;
-    void AddForce(Vector2 force);
-    void ClearForces();
+    bool isVisible() const; /**< @brief Checks if actor visible @returns true if visible */
+    void SetVisibility(bool visibility); /**< @brief Sets visibility of actor @param visibility Visibility to set */
 
-    void AddImpulse(Vector2 force);
-
-    float GetMass() const;
-
-    bool IsUsingAsymmetricGravity() const;
-    void SetUseAsymmetricGravity(bool useAsymmetricGravity);
-
-    ActorMovability GetMovability() const;
-    void SetMovability(ActorMovability movability);
-
-    float GetBounce() const;
-    void SetBounce(float bounce);
+    Vector2 GetVelocity() const; /**< @brief Gets velocity @returns Velocity */
+    void SetVelocity(const Vector2& velocity); /**< @brief Sets velocity @param velocity Velocity to set */
+    void AddImpulse(const Vector2& force); /**< @brief Adds impulse to velocity @param force Impulse to add */
     
-    /** @brief Checks if actor visible @returns true if visible */
-    bool isVisible() const;
-    /** @brief Sets visibility of actor @param visibility Visibility to set */
-    void SetVisibility(bool visibility);
+    float GetMass() const; /**< @brief Gets mass @returns Mass */
+    void SetMass(float mass); /**< @brief Sets mass @param mass Mass to set */
+
+    bool isSimulatingPhysics() const; /**< @brief Checks if simulating physics @returns true if simulating physics */
+    void SetSimulatingPhysics(bool enabled); /**< @brief Sets physics simulation @param enabled Whether to simulate physics */
+
+    Vector2 GetForces() const; /**< @brief Gets forces applied to actor in current tick @returns Forces */
+    void AddForce(const Vector2& force); /**< @brief Adds force to actor @param force Force to add */
+    void ClearForces(); /**< @brief Clears all forces applied to actor */
+
+    bool IsUsingAsymmetricGravity() const; /**< @brief Checks if actor is using asymmetric gravity @returns true if using asymmetric gravity */
+    void SetUseAsymmetricGravity(bool useAsymmetricGravity); /**< @brief Sets whether actor should use asymmetric gravity @param useAsymmetricGravity Whether to use asymmetric gravity */
+
+    ActorMovability GetMovability() const; /**< @brief Gets movability @returns Movability */
+    void SetMovability(ActorMovability movability); /**< @brief Sets movability @param movability Movability to set */
+
+    float GetBounce() const; /**< @brief Gets bounce @returns Bounce */
+    void SetBounce(float bounce); /**< @brief Sets bounce @param bounce Bounce to set */
 
     /**
      * @brief Internal function used to queue BeginPlay() on actor
