@@ -19,17 +19,25 @@ class World
 {
 public:
 
+    /**
+     * @brief Struct to hold world settings
+     * @details This struct holds settings that affect world behavior like physics and collision settings
+     */
     struct WorldSettings
     {
-        Vector2 Size = Vector2(1000, 24);
-        float upGravity = 400.f;
-        float downGravity = 550.f;
-        bool doGravity = true;
-        float clipDampeningFactor = 1.f;
-        float clipAllowed = 0.f;
-        float bounceThreshold = 4.f;
+        Vector2 Size = Vector2(1000, 24); ///< Size of world in game units
+        float upGravity = 400.f; ///< Gravity strength when moving up for asymmetric actors
+        float downGravity = 550.f; ///< Gravity strength when moving down for asymmetric actors
+        bool doGravity = true; ///< Whether gravity should be applied to actors in world
+        float clipDampeningFactor = 1.f; ///< Dampening factor for clipping collisions (1 = no dampening, 0 = full clip)
+        float clipAllowed = 0.f; ///< Allowed penetration for clipping collisions in game units (0 = no penetration
+        float bounceThreshold = 4.f; ///< Minimum normal velocity for bounce to occur in collisions
     };
 
+    /**
+     * @brief Game settings for world
+     * @sa WorldSettings
+     */
     WorldSettings Settings;
     
     /**

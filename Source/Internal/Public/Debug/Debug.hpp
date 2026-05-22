@@ -4,6 +4,8 @@
 #include <fstream>
 #include <unordered_map>
 
+#include "fmt/core.h"
+
 class Logger;
 enum class LogType;
 
@@ -13,6 +15,17 @@ enum class LogType;
  * @see Logger::operator()
  */
 extern Logger LOG_DEFAULT;
+
+#define logtypes \
+    X(INFO) \
+    X(WARNING) \
+    X(ERROR) \
+    X(VITAL) \
+    X(DEBUG)
+
+#define X(name) name,
+enum class LogType { logtypes };
+#undef X
 
 /**
  * @brief Logging functionality
@@ -26,23 +39,35 @@ class Logger
 
 public:
 
-    // returns true if successful
-    bool operator () (LogType type, const std::string& message);
+    /**
+     * @brief Logs message to log file with given type
+     * * @tparam Args arguments for formatting
+     * @param type type of log message
+     * @param message message to log
+     */
+    template <typename... Args>
+    bool operator () (LogType type, const std::string& message, Args... args);
 
     void init(const char* path);
     ~Logger();
+
+private:
+    std::string getTimestampUTC();
+
+    inline static const std::unordered_map<LogType, std::string> LogColorMap = {
+        {LogType::INFO, "\x1b[0;37m"},
+        {LogType::WARNING, "\x1b[0;33m"},
+        {LogType::ERROR, "\x1b[0;31m"},
+        {LogType::VITAL, "\x1b[1;35m"},
+        {LogType::DEBUG, "\x1b[0;34m"}
 };
 
-#define logtypes \
-    X(INFO) \
-    X(WARNING) \
-    X(ERROR) \
-    X(VITAL) \
-    X(DEBUG)
-
-#define X(name) name,
-enum class LogType { logtypes };
-#undef X
+    #define X(name) { LogType::name, std::string(#name) },
+    inline static const std::unordered_map<LogType, std::string> LogNameMap = {
+        logtypes
+    };
+    #undef X
+};
 
 /**
  * @brief Contains global debug functionality
@@ -67,3 +92,18 @@ namespace Debug
     }
 }
 
+template <typename... Args>
+bool Logger::operator ()(LogType type, const std::string& message, Args... args) {
+    std::string timestamp = getTimestampUTC(); // minimize latency
+
+    if (!LogFile.is_open()) { return false; }
+
+    std::string colorMod = LogColorMap.at(type);
+    
+    LogFile << timestamp << " - ";
+    LogFile << colorMod << LogNameMap.at(type) << "\x1b[0m";
+    LogFile << " | ";
+    LogFile << colorMod << fmt::format(message, std::forward<Args>(args)...) << "\x1b[0m" << std::endl;
+
+    return true;
+}

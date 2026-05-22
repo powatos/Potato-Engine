@@ -244,7 +244,7 @@ void IOController::FireBinding(BindingMap& map, Keycode key) {
 
     for (const InputBinding& binding : loc->second ) {
         if (!binding.GetDelegate().Fire()) {
-            LOG_DEFAULT(LogType::WARNING, fmt::format("Input event could not fire for binding: {}", binding.name));
+            LOG_DEFAULT(LogType::WARNING, "Input event could not fire for binding: {}", binding.name);
         }
     }
 }

@@ -36,23 +36,23 @@ bool PersistentLevel::LoadStaticActors() {
         auto it = Archive.find(ClassID);
         // if ClassID not found in archive, continue to skip
         if (it == Archive.end()) {
-            LOG_DEFAULT(LogType::WARNING, fmt::format("Unkown ClassID in factory: {} - skipped loading", ClassID));
+            LOG_DEFAULT(LogType::WARNING, "Unkown ClassID in factory: {} - skipped loading", ClassID);
             continue;
         }
 
         auto constructor = it->second;
         // if constsructor not found, continue to skip
         if (constructor == nullptr) {
-            LOG_DEFAULT(LogType::WARNING, fmt::format("Bad function reference in archive for class: {} - skipped loading", ClassID));
+            LOG_DEFAULT(LogType::WARNING, "Bad function reference in archive for class: {} - skipped loading", ClassID);
             continue;
         }
         
-        LOG_DEFAULT(LogType::INFO, fmt::format("Loading static actors of class: {}", ClassID));
+        LOG_DEFAULT(LogType::INFO, "Loading static actors of class: {}", ClassID);
 
         for (const auto& pos : posList) {
             
             if (!pos.is_array() || pos.size() != 2) {
-                LOG_DEFAULT(LogType::WARNING, fmt::format("Invalid position data for class: {} - skipped loading", ClassID));
+                LOG_DEFAULT(LogType::WARNING, "Invalid position data for class: {} - skipped loading", ClassID);
                 continue;
             } 
 
@@ -66,7 +66,7 @@ bool PersistentLevel::LoadStaticActors() {
                 
             } catch (const json::type_error& e) {
 
-                LOG_DEFAULT(LogType::WARNING, fmt::format("Failed to parse data for actor: {} - skipped loading", e.what()));
+                LOG_DEFAULT(LogType::WARNING, "Failed to parse data for actor: {} - skipped loading", e.what());
                 allSuccessful = false;
 
                 continue;
@@ -76,7 +76,7 @@ bool PersistentLevel::LoadStaticActors() {
 
             // if returns nullptr, skip
             if (obj == nullptr) {
-                LOG_DEFAULT(LogType::WARNING, fmt::format("Object could not be constructor for class: {} - skipped loading", ClassID));
+                LOG_DEFAULT(LogType::WARNING, "Object could not be constructor for class: {} - skipped loading", ClassID);
                 allSuccessful = false;
                 continue;
             }
@@ -85,7 +85,7 @@ bool PersistentLevel::LoadStaticActors() {
                 addedActor->SetPosition(Position);
             } else {
                 allSuccessful = false;
-                LOG_DEFAULT(LogType::WARNING, fmt::format( "Failed to load static actor when adding to actor pool: {} - skipped loading", ClassID ));
+                LOG_DEFAULT(LogType::WARNING, "Failed to load static actor when adding to actor pool: {} - skipped loading", ClassID);
                 delete obj;
             }
         }
@@ -93,7 +93,7 @@ bool PersistentLevel::LoadStaticActors() {
     }
 
 
-    LOG_DEFAULT(LogType::INFO, fmt::format("Static actors loaded {}", allSuccessful ? "successfully" : "unsuccessfully"));
+    LOG_DEFAULT(LogType::INFO, "Static actors loaded {}", allSuccessful ? "successfully" : "unsuccessfully");
     return allSuccessful;
 }
 
@@ -144,21 +144,21 @@ static json safeGetJson(const std::filesystem::path& path) {
     json parsed;
 
     if (!std::filesystem::exists(path)) {
-        LOG_DEFAULT(LogType::ERROR, fmt::format("Save file not found at {}", path.c_str()));
+        LOG_DEFAULT(LogType::ERROR, "Save file not found at {}", path.c_str());
         return parsed;
     }
 
     std::ifstream file(path);
 
     if (!file.is_open()) {
-        LOG_DEFAULT(LogType::ERROR, fmt::format("Could not open save file at {}", path.c_str()));
+        LOG_DEFAULT(LogType::ERROR, "Could not open save file at {}", path.c_str());
         return parsed;
     }
 
     try {
         parsed = json::parse(file);
     } catch (const json::parse_error& e) {
-        LOG_DEFAULT(LogType::ERROR, fmt::format("Failed to parse save file at {}: {}", path.c_str(), e.what()));   
+        LOG_DEFAULT(LogType::ERROR, "Failed to parse save file at {}: {}", path.c_str(), e.what());   
     }
 
     return parsed;

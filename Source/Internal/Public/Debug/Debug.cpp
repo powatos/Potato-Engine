@@ -8,26 +8,12 @@
 
 Logger LOG_DEFAULT;
 
-static const std::unordered_map<LogType, std::string> LogColorMap = {
-        {LogType::INFO, "\e[0;37m"},
-        {LogType::WARNING, "\e[0;33m"},
-        {LogType::ERROR, "\e[0;31m"},
-        {LogType::VITAL, "\e[1;35m"},
-        {LogType::DEBUG, "\e[0;34m"}
-};
-
-#define X(name) { LogType::name, std::string(#name) },
-static const std::unordered_map<LogType, std::string> LogNameMap = {
-    logtypes
-};
-#undef X
-
 void Logger::init(const char* path){    
     LogFile.open(path, std::ios::app);
     LogFile << "\n\n\n"; // delimit on every binding
 }
 
-std::string getTimestampUTC() {
+std::string Logger::getTimestampUTC() {
     using namespace std::chrono;
 
     auto now = system_clock::now();
@@ -42,21 +28,6 @@ std::string getTimestampUTC() {
     std::string timestamp = fmt::format("{:%H:%M:%S}.{:03}", tm, ms);
 
     return timestamp;
-}
-
-bool Logger::operator () (LogType type, const std::string& message) {
-    std::string timestamp = getTimestampUTC(); // minimize latency
-
-    if (!LogFile.is_open()) { return false; }
-
-    std::string colorMod = LogColorMap.at(type);
-    
-    LogFile << timestamp << " - ";
-    LogFile << colorMod << LogNameMap.at(type) << "\e[0m";
-    LogFile << " | ";
-    LogFile << colorMod << message << "\e[0m" << std::endl;
-
-    return true;
 }
 
 Logger::~Logger() {
