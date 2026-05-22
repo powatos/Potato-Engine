@@ -21,6 +21,9 @@ struct Vector2
     /** @brief Constructs vector from copy @param vec Vector to copy */
     constexpr Vector2(const Vector2& vec) : x(vec.x), y(vec.y) {} 
 
+    inline static constexpr Vector2 Up() { return Vector2{0.f,1.f}; }
+    inline static constexpr Vector2 Right() { return Vector2{1.f,0.f}; }
+
     /** @returns addition of two vectors */
     inline Vector2 operator +(const Vector2& other) const {
         return Vector2(x + other.x, y + other.y);

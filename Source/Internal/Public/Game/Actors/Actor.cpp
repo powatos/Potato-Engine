@@ -70,6 +70,13 @@ void Actor::AddVelocity(const Vector2& velocity) {
     Velocity += velocity;
 }
 
+bool Actor::IsUsingAsymmetricGravity() const {
+    return UseAsymmetricGravity;
+}
+void Actor::SetUseAsymmetricGravity(bool useAsymmetricGravity) {
+    UseAsymmetricGravity = useAsymmetricGravity;
+}
+
 float Actor::GetMass() const {
     return Mass;
 }

@@ -29,7 +29,7 @@ void PlayerController::Initialize() {
 
     SetTicking(true);
     TargetMovementVelocity = 1000.f;
-    JumpForce = 10.f;
+    JumpForce = 20.f;
 
 }
 
@@ -60,13 +60,11 @@ void PlayerController::Tick(float dt) {
 
 void PlayerController::sMvL() { playerMoveVec.x = -1; }
 void PlayerController::sMvR() { playerMoveVec.x =  1; }
-void PlayerController::sMvU() { playerMoveVec.y =  1; }
-void PlayerController::sMvD() { playerMoveVec.y = -1; }
+
+void PlayerController::jump() { ActivePlayer->AddImpulse(Vector2(0, JumpForce)); }
 
 void PlayerController::eMvL() { playerMoveVec.x = 0; }
 void PlayerController::eMvR() { playerMoveVec.x = 0; }
-void PlayerController::eMvU() { playerMoveVec.y = 0; }
-void PlayerController::eMvD() { playerMoveVec.y = 0; }
 
 
 void PlayerController::AssignPlayer(Player* player) {
@@ -87,13 +85,11 @@ void PlayerController::SetupInputBindings() {
     controller->RegisterInputBinding({
         InputBinding(Keycode::A, InputType::Triggered, "StartMoveLeft", this, &PlayerController::sMvL),
         InputBinding(Keycode::D, InputType::Triggered, "StartMoveRight", this, &PlayerController::sMvR),
-        InputBinding(Keycode::W, InputType::Triggered, "StartMoveUp", this, &PlayerController::sMvU),
-        InputBinding(Keycode::S, InputType::Triggered, "StartMoveDown", this, &PlayerController::sMvD),
+        
+        InputBinding(Keycode::Space, InputType::Impulse, "Jump", this, &PlayerController::jump),
         
         InputBinding(Keycode::A, InputType::Completed, "CompleteMoveLeft", this, &PlayerController::eMvL),
         InputBinding(Keycode::D, InputType::Completed, "CompleteMoveRight", this, &PlayerController::eMvR),
-        InputBinding(Keycode::W, InputType::Completed, "CompleteMoveUp", this, &PlayerController::eMvU),
-        InputBinding(Keycode::S, InputType::Completed, "CompleteMoveDown", this, &PlayerController::eMvD)
     });
 }
 

@@ -55,7 +55,8 @@ public:
 protected:
     virtual void Tick(float dt) override;
 
-    int TargetMovementVelocity;
+    float TargetMovementVelocity;
+    float JumpForce;
 
 private:
     Player* ActivePlayer;
@@ -64,8 +65,7 @@ private:
 
     void sMvL(); void eMvL();
     void sMvR(); void eMvR();
-    void sMvU(); void eMvU();
-    void sMvD(); void eMvD();
+    void jump();
 
     void test(int);
 };

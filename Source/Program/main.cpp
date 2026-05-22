@@ -34,6 +34,7 @@ int main()
     
     // ideal 195
     instance->MS_REPEAT_THRESHOLD = 195;
+    instance->FRAMES_PER_SECOND = 60.f;
 
     /// LEVEL SETUP
     World* world = instance->GetWorld();

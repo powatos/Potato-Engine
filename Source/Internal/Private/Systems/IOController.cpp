@@ -35,6 +35,7 @@ IOController::IOController() : FRAMES_PER_SECOND(30.f) {
     LOG_DEFAULT(LogType::VITAL, "IOController constructed");
 
     ActiveKey = Keycode::UNKNOWN;
+    ImpulseKey = Keycode::UNKNOWN;
     
     setenv("ESCDELAY", "25", 1); // disables escape delay (shorten if arrow/f keys not working)
 
@@ -85,6 +86,11 @@ void IOController::HandleInput() {
     // DEBUG
     if (key == Keycode::Escape) { LOG_DEFAULT(LogType::DEBUG, "esc"); GameInstance::get()->RequestShutdown(); }
     if (key == Keycode::T) { auto* _ = UIController::get()->GetWidget("W_DebugInfo"); _->SetVisibility(!_->isVisible()); }
+
+    if (InputBindingsImpulse.find(key) != InputBindingsImpulse.end()) {
+        ImpulseKey = key;
+        return;
+    }
 
     if (MS_REPEAT_THRESHOLD == 0) {
 
@@ -226,7 +232,9 @@ void IOController::DrawHUD() {
 void IOController::Tick(float dt) {
     Tickable::Tick(dt);
 
-    FireBinding(InputBindingsOngoing, ActiveKey);    
+    FireBinding(InputBindingsOngoing, ActiveKey);
+    FireBinding(InputBindingsImpulse, ImpulseKey);
+    ImpulseKey = Keycode::UNKNOWN;
 
 }
 
@@ -285,6 +293,9 @@ void IOController::RegisterInputBinding(InputBinding binding) {
         case InputType::Ongoing:
             InputBindingsOngoing[binding.key].push_back( binding );
             break;
+        case InputType::Impulse:
+            InputBindingsImpulse[binding.key].push_back( binding );
+            break;
     }
 
 }
@@ -301,6 +312,9 @@ void IOController::UnregisterBindingFrom(BindingMap& map, std::string deleteName
             vec.end()
         );
 
+        if (vec.empty()) {
+            map.erase(keycode);
+        }
     }
 }
 void IOController::UnregisterAllBindingsFrom(BindingMap& map, void* object) {
@@ -314,7 +328,11 @@ void IOController::UnregisterAllBindingsFrom(BindingMap& map, void* object) {
             vec.end()
         );
 
+        if (vec.empty()) {
+            map.erase(keycode);
+        }
     }
+
 }
 void IOController::UnregisterInputBinding(std::string deleteName) {
 

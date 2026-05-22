@@ -41,10 +41,15 @@ void World::__TickPhysics(float dt) {
     for (Actor* actor : actorPool) {
         if (!actor->isSimulatingPhysics()) { continue; }
         if (actor->GetMovability() == ActorMovability::Static) { continue; }
-
+        // todo: asymettric. then do debug format
         Vector2 forces = actor->GetForces();
 
-        if (Settings.doGravity) {  forces += Vector2(0, -Settings.gravity); }
+        if (Settings.doGravity && actor->GetVelocity().Dot(Vector2::Up()) > 0.f) {
+            forces += Vector2(0, -Settings.upGravity); 
+        } else {
+            // down gravity used if actor isnt asymettric
+            forces += Vector2(0, -Settings.downGravity);
+        }
 
         const Vector2 acceleration = forces / actor->GetMass();
         const Vector2 dVelocity = acceleration * dt;

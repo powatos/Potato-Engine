@@ -22,7 +22,8 @@ public:
     struct WorldSettings
     {
         Vector2 Size = Vector2(1000, 24);
-        float gravity = 150.f;
+        float upGravity = 400.f;
+        float downGravity = 550.f;
         bool doGravity = true;
         float clipDampeningFactor = 1.f;
         float clipAllowed = 0.f;

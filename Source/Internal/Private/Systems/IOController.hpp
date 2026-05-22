@@ -63,8 +63,10 @@ protected:
     BindingMap InputBindingsTriggered;
     BindingMap InputBindingsOngoing;
     BindingMap InputBindingsCompleted;
+    BindingMap InputBindingsImpulse;
 
     Keycode ActiveKey;
+    Keycode ImpulseKey;
     
 };
 

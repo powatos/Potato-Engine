@@ -52,5 +52,6 @@ enum class InputType
 {
     Triggered,
     Ongoing,
-    Completed
+    Completed,
+    Impulse
 };

@@ -13,6 +13,7 @@ SET_DEFAULT_SUBCLASS(Player, Player);
 Player::Player() {
     Texture = 'P';
     SetSize(Vector2(2,2));
+    SetUseAsymmetricGravity(true);
 }
 
 void Player::BeginPlay() {

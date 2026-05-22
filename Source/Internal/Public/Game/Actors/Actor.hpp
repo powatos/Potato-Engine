@@ -64,6 +64,9 @@ public:
 
     float GetMass() const;
 
+    bool IsUsingAsymmetricGravity() const;
+    void SetUseAsymmetricGravity(bool useAsymmetricGravity);
+
     ActorMovability GetMovability() const;
     void SetMovability(ActorMovability movability);
 
@@ -111,6 +114,7 @@ private:
     float Mass;
     bool Visible;
     bool SimulatePhysics;
+    bool UseAsymmetricGravity;
     float Rotation;
 
     bool isInPlay;
