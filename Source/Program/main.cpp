@@ -12,6 +12,7 @@
 #include "Game/UI/HUDController.hpp"
 #include "Core/Input/InputController.hpp"
 #include "Game/UI/Widgets/Objects/DebugInfo.hpp"
+#include "Game/Actors/Block.hpp"
 
 
 void t() {
@@ -35,14 +36,17 @@ int main()
     instance->MS_REPEAT_THRESHOLD = 195;
 
     /// LEVEL SETUP
+    World* world = instance->GetWorld();
     PersistentLevel level("save.json");
     level.LoadStaticActors();
 
     /// PLAYER SETUP
     PlayerController* playerController = instance->GetPlayerController();
     Player* player = playerController->GetPlayer();
+    player->SetPosition(Vector2(0, 1.5));
 
     player->Texture = '0';
+    player->AddImpulse(Vector2(-1, 0));
 
     /// UI SETUP
     IHUDController* HUDController = engine.GetHUDController();

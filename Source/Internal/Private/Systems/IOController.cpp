@@ -163,11 +163,25 @@ void IOController::DrawLevel() {
         const Vector2 camOffsetActorPos = Vector2(actorPos.x - camera->GetPosition().x, actorPos.y);
         const Vector2 screenVector = GameplayHelper::VecToScreenVec(camOffsetActorPos);
         
-        mvwaddch(DisplayWindow, 
-            static_cast<int>(screenVector.x), 
-            static_cast<int>(screenVector.y), 
-            actor->Texture
-        );
+        const Vector2 actorSize = actor->GetSize();
+
+
+        for (int r = 0; r < actorSize.y; ++r) {
+            std::string textureRowStr = "";
+            textureRowStr.reserve(actorSize.x);
+
+            for (int c = 0; c < actorSize.x; ++c) {
+                textureRowStr += actor->Texture;
+            }
+
+            mvwaddstr(DisplayWindow, 
+                static_cast<int>(screenVector.x + r), 
+                static_cast<int>(screenVector.y), 
+                textureRowStr.c_str()
+            );
+        }
+
+        
 
     }
 

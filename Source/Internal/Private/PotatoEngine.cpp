@@ -41,12 +41,16 @@ void PotatoEngine::LoadSubobjects() {
 void PotatoEngine::BeginPlay()
 {
     Engine* engine = Engine::get();
+    GameInstance* instance = GameInstance::get();
+    World* world = instance->GetWorld();
 
     for (IEngineSubsystem* sys : SubsystemStack) {
         sys->_BeginPlay();
     }
 
-    for (Actor* actor : GameInstance::get()->GetWorld()->GetAllActors()) {
+    world->_BeginPlay();
+
+    for (Actor* actor : world->GetAllActors()) {
         actor->DispatchBeginPlay();
     }
 

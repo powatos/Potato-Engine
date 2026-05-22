@@ -55,6 +55,8 @@ public:
 protected:
     virtual void Tick(float dt) override;
 
+    int TargetMovementVelocity;
+
 private:
     Player* ActivePlayer;
     Camera* ActiveCamera;

@@ -28,12 +28,9 @@ void PlayerController::Initialize() {
     ActiveCamera = world->SpawnActor<Camera>();
 
     SetTicking(true);
+    TargetMovementVelocity = 1000.f;
+    JumpForce = 10.f;
 
-    // test
-    PotatoEngine::Get().GetNativeEventController()->RegisterNativeEvent(
-        "PositionOver40",
-        NativeEventBinding<int>("testBinding", this, &PlayerController::test)
-    );
 }
 
 void PlayerController::test(int a) {
@@ -53,9 +50,11 @@ void PlayerController::Tick(float dt) {
     newCamPos.x -= ActiveCamera->GetSize().x/2;
     newCamPos.y = ActiveCamera->GetSize().y-1;
 
+    newCamPos.x = std::clamp(newCamPos.x, 0.f, 1000.f);
+
     ActiveCamera->SetPosition(newCamPos);
 
-    ActivePlayer->AddLocalOffset(playerMoveVec * 0.5);
+    ActivePlayer->AddForce(playerMoveVec * TargetMovementVelocity);
 
 }
 

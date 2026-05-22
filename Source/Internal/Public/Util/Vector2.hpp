@@ -48,7 +48,7 @@ struct Vector2
         return Vector2(x*other.x, y*other.y);
     }
     /** @returns division of two vectors */
-    inline Vector2 operator / (float scalar) const {
+    inline Vector2 operator /(float scalar) const {
         return Vector2(x / scalar, y / scalar);
     }
     /** @returns negation of vector */
@@ -66,7 +66,7 @@ struct Vector2
     }
     /** @returns [magnitude](https://en.wikipedia.org/wiki/Euclidean_vector#Length) of vector */
     inline float Magnitude() const {
-        return std::sqrt(x * x + y * y);
+        return std::hypotf(x,y);
     }
     /** @returns [unit](https://en.wikipedia.org/wiki/Euclidean_vector#Unit_vector) vector */
     inline Vector2 Normalized() const {
@@ -74,10 +74,28 @@ struct Vector2
         if (mag == 0.f) return Vector2(0.f, 0.f);
         return Vector2(x / mag, y / mag);
     }
+    /** @returns distance to another vector */
+    inline float Distance(const Vector2& other) const {
+        const float dx = x-other.x;
+        const float dy = y-other.y;
+
+        return std::sqrt(dx * dx + dy * dy );
+    }
+    /** @returns the square of the distance to another vector */
+    inline float SquaredDistance(const Vector2& other) const {
+        const float dx = x-other.x;
+        const float dy = y-other.y;
+
+        return  dx * dx + dy * dy;
+    }
 
     /** @returns string representation of vector */
     inline std::string ToString() const {
         return "(" + std::to_string((int)x) + ", " + std::to_string((int)y) + ")";
+    }
+    /** @returns string representation of vector using float */
+    inline std::string ToStringF() const {
+        return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
     }
 
 };

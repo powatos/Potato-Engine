@@ -7,6 +7,7 @@
 #include "Game/World.hpp"
 #include "Core/PotatoEngine.hpp"
 #include "Core/Event/EventController.hpp"
+#include "Game/Control/GameInstance.hpp"
 
 #include "Actor.hpp"
 
@@ -18,6 +19,10 @@ Actor::Actor() {
     Size = Vector2();
     Rotation = 0.f;
     Visible = true;
+
+    Mass = 10.f;
+    SimulatePhysics = true;
+    Movability = ActorMovability::Movable;
     
 }
 
@@ -35,6 +40,7 @@ void Actor::BeginPlay() {
 void Actor::Tick(float dt) {
     Tickable::Tick(dt);
 
+
 }
 
 Vector2 Actor::GetPosition() const { 
@@ -42,24 +48,30 @@ Vector2 Actor::GetPosition() const {
 }
 void Actor::SetPosition(const Vector2 &position) { 
     // TODO: enforce world bounds somewhere better later
-    Position = Vector2(
-        std::clamp(position.x, 0.f, static_cast<float>(World::EXTENT_X-1) - Size.x), 
-        std::clamp(position.y, 0.f, static_cast<float>(World::EXTENT_Y-1)) // TODO: enforce position restriction for Y based on size
-    );
+    // World* world = GameInstance::get()->GetWorld();
+    // Position = Vector2(
+    //     std::clamp(position.x, 0.f, static_cast<float>(world->Settings.Size.x-1) - Size.x), 
+    //     std::clamp(position.y, 0.f, static_cast<float>(world->Settings.Size.y-1)) // TODO: enforce position restriction for Y based on size
+    // );
+    Position = position;
 
-    if (Position.x > 40) {
-        PotatoEngine::Get().GetNativeEventController()->FireNativeEvent<int>(
-            "PositionOver40",
-            (int)Position.y
-        );
-    }
-
-    if (Position.x > 60) {
-        PotatoEngine::Get().GetNativeEventController()->UnregisterNativeEvent<int>("testBinding");
-    }
 }
 void Actor::AddLocalOffset(const Vector2& offset) {
     SetPosition(Position + offset);
+}
+
+Vector2 Actor::GetVelocity() const { 
+    return Velocity; 
+}
+void Actor::SetVelocity(const Vector2& velocity) { 
+    Velocity = velocity;
+}
+void Actor::AddVelocity(const Vector2& velocity) {
+    Velocity += velocity;
+}
+
+float Actor::GetMass() const {
+    return Mass;
 }
 
 Vector2 Actor::GetSize() const { 
@@ -84,11 +96,46 @@ void Actor::AddLocalRotation(float rotation) {
     SetRotation(GetRotation() + rotation);
 }
 
+bool Actor::isSimulatingPhysics() const {
+    return SimulatePhysics;
+}
+void Actor::SetSimulatingPhysics(bool enabled) {
+    SimulatePhysics = enabled;
+}
+
+Vector2 Actor::GetForces() const {
+    return Forces;
+}
+void Actor::AddForce(Vector2 force) {
+    Forces += force;
+}
+void Actor::ClearForces() {
+    Forces = Vector2(0.f, 0.f);
+}
+
+void Actor::AddImpulse(Vector2 force) {
+    Velocity += force;
+}
+
 bool Actor::isVisible() const {
     return Visible;
 }
 void Actor::SetVisibility(bool visibility) {
     Visible = visibility;
+}
+
+float Actor::GetBounce() const {
+    return Bounciness;
+}
+void Actor::SetBounce(float bounce) {
+    Bounciness = bounce;
+}
+
+ActorMovability Actor::GetMovability() const {
+    return Movability;
+}
+void Actor::SetMovability(ActorMovability movability) {
+    Movability = movability;
 }
 
 

@@ -5,7 +5,7 @@ GAME_TARGET				:= Program
 
 CXX						:= g++
 # REMOVE -08 AFTER DEBUGGING
-CXXFLAGS				:= -g -Wall -std=c++17 -O0 -MMD -MP
+CXXFLAGS				:= -g -Wall -std=c++17 -O0 -MMD -MP -Wpedantic
 LDLIBS					:= -lncurses
 
 SRCDIR					:= Source

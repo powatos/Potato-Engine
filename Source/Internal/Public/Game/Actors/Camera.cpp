@@ -5,6 +5,7 @@
 Camera::Camera() {
     SetVisibility(false);
 
+    SetSimulatingPhysics(false);
     SetSize(Vector2(80.f, 24.f));
 }
 

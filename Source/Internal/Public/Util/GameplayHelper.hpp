@@ -3,6 +3,7 @@
 
 class Camera;
 struct Vector2;
+class Actor;
 
 /**
  * @brief Helper class with useful logic and shorthand functions
@@ -27,4 +28,19 @@ public:
      * @returns true if is in frame
      */
     static bool IsPositionInCameraFrame(const Vector2& pos, Camera* camera);
+    /**
+     * @brief Gets list of overlapping actors
+     * @param actor actor to check for overlaps
+     * @returns vector of actor pointers that are overlapping
+     */
+    static std::vector<Actor*> GetOverlappingActors(const Actor* actor);
+    /**
+     * @brief Checks if two actors are overlapping
+     * @param actor1 first actor
+     * @param actor2 second actor
+     * @returns true if overlapping
+     */
+    static bool IsActorOverlapping(const Actor* actor1, const Actor* actor2);
+
+
 };

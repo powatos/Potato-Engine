@@ -5,6 +5,12 @@
 #include "Core/Event/Tickable.hpp"
 #include "Util/Vector2.hpp"
 
+enum class ActorMovability
+{
+    Movable,
+    Static
+};
+
 /**
  * @brief Base actor class
  * @details This class represents a level object that exists in the game world. All objects that obey world
@@ -28,6 +34,10 @@ public:
     /** @brief Sets position @param position Position to set */
     void SetPosition(const Vector2& position);
 
+    Vector2 GetVelocity() const;
+    void SetVelocity(const Vector2& velocity);
+    void AddVelocity(const Vector2& velocity);
+
     /** @brief Gets size @returns Size */
     Vector2 GetSize() const;
     /** @brief Sets size @param size Size to set */
@@ -42,6 +52,23 @@ public:
     void AddLocalOffset(const Vector2& offset);
     /** @brief Adds to rotation value @param rotation Rotation to add */
     void AddLocalRotation(float rotation);
+
+    bool isSimulatingPhysics() const;
+    void SetSimulatingPhysics(bool enabled);
+
+    Vector2 GetForces() const;
+    void AddForce(Vector2 force);
+    void ClearForces();
+
+    void AddImpulse(Vector2 force);
+
+    float GetMass() const;
+
+    ActorMovability GetMovability() const;
+    void SetMovability(ActorMovability movability);
+
+    float GetBounce() const;
+    void SetBounce(float bounce);
     
     /** @brief Checks if actor visible @returns true if visible */
     bool isVisible() const;
@@ -73,10 +100,17 @@ protected:
 
 private:
 
-    bool Visible;
-
     Vector2 Position;
+    Vector2 Velocity;
+    Vector2 Forces;
     Vector2 Size;
+    
+    ActorMovability Movability;
+
+    float Bounciness;
+    float Mass;
+    bool Visible;
+    bool SimulatePhysics;
     float Rotation;
 
     bool isInPlay;

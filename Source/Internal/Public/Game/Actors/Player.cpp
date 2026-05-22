@@ -11,18 +11,21 @@
 SET_DEFAULT_SUBCLASS(Player, Player);
 
 Player::Player() {
+    Texture = 'P';
+    SetSize(Vector2(2,2));
 }
 
 void Player::BeginPlay() {
     Actor::BeginPlay();
 
+    SetSimulatingPhysics(true);
     SetTicking(true);
 }
 
 void Player::Tick(float dt) {
     Entity::Tick(dt);
 
-    Texture = ((Texture - '0') + 1) % 10 + '0';
+    // Texture = ((Texture - '0') + 1) % 10 + '0';
 
 }
 

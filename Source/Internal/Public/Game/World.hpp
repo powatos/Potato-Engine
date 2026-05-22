@@ -18,10 +18,18 @@ class Player;
 class World
 {
 public:
-    /** @brief x-width of game world */
-    static constexpr int EXTENT_X = 1'000;
-    /** @brief y-height of game world */
-    static constexpr int EXTENT_Y = 24;
+
+    struct WorldSettings
+    {
+        Vector2 Size = Vector2(1000, 24);
+        float gravity = 150.f;
+        bool doGravity = true;
+        float clipDampeningFactor = 1.f;
+        float clipAllowed = 0.f;
+        float bounceThreshold = 4.f;
+    };
+
+    WorldSettings Settings;
     
     /**
      * @internal
@@ -29,6 +37,8 @@ public:
      */
     World();
     ~World();
+
+    void _BeginPlay();
 
     /**
      * @brief Spawns Actor into world
@@ -64,9 +74,14 @@ public:
     /** @brief Gets ActorPool @returns actor pool */
     const ActorPool& GetAllActors() const;
 
+    void __TickPhysics(float dt);
+
+
 private:
-    Player* ActivePlayer;
+    void ResolveCollisions();
+
     ActorPool actorPool;
+
 
 };
 

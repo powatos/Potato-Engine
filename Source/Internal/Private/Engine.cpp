@@ -6,6 +6,7 @@
 
 #include "Debug/Debug.hpp"
 #include "Game/Control/GameInstance.hpp"
+#include "Game/World.hpp"
 #include "Systems/IOController.hpp"
 
 #include "Engine.hpp"
@@ -39,6 +40,7 @@ int Engine::main() {
     
     IOController* Controller = IOController::get();
     GameInstance* Instance = GameInstance::get();
+    World* world = Instance->GetWorld();
 
     const ms idealDelay(static_cast<int>(1000.f / Controller->FRAMES_PER_SECOND));
     auto lastTick = stdc::steady_clock::now();
@@ -55,6 +57,8 @@ int Engine::main() {
 
         Controller->HandleInput();
         FireTick(dt);
+        world->__TickPhysics(dt);
+        // post physics tick
         Controller->Draw();
 
         auto end = stdc::steady_clock::now();
