@@ -15,6 +15,11 @@ public:
     /** @brief Sets tick state for object @param isEnabled tick state */
     void SetTicking(bool isEnabled);
 
+    /** @brief Checks if object is ticking @returns true if object is ticking */
+    bool isTickingPostPhysics() const;
+    /** @brief Sets tick state for object @param isEnabled tick state */
+    void SetTickingPostPhysics(bool isEnabled);
+
 protected:
     Tickable() = default; // protected constructor lets ONLY derived classes call it
     virtual ~Tickable() = 0; // protected destructor stops compiler from allocating new, pure virtual makes abstract
@@ -34,7 +39,23 @@ protected:
      */
     virtual void Tick(float dt);
 
+    /**
+     * @brief Update event after physics step
+     * @details This function is called every tick after the physics step. Put all
+     * functionality that should run after physics updates here.
+     * @param dt Deltatime; time elapsed since last frame in ms
+     * @note Always call base method when overriding: 
+     * @code
+     * void Class::TickPostPhysics() {
+     *     BaseClass::TickPostPhysics();
+     *     // ...
+     * }
+     * @endcode
+     */
+    virtual void TickPostPhysics(float dt) {}
+
 private:
     bool bTicking;
+    bool bTickingPostPhysics;
 
 };

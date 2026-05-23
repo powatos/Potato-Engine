@@ -57,7 +57,7 @@ int Engine::main() {
 
         Controller->HandleInput();
         FireTick(dt);
-        world->__TickPhysics(dt);
+        FireTickPostPhysics(dt);
         // post physics tick
         Controller->Draw();
 
@@ -88,11 +88,11 @@ int Engine::main() {
 }
 
 void Engine::FireTick(const float dt) const {
-
     EventController::get()->FireNativeEvent<float>("__ENGINE_TICK", dt);
-
 }
-
+void Engine::FireTickPostPhysics(const float dt) const {
+    EventController::get()->FireNativeEvent<float>("__ENGINE_TICK_POST_PHYSICS", dt);
+}
 
 void Engine::Resolve() noexcept {
     LOG_DEFAULT(LogType::VITAL, "Resolving Engine");

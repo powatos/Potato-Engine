@@ -23,6 +23,7 @@ private:
     
 
     void FireTick(const float dt) const;
+    void FireTickPostPhysics(const float dt) const;
 
 protected:
     std::vector<EventDelegate<float>> TickDelegates;

@@ -33,102 +33,117 @@ void World::_BeginPlay() {
     Block* wallU = SpawnActor<Block>(Vector2(0, 23+wallWidth));
     wallU->SetSize(Vector2(Settings.Size.x, wallWidth));
     wallU->Texture = 'W';
+
+    SetTickingPostPhysics(true);
 }
 
-void World::__TickPhysics(float dt) {
+void World::TickPostPhysics(float dt) {
 
-
+    // update movement physics for each actor
     for (Actor* actor : actorPool) {
         if (!actor->isSimulatingPhysics()) { continue; }
         if (actor->GetMovability() == ActorMovability::Static) { continue; }
-        // todo: asymettric. then do debug format
-        Vector2 forces = actor->GetForces();
 
-        if (Settings.doGravity && actor->GetVelocity().Dot(Vector2::Up()) > 0.f) {
-            forces += Vector2(0, -Settings.upGravity); 
-        } else {
-            // down gravity used if actor isnt asymettric
-            forces += Vector2(0, -Settings.downGravity);
-        }
-
-        const Vector2 acceleration = forces / actor->GetMass();
-        const Vector2 dVelocity = acceleration * dt;
-
-        actor->AddImpulse(dVelocity);
-
-        actor->AddLocalOffset(actor->GetVelocity() * dt);
-        actor->ClearForces();
+        UpdateActorPhysics(actor, dt);
     }
 
-    ResolveCollisions();
-}
-
-void World::ResolveCollisions() {
-
+    // update collision physics for each actor
     for (Actor* a : actorPool) {
         if (!a->isSimulatingPhysics()) { continue; }
-    for (Actor* b : actorPool) {
-        if (a >= b) { continue; }
-        if (!b->isSimulatingPhysics()) { continue; }
 
-        const Vector2 aPos = a->GetPosition();
-        const Vector2 bPos = b->GetPosition();
+        for (Actor* b : actorPool) {
+            if (a >= b) { continue; } // pointer trick to avoid checking pairs twice and against self
+            if (!b->isSimulatingPhysics()) { continue; }
 
-        // assumes max distance between actor origins (not calculating size) is < 100.f
-        if (aPos.SquaredDistance(bPos) >= 10'000.f) { continue; }
+            const Vector2 aPos = a->GetPosition();
+            const Vector2 bPos = b->GetPosition();
 
-        const Vector2 aHalfSize = a->GetSize() * 0.5f;
-        const Vector2 bHalfSize = b->GetSize() * 0.5f;
-        const Vector2 aCenter = Vector2( aPos.x + aHalfSize.x , aPos.y - aHalfSize.y );
-        const Vector2 bCenter = Vector2( bPos.x + bHalfSize.x , bPos.y - bHalfSize.y );
-        const float dx = bCenter.x - aCenter.x;
-        const float dy = bCenter.y - aCenter.y;
-        const float overlapX = (aHalfSize.x + bHalfSize.x) - std::abs(dx);
-        const float overlapY = (aHalfSize.y + bHalfSize.y) - std::abs(dy);
+            // broadphase check against actors farther than 100.f units
+            if (aPos.SquaredDistance(bPos) >= 10'000.f) { continue; }
 
-        if ( !(overlapX > 0.f && overlapY > 0.f) ) { continue; }
-
-        Vector2 normal{};
-        float penetration{};
-        if (overlapX < overlapY) {
-            penetration = overlapX;
-            normal.x = dx > 0.f ? -1.f : 1.f;
-        } else {
-            penetration = overlapY;
-            normal.y = dy > 0.f ? -1.f : 1.f;
+            ResolveCollision(a, b, aPos, bPos);
         }
-
-        const float seperationAmount = std::max(penetration - Settings.clipAllowed, 0.f) * Settings.clipDampeningFactor;
-        const Vector2 correctionVector = normal * seperationAmount;
-
-        const float aInvMass = a->GetMovability() == ActorMovability::Static ? 0.f : (1.f / a->GetMass());
-        const float bInvMass = b->GetMovability() == ActorMovability::Static ? 0.f : (1.f / b->GetMass());
-        const float totalInvMass = aInvMass + bInvMass;
-
-        if (totalInvMass > 0.f) {
-            a->AddLocalOffset( correctionVector * (aInvMass / totalInvMass) );
-            b->AddLocalOffset( -correctionVector * (bInvMass / totalInvMass) );
-        }
-
-        const Vector2 relativeVel = a->GetVelocity() - b->GetVelocity() ;
-        const float normalVel = relativeVel.Dot(normal);
-        if (normalVel < 0.f && totalInvMass > 0.f) {
-            float restitution = a->GetBounce() * b->GetBounce();
-
-            if (std::abs(normalVel) < Settings.bounceThreshold) { restitution = 0.f; }
-            const float impulseMag = -(1.f + restitution) * normalVel / totalInvMass;
-            const Vector2 impulse = normal * impulseMag;
-
-            a->AddImpulse(impulse * aInvMass);
-            b->AddImpulse(-impulse * bInvMass);
-        }
-
-        //a.FireOverlap();
-        //b.FireOverlap();
-
     }
+}
+
+void World::UpdateActorPhysics(Actor* actor, float dt) {
+    
+    // Sum all acting forces
+    Vector2 forces = actor->GetForces();
+    if (Settings.doGravity && actor->GetVelocity().Dot(Vector2::Up()) > 0.f) {
+        forces += Vector2(0, -Settings.upGravity); 
+    } else {
+        // down gravity used if actor isnt asymettric
+        forces += Vector2(0, -Settings.downGravity);
     }
 
+    const Vector2 acceleration = forces / actor->GetMass();
+    const Vector2 dVelocity = acceleration * dt;
+
+    actor->AddImpulse(dVelocity); // update velocity based on acceleration
+    actor->AddLocalOffset(actor->GetVelocity() * dt); // update position
+
+    actor->ClearForces(); // clear forces for next tick
+}
+
+void World::ResolveCollision(Actor* a, Actor* b, const Vector2& aPos, const Vector2& bPos) {
+    const Vector2 aHalfSize = a->GetSize() * 0.5f;
+    const Vector2 bHalfSize = b->GetSize() * 0.5f;
+    const Vector2 aCenter = Vector2( aPos.x + aHalfSize.x , aPos.y - aHalfSize.y );
+    const Vector2 bCenter = Vector2( bPos.x + bHalfSize.x , bPos.y - bHalfSize.y );
+    const float dx = bCenter.x - aCenter.x;
+    const float dy = bCenter.y - aCenter.y;
+    const float overlapX = (aHalfSize.x + bHalfSize.x) - std::abs(dx);
+    const float overlapY = (aHalfSize.y + bHalfSize.y) - std::abs(dy);
+
+    // check for actual overlap
+    if ( !(overlapX > 0.f && overlapY > 0.f) ) { return; }
+
+    // calculate overlap details
+    Vector2 normal{};
+    float penetration{};
+    if (overlapX < overlapY) {
+        penetration = overlapX;
+        normal.x = dx > 0.f ? -1.f : 1.f;
+    } else {
+        penetration = overlapY;
+        normal.y = dy > 0.f ? -1.f : 1.f;
+    }
+
+    // calculate correction details
+    const float seperationAmount = std::max(penetration - Settings.clipAllowed, 0.f) * Settings.clipDampeningFactor;
+    const Vector2 correctionVector = normal * seperationAmount;
+
+    // weighted correction based on mass
+    const float aInvMass = a->GetMovability() == ActorMovability::Static ? 0.f : (1.f / a->GetMass());
+    const float bInvMass = b->GetMovability() == ActorMovability::Static ? 0.f : (1.f / b->GetMass());
+    const float totalInvMass = aInvMass + bInvMass;
+
+    // correct positions
+    if (totalInvMass > 0.f) {
+        a->AddLocalOffset( correctionVector * (aInvMass / totalInvMass) );
+        b->AddLocalOffset( -correctionVector * (bInvMass / totalInvMass) );
+    }
+
+    // apply impulse based on newtons law of restitution
+    const Vector2 relativeVel = a->GetVelocity() - b->GetVelocity() ;
+    const float normalVel = relativeVel.Dot(normal);
+
+    if (normalVel < 0.f && totalInvMass > 0.f) {
+        float restitution = a->GetBounce() * b->GetBounce(); // amount of bounce
+
+        if (std::abs(normalVel) < Settings.bounceThreshold) { restitution = 0.f; } // low restitutions dont bounce
+
+        const float impulseMag = -(1.f + restitution) * normalVel / totalInvMass;
+        const Vector2 impulse = normal * impulseMag;
+
+        // conservation of energy
+        a->AddImpulse(impulse * aInvMass);
+        b->AddImpulse(-impulse * bInvMass);
+    }
+
+    //a.FireOverlap();
+    //b.FireOverlap();
 }
 
 void World::DestroyActor(Actor* actor) {

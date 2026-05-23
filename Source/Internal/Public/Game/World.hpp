@@ -15,7 +15,7 @@ class Player;
 /**
  * @brief Local level managing gameplay interactions
  */
-class World
+class World : public Tickable
 {
 public:
 
@@ -83,11 +83,12 @@ public:
     /** @brief Gets ActorPool @returns actor pool */
     const ActorPool& GetAllActors() const;
 
-    void __TickPhysics(float dt);
+    virtual void TickPostPhysics(float dt) override;
 
 
 private:
-    void ResolveCollisions();
+    void UpdateActorPhysics(Actor* actor, float dt);
+    void ResolveCollision(Actor* a, Actor* b, const Vector2& aPos, const Vector2& bPos);
 
     ActorPool actorPool;
 

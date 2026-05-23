@@ -10,7 +10,6 @@ bool Tickable::isTicking() const {
 }
 
 void Tickable::SetTicking(bool isEnabled) {
-    /** DO NOT CALL IN CONSTRUCTOR */
 
     bTicking = isEnabled;
 
@@ -27,5 +26,27 @@ void Tickable::SetTicking(bool isEnabled) {
     }
 }
 
-void Tickable::Tick(float dt) {}
+bool Tickable::isTickingPostPhysics() const {
+    return bTickingPostPhysics;
+}
+
+void Tickable::SetTickingPostPhysics(bool isEnabled) {
+    bTickingPostPhysics = isEnabled;
+
+    EventController* controller = PotatoEngine::Get().GetNativeEventController();
+
+    if (isEnabled) {
+        controller->RegisterNativeEvent(
+            "__ENGINE_TICK_POST_PHYSICS",
+            NativeEventBinding<float>("__engine_tick_post_physics_binding", this, &Tickable::TickPostPhysics)
+        );
+        
+    } else {
+        controller->UnregisterNativeEvent<float>("__ENGINE_TICK_POST_PHYSICS", this);
+    }
+}
+
+void Tickable::Tick(float dt) {
+
+}
 Tickable::~Tickable() {}
