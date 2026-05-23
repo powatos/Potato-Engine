@@ -13,12 +13,13 @@
 using json = nlohmann::json;
 
 static json safeGetJson(const std::filesystem::path& path);
+static std::filesystem::path getDataDir();
 
 PersistentLevel::PersistentLevel(const std::string& saveFileName) {
     
-    saveFileAbsPath = std::filesystem::current_path() / "Saves" / saveFileName; 
+    saveFileAbsPath = getDataDir() / "Saves" / saveFileName; 
 
-}
+}   
 
 bool PersistentLevel::LoadStaticActors() {
     json Save = safeGetJson(saveFileAbsPath);
@@ -169,6 +170,43 @@ static json safeGetJson(const std::filesystem::path& path) {
 
 }
 
+static std::filesystem::path getDataDir() {
+    static std::filesystem::path dataDir;
+
+#if defined(_WIN32)
+    // windows: C:\Users\{User}\AppData\Roaming\PotatoEngine\Data
+    const char* appData = std::getenv("APPDATA");
+    if (appData) {
+        saveDir = std::filesystem::path(appData) / "PotatoEngine" / "Data";
+    } else {
+        LOG_DEFAULT(LogType::ERROR, "APPDATA environment variable not found while parsing data");
+    }
+#elif defined(__APPLE__)
+    // macOS: /Users/{User}/Library/Application Support/PotatoEngine/Data
+    const char* home = std::getenv("HOME");
+    if (home) {
+        dataDir = std::filesystem::path(home) / "Library" / "Application Support" / "PotatoEngine" / "Data";
+    } else {    
+        LOG_DEFAULT(LogType::ERROR, "HOME environment variable not found while parsing data");
+    }
+#elif defined(__linux__)
+    // linux: /home/{User}/.local/share/PotatoEngine/Data
+    const char* xdgData = std::getenv("XDG_DATA_HOME");
+    if (xdgData) {
+        dataDir = std::filesystem::path(xdgData) / "PotatoEngine" / "Data";
+    } else {
+        const char* home = std::getenv("HOME");
+        if (home) {
+            dataDir = std::filesystem::path(home) / ".local" / "share" / "PotatoEngine" / "Data";
+        } else {
+            LOG_DEFAULT(LogType::ERROR, "HOME environment variable not found while parsing data");
+        }
+    }
+#endif
+    
+    std::filesystem::create_directories(dataDir);
+    return dataDir;
+}
 
 
 
