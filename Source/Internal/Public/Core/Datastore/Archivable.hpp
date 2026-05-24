@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <functional>
+#include <string>
 
 /**
  * @def ARCHIVE_STATIC(type)
