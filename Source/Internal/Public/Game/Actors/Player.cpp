@@ -23,7 +23,7 @@ void Player::BeginPlay() {
     SetTicking(true);
 }
 
-void Player::Tick(float dt) {
+void Player::Tick([[maybe_unused]] float dt) {
     Entity::Tick(dt);
 
     // Texture = ((Texture - '0') + 1) % 10 + '0';

@@ -33,7 +33,7 @@ void PlayerController::Initialize() {
 
 }
 
-void PlayerController::Tick(float dt) {
+void PlayerController::Tick([[maybe_unused]] float dt) {
     Tickable::Tick(dt);
 
     if (ActivePlayer == nullptr) { return; }

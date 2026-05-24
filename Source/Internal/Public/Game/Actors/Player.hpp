@@ -21,7 +21,7 @@ public:
 
 protected:
     virtual void BeginPlay() override;
-    virtual void Tick(float dt) override;
+    virtual void Tick([[maybe_unused]] float dt) override;
 
 private:
     // PlayerController* OwningController;

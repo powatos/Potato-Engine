@@ -55,7 +55,7 @@ public:
 
 
 protected:
-    virtual void Tick(float dt) override;
+    virtual void Tick([[maybe_unused]] float dt) override;
 
     float TargetMovementVelocity;
     float JumpForce;

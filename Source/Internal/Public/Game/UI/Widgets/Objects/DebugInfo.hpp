@@ -16,6 +16,6 @@ public:
     ~DebugInfo();
 
 protected:
-    virtual void Tick(float dt) override;
+    virtual void Tick([[maybe_unused]] float dt) override;
 
 };

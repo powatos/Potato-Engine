@@ -249,7 +249,7 @@ void IOController::DrawHUD() {
 
 }
 
-void IOController::Tick(float dt) {
+void IOController::Tick([[maybe_unused]] float dt) {
     Tickable::Tick(dt);
 
     FireBinding(InputBindingsOngoing, ActiveKey);

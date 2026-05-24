@@ -23,7 +23,7 @@ DebugInfo::DebugInfo(std::string UID) : Widget(std::move(UID)) {
     SetVisibility(true);
 }
 
-void DebugInfo::Tick(float dt) {
+void DebugInfo::Tick([[maybe_unused]] float dt) {
     Widget::Tick(dt);
 
     PlayerController* plrCtrl = GameInstance::get()->GetPlayerController();

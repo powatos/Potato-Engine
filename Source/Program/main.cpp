@@ -37,7 +37,7 @@ int main()
     instance->FRAMES_PER_SECOND = 60.f;
 
     /// LEVEL SETUP
-    World* world = instance->GetWorld();
+    [[maybe_unused]] World* world = instance->GetWorld();
     PersistentLevel level("save.json");
     level.LoadStaticActors();
 
@@ -50,10 +50,10 @@ int main()
     player->AddImpulse(Vector2(-1, 0));
 
     /// UI SETUP
-    IHUDController* HUDController = engine.GetHUDController();
+    [[maybe_unused]] IHUDController* HUDController = engine.GetHUDController();
 
     /// DEBUG
-    DebugInfo *debugInfoWidget = HUDController->AddWidget<DebugInfo>("W_DebugInfo");
+    [[maybe_unused]] DebugInfo *debugInfoWidget = HUDController->AddWidget<DebugInfo>("W_DebugInfo");
 
     /// PLAY
     engine.BeginPlay();
