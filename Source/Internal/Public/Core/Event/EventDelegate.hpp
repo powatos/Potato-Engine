@@ -3,6 +3,9 @@
 
 #include <functional>
 
+#include "Debug/Debug.hpp"
+#include "Game/Control/PlayerController.hpp"
+
 /**
  * @brief A wrapper that carries response delegate information
  * @details Used to subscribe to events in a binding struct/method

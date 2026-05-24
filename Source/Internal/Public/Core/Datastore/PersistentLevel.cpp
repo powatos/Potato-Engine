@@ -151,21 +151,21 @@ static json safeGetJson(const std::filesystem::path& path) {
     json parsed;
 
     if (!std::filesystem::exists(path)) {
-        LOG_DEFAULT(LogType::ERROR, "Save file not found at {}", path.c_str());
+        LOG_DEFAULT(LogType::ERROR, "Save file not found at {}", path.string());
         return parsed;
     }
 
     std::ifstream file(path);
 
     if (!file.is_open()) {
-        LOG_DEFAULT(LogType::ERROR, "Could not open save file at {}", path.c_str());
+        LOG_DEFAULT(LogType::ERROR, "Could not open save file at {}", path.string());
         return parsed;
     }
 
     try {
         parsed = json::parse(file);
     } catch (const json::parse_error& e) {
-        LOG_DEFAULT(LogType::ERROR, "Failed to parse save file at {}: {}", path.c_str(), e.what());   
+        LOG_DEFAULT(LogType::ERROR, "Failed to parse save file at {}: {}", path.string(), e.what());   
     }
 
     return parsed;

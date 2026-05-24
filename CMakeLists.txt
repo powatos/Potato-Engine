@@ -4,6 +4,8 @@ project(PotatoEngine CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_CXX_FLAGS "-g -O8")
+
 find_Package(Curses REQUIRED)
 
 if (Curses_FOUND AND NOT TARGET Curses::Curses)

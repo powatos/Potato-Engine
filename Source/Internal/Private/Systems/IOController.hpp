@@ -11,8 +11,8 @@
 
 using BindingMap = std::unordered_map<Keycode, std::vector<InputBinding>, __KeycodeHash>;
 
-struct _win_st;
-typedef struct _win_st WINDOW;
+// struct _win_st;
+// typedef struct _win_st WINDOW;
 struct WidgetMapper;
 class Widget;
 
@@ -55,8 +55,8 @@ private:
 protected:
     virtual void Tick(float dt) override;
 
-    WINDOW* BoxWindow;
-    WINDOW* DisplayWindow;
+    void* BoxWindow;
+    void* DisplayWindow;
 
     std::unordered_map<std::string, WidgetMapper*> WidgetMaps;
 
@@ -72,7 +72,7 @@ protected:
 
 struct WidgetMapper {
     Widget* widget;
-    WINDOW* window;
+    void* window;
 
-    WidgetMapper(Widget* widget, WINDOW* window) : widget(widget), window(window) {}
+    WidgetMapper(Widget* widget, void* window) : widget(widget), window(window) {}
 };

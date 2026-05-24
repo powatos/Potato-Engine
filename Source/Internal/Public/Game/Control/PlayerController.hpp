@@ -19,6 +19,8 @@ public:
     PlayerController();
     virtual ~PlayerController();
 
+    char temp;
+
     void Initialize();
     void AssignPlayer(Player* player);
 

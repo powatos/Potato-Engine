@@ -40,20 +40,28 @@ IOController::IOController() : FRAMES_PER_SECOND(30.f) {
 
     ActiveKey = Keycode::UNKNOWN;
     ImpulseKey = Keycode::UNKNOWN;
-    
-    setenv("ESCDELAY", "25", 1); // disables escape delay (shorten if arrow/f keys not working)
+
+    // disables escape delay (shorten if arrow/f keys not working)
+#if defined(_WIN32) || defined(_WIN64)
+    _putenv_s("ESCDELAY", "25");
+#else
+    setenv("ESCDELAY", "25", 1);
+#endif
 
     initscr(); // init ncurses
     cbreak(); // disable line buffering
 	noecho(); // disable input feedback
 
-    DisplayWindow = newwin(24, 80, 1, 1);
-    BoxWindow = newwin(24+2,80+2, 0, 0);
+    WINDOW* dispWindow = newwin(24, 80, 1, 1);
+    WINDOW* boxWindow = newwin(24+2, 80+2, 0, 0);
 
-	keypad(DisplayWindow, TRUE); // enable keypad input
-    nodelay(DisplayWindow, TRUE); // disable input delay
+    DisplayWindow = dispWindow;
+    BoxWindow = boxWindow;
+
+	keypad(dispWindow, TRUE); // enable keypad input
+    nodelay(dispWindow, TRUE); // disable input delay
 	curs_set(0); // disable cursor visibility
-	wtimeout(DisplayWindow, 0); // Make getch() non-blocking
+	wtimeout(dispWindow, 0); // Make getch() non-blocking
 
     // crash handlers
     signal(SIGINT, crashHandler);
@@ -64,9 +72,11 @@ IOController::IOController() : FRAMES_PER_SECOND(30.f) {
 }
 
 void IOController::_BeginPlay() {
+
+    WINDOW* boxWindow = static_cast<WINDOW*>(BoxWindow);
     
-    box(BoxWindow, 0, 0);
-    wrefresh(BoxWindow);
+    box(boxWindow, 0, 0);
+    wrefresh(boxWindow);
 
     GameInstance* instance = GameInstance::get();
 
@@ -78,10 +88,12 @@ void IOController::_BeginPlay() {
 void IOController::HandleInput() {
     static auto lastValidInput = std::chrono::steady_clock::now();
 
+    WINDOW* displayWindow = static_cast<WINDOW*>(this->DisplayWindow);
+
     // Flush input buffer to ignore old frame inputs
     int _ch;
     int _lch;
-    while ((_ch = wgetch(DisplayWindow)) != ERR) {
+    while ((_ch = wgetch(displayWindow)) != ERR) {
         _lch = _ch;
     }
 
@@ -151,7 +163,9 @@ void IOController::Draw() {
 }
 
 void IOController::DrawLevel() {
-    werase(DisplayWindow);
+    WINDOW* displayWindow = static_cast<WINDOW*>(DisplayWindow);
+
+    werase(displayWindow);
     
     const GameInstance* Instance = GameInstance::get();
     const ActorPool& renderActors = Instance->GetWorld()->GetAllActors();
@@ -184,7 +198,7 @@ void IOController::DrawLevel() {
                 textureRowStr += actor->Texture;
             }
 
-            mvwaddstr(DisplayWindow, 
+            mvwaddstr(displayWindow, 
                 static_cast<int>(screenVector.x + r), 
                 static_cast<int>(screenVector.y), 
                 textureRowStr.c_str()
@@ -195,8 +209,8 @@ void IOController::DrawLevel() {
 
     }
 
-    touchwin(DisplayWindow);
-    wnoutrefresh(DisplayWindow);
+    touchwin(displayWindow);
+    wnoutrefresh(displayWindow);
 }
 
 void IOController::DrawHUD() {
@@ -204,11 +218,13 @@ void IOController::DrawHUD() {
 
     // iterate through each widget
     for (auto& [UID, map] : WidgetMaps) {
-        werase(map->window);
+        WINDOW* hudWindow = static_cast<WINDOW*>(map->window);
+
+        werase(hudWindow);
 
         if (!map->widget->isVisible()) { continue; }
     
-        box(map->window, 0, 0);
+        box(hudWindow, 0, 0);
         
         // iterate through each ui element on the widget
         for (auto [name, elem] : map->widget->GetAllElements()) {
@@ -219,7 +235,7 @@ void IOController::DrawHUD() {
             if (t == "TextElement"s) {
                 const TextElement* e = dynamic_cast<const TextElement*>(elem);
                 const Vector2 pos = e->GetScreenPosition() + Vector2(1.f,1.f);
-                mvwprintw(map->window,
+                mvwprintw(hudWindow,
                     static_cast<int>(pos.y),
                     static_cast<int>(pos.x),
                     e->field.c_str()
@@ -227,8 +243,8 @@ void IOController::DrawHUD() {
             }
             
         }
-        touchwin(map->window);
-        wnoutrefresh(map->window);
+        touchwin(hudWindow);
+        wnoutrefresh(hudWindow);
     }
 
 }
@@ -276,7 +292,9 @@ void IOController::RegisterInputBinding(std::initializer_list<InputBinding> bind
     for (InputBinding binding : bindings) { RegisterInputBinding(binding); }
 }
 void IOController::UnregisterBindingFrom(BindingMap& map, std::string deleteName) {
-    for (auto& [keycode, vec] : map) {
+
+    for (auto it = map.begin(); it != map.end(); ) {
+        auto& vec = it->second;
 
         vec.erase(
             std::remove_if(vec.begin(), vec.end(), [deleteName](const InputBinding& binding) {
@@ -286,12 +304,18 @@ void IOController::UnregisterBindingFrom(BindingMap& map, std::string deleteName
         );
 
         if (vec.empty()) {
-            map.erase(keycode);
+            it = map.erase(it);
+        } else {
+            ++it;
         }
+
     }
+
 }
 void IOController::UnregisterAllBindingsFrom(BindingMap& map, void* object) {
-    for (auto& [keycode, vec] : map) {
+
+    for (auto it = map.begin(); it != map.end(); ) {
+        auto& vec = it->second;
 
         vec.erase(
             std::remove_if(vec.begin(), vec.end(), [object](const InputBinding& binding) {
@@ -302,8 +326,11 @@ void IOController::UnregisterAllBindingsFrom(BindingMap& map, void* object) {
         );
 
         if (vec.empty()) {
-            map.erase(keycode);
+            it = map.erase(it);
+        } else {
+            ++it;
         }
+
     }
 
 }
@@ -328,11 +355,12 @@ void IOController::UnregisterAllInputBindings(void* object) {
 
 void IOController::RegisterWidget(Widget* widget) {
     if (DisplayWindow == nullptr) { return; }
+    WINDOW* displayWindow = static_cast<WINDOW*>(DisplayWindow);
 
     const Vector2 widgetSize = widget->GetScreenSize();
     const Vector2 widgetPos = widget->GetScreenPosition();
 
-    WINDOW* win = derwin(DisplayWindow, 
+    WINDOW* win = derwin(displayWindow, 
         static_cast<int>(widgetSize.y), 
         static_cast<int>(widgetSize.x), 
         static_cast<int>(widgetPos.y), 
@@ -347,7 +375,7 @@ void IOController::RemoveWidget(std::string UID) {
     for (auto it = WidgetMaps.begin(); it != WidgetMaps.end(); ) {
         if (it->second->window == nullptr) { continue; } // can happen if IOController resolve is called before UIController resolve
         if (it->second->widget->GetUID() == UID) {
-            delwin(it->second->window);
+            delwin(static_cast<WINDOW*>(it->second->window));
             it->second->window = nullptr;
 
             delete it->second;
@@ -361,19 +389,22 @@ void IOController::RemoveWidget(std::string UID) {
 #pragma endregion
 
 void IOController::Resolve() noexcept {
+    WINDOW* displayWindow = static_cast<WINDOW*>(DisplayWindow);
+    WINDOW* boxWindow = static_cast<WINDOW*>(BoxWindow);
+
     LOG_DEFAULT(LogType::VITAL, "Resolving IOController");
 
     for (auto& [UID, map] : WidgetMaps) {
-        delwin(map->window);
+        delwin(static_cast<WINDOW*>(map->window));
         map->window = nullptr;
         delete map;
     }
 
-    delwin(BoxWindow);
+    delwin(boxWindow);
 
-    wrefresh(DisplayWindow);
-    wgetch(DisplayWindow);
-    delwin(DisplayWindow);
+    wrefresh(displayWindow);
+    wgetch(displayWindow);
+    delwin(displayWindow);
     curs_set(1);
     endwin();
 }
