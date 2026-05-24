@@ -192,7 +192,7 @@ void IOController::DrawLevel() {
 
         for (int r = 0; r < actorSize.y; ++r) {
             std::string textureRowStr = "";
-            textureRowStr.reserve(actorSize.x);
+            textureRowStr.reserve(static_cast<const unsigned int>(actorSize.x));
 
             for (int c = 0; c < actorSize.x; ++c) {
                 textureRowStr += actor->Texture;

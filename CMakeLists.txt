@@ -4,8 +4,6 @@ project(PotatoEngine CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_CXX_FLAGS "-g -O8")
-
 find_Package(Curses REQUIRED)
 
 if (Curses_FOUND AND NOT TARGET Curses::Curses)
@@ -30,7 +28,7 @@ file (GLOB_RECURSE THIRDPARTY_SOURCES
 add_library(PotatoEngine STATIC ${ENGINE_SOURCES} ${THIRDPARTY_SOURCES})
 
 if (MSVC)
-    target_compile_options(PotatoEngine PRIVATE /W4 /utf-8)
+    target_compile_options(PotatoEngine PRIVATE /W4 /utf-8 /EHsc)
 else()
     target_compile_options(PotatoEngine PRIVATE -Wall -Wpedantic)
 endif()
@@ -53,7 +51,7 @@ if (GAME_SOURCES)
     add_executable(Program ${GAME_SOURCES})
 
     if (MSVC)
-        target_compile_options(Program PRIVATE /W4 /utf-8)
+        target_compile_options(Program PRIVATE /W4 /utf-8 /EHsc)
     else()
         target_compile_options(Program PRIVATE -Wall -Wpedantic)
     endif()
