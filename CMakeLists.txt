@@ -10,8 +10,8 @@ find_Package(Curses REQUIRED)
 if (Curses_FOUND AND NOT TARGET Curses::Curses)
     add_library(Curses::Curses INTERFACE IMPORTED)
     set_target_properties(Curses::Curses PROPERTIES
-        INTERFACE_LINK_LIBRARIES "${CURSES_LIBRARIES}"
-        INTERFACE_INCLUDE_DIRECTORIES "${CURSES_INCLUDE_DIRS}"
+        INTERFACE_LINK_LIBRARIES "${CURSES_LIBRARY}"
+        INTERFACE_INCLUDE_DIRECTORIES "${CURSES_INCLUDE_PATH}"
     )
 endif()
 
@@ -34,17 +34,26 @@ else()
     target_compile_options(PotatoEngine PRIVATE -Wall -Wpedantic)
 endif()
 
+set(VIRTUAL_SDK_DIR "${CMAKE_CURRENT_BINARY_DIR}/VirtualSDK/PotatoEngine")
+
+add_custom_command(TARGET PotatoEngine PRE_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_CURRENT_SOURCE_DIR}/Source/Internal/Public
+            ${VIRTUAL_SDK_DIR}
+)
+
 target_include_directories(PotatoEngine PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Source/Internal/Public>
-    $<INSTALL_INTERFACE:include/PotatoEngine>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/VirtualSDK>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Source/ThirdParty>
-    $<INSTALL_INTERFACE:include/PotatoEngine/ThirdParty> 
+    $<INSTALL_INTERFACE:include> 
 )
 target_include_directories(PotatoEngine PRIVATE
     Source/Internal/Private
 )
 
 target_link_libraries(PotatoEngine PRIVATE Curses::Curses)
+add_library(PotatoEngine::PotatoEngine ALIAS PotatoEngine)
 
 file(GLOB_RECURSE GAME_SOURCES "Source/Program/*.cpp")
 
@@ -79,6 +88,7 @@ include(GNUInstallDirs)
 install(TARGETS PotatoEngine
     EXPORT PotatoEngineTargets
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 install(DIRECTORY Source/Internal/Public/
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/PotatoEngine
