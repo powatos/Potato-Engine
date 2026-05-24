@@ -37,7 +37,10 @@ jobs:
         if [ "${{ matrix.os }}" = "windows-latest" ]; then
           cmake -B build -DCMAKE_BUILD_TYPE=Debug \
             -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" \
-            -DCMAKE_PREFIX_PATH="C:/vcpkg/installed/x64-windows"
+            -DCMAKE_PREFIX_PATH="C:/vcpkg/installed/x64-windows" \
+            -DCURSES_NEED_NCURSES=TRUE \
+            -DCURSES_LIBRARY="C:/vcpkg/installed/x64-windows/lib/pdcurses.lib" \
+            -DCURSES_INCLUDE_PATH="C:/vcpkg/installed/x64-windows/include"
         else
           cmake -B build -DCMAKE_BUILD_TYPE=Debug
         fi
