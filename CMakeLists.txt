@@ -28,7 +28,7 @@ file (GLOB_RECURSE THIRDPARTY_SOURCES
 add_library(PotatoEngine STATIC ${ENGINE_SOURCES} ${THIRDPARTY_SOURCES})
 
 if (MSVC)
-    target_compile_options(PotatoEngine PRIVATE /W4)
+    target_compile_options(PotatoEngine PRIVATE /W4 /utf-8)
 else()
     target_compile_options(PotatoEngine PRIVATE -Wall -Wpedantic)
 endif()
@@ -51,7 +51,7 @@ if (GAME_SOURCES)
     add_executable(Program ${GAME_SOURCES})
 
     if (MSVC)
-        target_compile_options(Program PRIVATE /W4)
+        target_compile_options(Program PRIVATE /W4 /utf-8)
     else()
         target_compile_options(Program PRIVATE -Wall -Wpedantic)
     endif()

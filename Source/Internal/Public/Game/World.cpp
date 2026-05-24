@@ -5,8 +5,6 @@
 #include "Util/GameplayHelper.hpp"
 #include "Game/Actors/Block.hpp"
 
-#include "fmt/core.h"
-
 #include "World.hpp"
 
 World::World() {

@@ -1,5 +1,7 @@
 /** @file PlayerController.cpp */
 
+#include <algorithm>
+
 #include "Game/Actors/Player.hpp"
 #include "Game/Actors/Camera.hpp"
 #include "Core/PotatoEngine.hpp"
@@ -9,8 +11,6 @@
 #include "Core/Event/EventController.hpp"
 #include "Util/GameplayHelper.hpp"
 #include "Debug/Debug.hpp"
-
-#include "fmt/core.h"
 
 #include "PlayerController.hpp"
 

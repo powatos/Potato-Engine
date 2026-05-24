@@ -23,7 +23,12 @@ std::string Logger::getTimestampUTC() {
     // threadsafe (linux specific)
     std::time_t t = system_clock::to_time_t(now);
     std::tm tm{};
+
+#if defined(_WIN32) || defined(_WIN64)
+    gmtime_s(&tm, &t);
+#else
     gmtime_r(&t, &tm);
+#endif
 
     std::string timestamp = fmt::format("{:%H:%M:%S}.{:03}", tm, ms);
 

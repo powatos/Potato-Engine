@@ -6,7 +6,7 @@
 #include "Core/Event/Tickable.hpp"
 #include "Game/UI/UIElement.hpp"
 
-class WidgetElement;
+struct WidgetElement;
 
 /**
  * @brief UI element that can be displayed on screen

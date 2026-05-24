@@ -1,6 +1,11 @@
 /** @file IOController.cpp */
 
-#include <ncurses.h>
+#if defined(_WIN32) || defined(_WIN64)
+    #include <curses.h>
+#else
+    #include <ncurses.h>
+#endif
+
 #include <signal.h>
 #include <string>
 #include <chrono>
@@ -17,7 +22,6 @@
 #include "Game/UI/Widgets/TextElement.hpp"
 #include "UIController.hpp"
 
-#include "fmt/core.h"
 #include "IOController.hpp"
 
 static constexpr char toggleCase(char c);

@@ -6,7 +6,6 @@
 #include "Debug/Debug.hpp"
 #include "Game/World.hpp"
 
-#include "fmt/core.h"
 #include "nlohmann/json.hpp"
 #include "PersistentLevel.hpp"
 
@@ -180,7 +179,7 @@ static std::filesystem::path getDataDir() {
     // windows: C:\Users\{User}\AppData\Roaming\PotatoEngine\Data
     const char* appData = std::getenv("APPDATA");
     if (appData) {
-        saveDir = std::filesystem::path(appData) / "PotatoEngine" / "Data";
+        dataDir = std::filesystem::path(appData) / "PotatoEngine" / "Data";
     } else {
         LOG_DEFAULT(LogType::ERROR, "APPDATA environment variable not found while parsing data");
     }
