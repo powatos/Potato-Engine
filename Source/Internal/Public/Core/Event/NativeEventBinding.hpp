@@ -1,6 +1,8 @@
 /** @file InputBinding.hpp */
 #pragma once
 
+#include <string>
+
 #include "Core/Event/EventDelegate.hpp"
 
 /**

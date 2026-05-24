@@ -2,7 +2,6 @@
 
 #include <chrono>
 #include <thread>
-#include <immintrin.h>
 
 #include "Debug/Debug.hpp"
 #include "Game/Control/GameInstance.hpp"
