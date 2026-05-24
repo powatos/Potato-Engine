@@ -21,6 +21,8 @@ Generative AI was used for the following purposes. All other code/logic authored
 
 * Code automation (ex. [input enum values](Input_8hpp_source.html)) TODO: fix link
 * Documentation *setup* (doxygen)
+* CMake setup
+* vcpkg deployment
 * Project deployment (ex. Github Pages, Github Actions)
 * Scripting for workflow/environment automation
 * Timing game loop

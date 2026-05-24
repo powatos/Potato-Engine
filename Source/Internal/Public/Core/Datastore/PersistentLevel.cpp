@@ -17,7 +17,10 @@ static std::filesystem::path getDataDir();
 
 PersistentLevel::PersistentLevel(const std::string& saveFileName) {
     
-    saveFileAbsPath = getDataDir() / "Saves" / saveFileName; 
+    std::filesystem::path saveDir = getDataDir() / "Saves";
+    std::filesystem::create_directories(saveDir);
+
+    saveFileAbsPath = saveDir / saveFileName;
 
 }   
 

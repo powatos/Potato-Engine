@@ -46,13 +46,10 @@
 
 # Local Data
 *.env
-Binaries
+build/
 
 # Log Files
 *.log
 
 # docs
 docs/
-
-
-!libPotatoEngine.a

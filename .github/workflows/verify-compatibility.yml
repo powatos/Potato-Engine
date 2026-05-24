@@ -1,0 +1,44 @@
+name: Cross-Platform Build Verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Test on ${{ matrix.os }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install ncurses (linux)
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt-get update && sudo apt-get install -y libncurses5-dev libncursesw5-dev
+
+    - name: Install ncurses (macOS)
+      if: matrix.os == 'macos-latest'
+      run: brew install ncurses
+
+    - name: Install PDCurses (Windows)
+      if: matrix.os == 'windows-latest'
+      run: vcpkg install pdcurses:x64-windows
+
+    # cmake
+    - name: Configure CMake
+      shell: bash
+      run: |
+        if [ "${{ matrix.os }}" = "windows-latest" ]; then
+          cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        else
+          cmake -B build -DCMAKE_BUILD_TYPE=Debug
+        fi
+  
+    - name: Build Engine
+      run: cmake --build build

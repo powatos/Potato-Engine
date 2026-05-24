@@ -1,26 +1,33 @@
 #!/bin/bash
 
-LIB_TARGET=libPotatoEngine.a
 GAME_TARGET=Program
 
-OBJDIR=Binaries/
+OBJDIR=build/
 LOGDIR=logs/debug.log
 
+SCRIPT=$(basename "$0")
+
 case "$1" in
+    "rebuild"|"rb")
+        rm -rf $OBJDIR
+        cmake -B $OBJDIR -DCMAKE_BUILD_TYPE=Debug
+        echo "Rebuild complete"
+        ./$SCRIPT build
+        ;;
     "build"|"b")
-        make
+        cmake --build $OBJDIR
         echo "Build complete"
         ;;
     "run"|"r")
-        if  [[ -f $GAME_TARGET ]]; then
-            ./$GAME_TARGET
+        if  [[ -f $OBJDIR/$GAME_TARGET ]]; then
+            ./$OBJDIR/$GAME_TARGET
         else
             echo "Invalid game target"
             exit 1
         fi
         ;;
     "clean"|"-c")
-        rm -rf $OBJDIR $LIB_TARGET $GAME_TARGET
+        rm -rf $OBJDIR
         echo "Cleaned up binaries"
         ;;
     "flush"|"-f")
