@@ -4,7 +4,7 @@
 #include <fstream>
 #include <filesystem>
 
-struct Vector2;
+#include "Util/Vector2.hpp"
 
 /** 
  * @brief Level object that stores persistent save data

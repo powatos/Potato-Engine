@@ -46,7 +46,7 @@
 
 # Local Data
 *.env
-build/
+build*/
 
 # Log Files
 *.log
