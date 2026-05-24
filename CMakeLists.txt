@@ -27,7 +27,11 @@ file (GLOB_RECURSE THIRDPARTY_SOURCES
 
 add_library(PotatoEngine STATIC ${ENGINE_SOURCES} ${THIRDPARTY_SOURCES})
 
-target_compile_options(PotatoEngine PRIVATE -Wall -Wpedantic)
+if (MSVC)
+    target_compile_options(PotatoEngine PRIVATE /W4)
+else()
+    target_compile_options(PotatoEngine PRIVATE -Wall -Wpedantic)
+endif()
 
 target_include_directories(PotatoEngine PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Source/Internal/Public>
@@ -45,7 +49,12 @@ file(GLOB_RECURSE GAME_SOURCES "Source/Program/*.cpp")
 
 if (GAME_SOURCES)
     add_executable(Program ${GAME_SOURCES})
-    target_compile_options(Program PRIVATE -Wall -Wpedantic)
+
+    if (MSVC)
+        target_compile_options(Program PRIVATE /W4)
+    else()
+        target_compile_options(Program PRIVATE -Wall -Wpedantic)
+    endif()
 
     target_include_directories(Program PRIVATE
         Source/Internal/Public
