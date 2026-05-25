@@ -6,13 +6,13 @@ OBJDIR=build/
 LOGDIR=logs/debug.log
 
 SCRIPT=$(basename "$0")
+CBTYPE=${2:-Debug}
 
 case "$1" in
-    "rebuild"|"rb")
+    "conf")
         rm -rf $OBJDIR
-        cmake -B $OBJDIR -DCMAKE_BUILD_TYPE=Debug
+        cmake -B $OBJDIR -DCMAKE_BUILD_TYPE=$CBTYPE
         echo "Rebuild complete"
-        ./$SCRIPT build
         ;;
     "build"|"b")
         cmake --build $OBJDIR

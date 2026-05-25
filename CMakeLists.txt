@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.24)
 project(PotatoEngine CXX)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -29,22 +31,21 @@ file (GLOB_RECURSE THIRDPARTY_SOURCES
 add_library(PotatoEngine STATIC ${ENGINE_SOURCES} ${THIRDPARTY_SOURCES})
 
 if (MSVC)
-    target_compile_options(PotatoEngine PRIVATE /W4 /utf-8 /EHsc /D_CRT_SECURE_NO_WARNINGS)
+    target_compile_options(PotatoEngine PRIVATE
+        /W4 /utf-8 /EHsc /D_CRT_SECURE_NO_WARNINGS
+        $<$<CONFIG:DEBUG>:/Od>
+        $<$<CONFIG:RELEASE>:/O2>
+    )
 else()
-    target_compile_options(PotatoEngine PRIVATE -Wall -Wpedantic)
+    target_compile_options(PotatoEngine PRIVATE 
+        -Wall -Wpedantic
+        $<$<CONFIG:DEBUG>:-g -O0>
+        $<$<CONFIG:RELEASE>:-O3>
+    )
 endif()
-
-set(VIRTUAL_SDK_DIR "${CMAKE_CURRENT_BINARY_DIR}/VirtualSDK/PotatoEngine")
-
-add_custom_command(TARGET PotatoEngine PRE_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${CMAKE_CURRENT_SOURCE_DIR}/Source/Internal/Public
-            ${VIRTUAL_SDK_DIR}
-)
 
 target_include_directories(PotatoEngine PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Source/Internal/Public>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/VirtualSDK>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Source/ThirdParty>
     $<INSTALL_INTERFACE:include> 
 )
@@ -61,9 +62,17 @@ if (GAME_SOURCES)
     add_executable(Program ${GAME_SOURCES})
 
     if (MSVC)
-        target_compile_options(Program PRIVATE /W4 /utf-8 /EHsc /D_CRT_SECURE_NO_WARNINGS)
+        target_compile_options(Program PRIVATE
+            /W4 /utf-8 /EHsc /D_CRT_SECURE_NO_WARNINGS
+            $<$<CONFIG:DEBUG>:/Od>
+            $<$<CONFIG:RELEASE>:/O2>
+        )
     else()
-        target_compile_options(Program PRIVATE -Wall -Wpedantic)
+        target_compile_options(Program PRIVATE 
+            -Wall -Wpedantic
+            $<$<CONFIG:DEBUG>:-g -O0>
+            $<$<CONFIG:RELEASE>:-O3>
+        )
     endif()
 
     target_include_directories(Program PRIVATE
