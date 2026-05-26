@@ -11,16 +11,12 @@
 
 using json = nlohmann::json;
 
-static json safeGetJson(const std::filesystem::path& path);
-static std::filesystem::path getDataDir();
+static json safeGetJson(const path& path);
 
 PersistentLevel::PersistentLevel(const std::string& saveFileName) {
-    
-    std::filesystem::path saveDir = getDataDir() / "Saves";
-    std::filesystem::create_directories(saveDir);
 
-    saveFileAbsPath = saveDir / saveFileName;
-
+    saveFileAbsPath = DataManager::GetSaveDir() / saveFileName;
+    LOG_DEFAULT(LogType::INFO, "Persistent level initialized with save file: {}", saveFileAbsPath.string());
 }   
 
 bool PersistentLevel::LoadStaticActors() {
@@ -147,68 +143,47 @@ void PersistentLevel::WriteVector2Data( std::string key, const Vector2& value ) 
 
 #pragma endregion
 
-static json safeGetJson(const std::filesystem::path& path) {
+static json safeGetJson(const path& savePath) {
     json parsed;
 
-    if (!std::filesystem::exists(path)) {
-        LOG_DEFAULT(LogType::ERROR, "Save file not found at {}", path.string());
-        return parsed;
+    const bool bFileEmpty = std::filesystem::exists(savePath) && std::filesystem::file_size(savePath) == 0;
+    if (!std::filesystem::exists(savePath) || bFileEmpty) {
+        LOG_DEFAULT(LogType::WARNING, "Save file not found at {}. Copying from fallback", savePath.string());
+        
+        if (bFileEmpty) {
+            std::filesystem::remove(savePath);
+        }
+
+        std::ofstream outFile(savePath);
+        try {
+            parsed = json::parse(PersistentLevel::fallbackSaveString);
+            if (outFile.is_open()) {
+                outFile << parsed.dump(4);
+                outFile.close();
+            }
+            LOG_DEFAULT(LogType::INFO, "Fallback save file copied to {}", savePath.string());
+        } catch (const json::parse_error& e) {
+            LOG_DEFAULT(LogType::ERROR, "Failed to parse fallback save string: {}", e.what());
+        }
     }
 
-    std::ifstream file(path);
-
+    std::ifstream file(savePath);
     if (!file.is_open()) {
-        LOG_DEFAULT(LogType::ERROR, "Could not open save file at {}", path.string());
+        LOG_DEFAULT(LogType::ERROR, "Could not open save file at {}", savePath.string());
         return parsed;
     }
 
     try {
         parsed = json::parse(file);
     } catch (const json::parse_error& e) {
-        LOG_DEFAULT(LogType::ERROR, "Failed to parse save file at {}: {}", path.string(), e.what());   
+        LOG_DEFAULT(LogType::ERROR, "Failed to parse save file at {}: {}", savePath.string(), e.what());   
     }
 
     return parsed;
 
 }
 
-static std::filesystem::path getDataDir() {
-    static std::filesystem::path dataDir;
 
-#if defined(_WIN32)
-    // windows: C:\Users\{User}\AppData\Roaming\PotatoEngine\Data
-    const char* appData = std::getenv("APPDATA");
-    if (appData) {
-        dataDir = std::filesystem::path(appData) / "PotatoEngine" / "Data";
-    } else {
-        LOG_DEFAULT(LogType::ERROR, "APPDATA environment variable not found while parsing data");
-    }
-#elif defined(__APPLE__)
-    // macOS: /Users/{User}/Library/Application Support/PotatoEngine/Data
-    const char* home = std::getenv("HOME");
-    if (home) {
-        dataDir = std::filesystem::path(home) / "Library" / "Application Support" / "PotatoEngine" / "Data";
-    } else {    
-        LOG_DEFAULT(LogType::ERROR, "HOME environment variable not found while parsing data");
-    }
-#elif defined(__linux__)
-    // linux: /home/{User}/.local/share/PotatoEngine/Data
-    const char* xdgData = std::getenv("XDG_DATA_HOME");
-    if (xdgData) {
-        dataDir = std::filesystem::path(xdgData) / "PotatoEngine" / "Data";
-    } else {
-        const char* home = std::getenv("HOME");
-        if (home) {
-            dataDir = std::filesystem::path(home) / ".local" / "share" / "PotatoEngine" / "Data";
-        } else {
-            LOG_DEFAULT(LogType::ERROR, "HOME environment variable not found while parsing data");
-        }
-    }
-#endif
-    
-    std::filesystem::create_directories(dataDir);
-    return dataDir;
-}
 
 
 

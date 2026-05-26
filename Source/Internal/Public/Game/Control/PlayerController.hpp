@@ -21,7 +21,16 @@ public:
 
     char temp;
 
+    /** 
+     * @brief Initializes controller
+     * @details This method is called automatically and is intended for internal use only
+     */
     void Initialize();
+    /**
+     * @brief Assigns player to controller
+     * @details This method is called automatically and is intended for internal use only
+     * @param player Player to assign
+     */
     void AssignPlayer(Player* player);
 
     /** @brief Gets assigned Player @returns Player */
@@ -43,7 +52,7 @@ public:
      *         &PlayerController::DoJump)
      * );
      * @endcode
-     * @note Always call base method when overriding:
+     * @note Call base method when overriding to bind default player movement:
      * @code
      * void PlayerControllerClass::SetupInputBindings() {
      *     BasePlayerController::SetupInputBindings();

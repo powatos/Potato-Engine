@@ -11,13 +11,18 @@ struct InputBinding
 {
 // optimized declaration order 
 public:
+    /**
+     * @brief Identifier for binding
+     */
     std::string name;
 
 private:
     EventDelegate<> delegate;
 
 public:
+    /// @brief Keycode to bind to
     Keycode key;
+    /// @brief InputType to bind to
     InputType type;
 
     /**

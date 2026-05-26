@@ -1,7 +1,7 @@
 /** @file Actor.hpp */
 #pragma once
 
-#include "Core/Datastore/Archivable.hpp"
+#include "Core/Data/Archivable.hpp"
 #include "Core/Event/Tickable.hpp"
 #include "Util/Vector2.hpp"
 
@@ -71,6 +71,10 @@ public:
      */
     void DispatchBeginPlay();
 
+    /**
+     * @brief Single-char texture for actor
+     * @details The actor is displayed as a grid (based on its @ref GetSize() "size") of this character
+     */
     char Texture;
 protected:
 
@@ -79,7 +83,7 @@ protected:
      * @details Put all pre-gameplay functionality here
      * @note Always call base method when overriding:
      * @code
-     * void ActorClass::BeginPlay() {
+     * void ActorClass::BegainPlay() {
      *     BaseActor::BeginPlay();
      *     // ...
      * }

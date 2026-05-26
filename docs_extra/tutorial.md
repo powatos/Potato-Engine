@@ -1,6 +1,6 @@
 @page tutorial Tutorial
 
-# Example Tutorial
+# Tutorial: Lazer Assault
 This page showcases the engine with a tutorial for a simple lazer obstacle game.
 
 @remark This page is incomplete while the engine is in development. Come back soon!

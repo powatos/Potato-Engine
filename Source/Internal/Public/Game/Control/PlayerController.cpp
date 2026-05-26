@@ -35,23 +35,20 @@ void PlayerController::Initialize() {
 
 void PlayerController::Tick([[maybe_unused]] float dt) {
     Tickable::Tick(dt);
+    
+    { /// Camera follow logic
+        if (ActivePlayer == nullptr) { return; }
+        Vector2 newCamPos = ActivePlayer->GetPosition();
+        
+        newCamPos.x -= ActiveCamera->GetSize().x/2;
+        newCamPos.y = ActiveCamera->GetSize().y-1;
 
-    if (ActivePlayer == nullptr) { return; }
+        newCamPos.x = std::clamp(newCamPos.x, 0.f, 1000.f);
 
-    Vector2 newCamPos = ActivePlayer->GetPosition();
-
-    // camera x is median of player
-    // camera y fills screen (top)
-
-    newCamPos.x -= ActiveCamera->GetSize().x/2;
-    newCamPos.y = ActiveCamera->GetSize().y-1;
-
-    newCamPos.x = std::clamp(newCamPos.x, 0.f, 1000.f);
-
-    ActiveCamera->SetPosition(newCamPos);
-
+        ActiveCamera->SetPosition(newCamPos);
+    }
+    
     ActivePlayer->AddForce(playerMoveVec * TargetMovementVelocity);
-
 }
 
 void PlayerController::AssignPlayer(Player* player) {

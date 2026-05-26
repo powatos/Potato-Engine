@@ -20,7 +20,9 @@ struct Vector2
     /** @brief Constructs vector from copy @param vec Vector to copy */
     constexpr Vector2(const Vector2& vec) : x(vec.x), y(vec.y) {} 
 
+    /** @returns unit vector pointing up */
     inline static constexpr Vector2 Up() { return Vector2{0.f,1.f}; }
+    /** @returns unit vector pointing right */
     inline static constexpr Vector2 Right() { return Vector2{1.f,0.f}; }
 
     /** @returns addition of two vectors */

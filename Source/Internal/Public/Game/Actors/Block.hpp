@@ -3,8 +3,7 @@
 #include "Game/Actors/Actor.hpp"
 
 /**
- * @brief Solid block
- * @details Intended for internal testing purposes
+ * @brief Solid block actor
  */
 class Block : public Actor
 {

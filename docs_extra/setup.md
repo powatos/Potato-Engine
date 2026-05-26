@@ -10,7 +10,7 @@ TODO: includes
 
 @anchor game-setup
 ## Game Setup
-Prior to initializing the engine, game functionality may be designed. This includes game variables, constants, functions, or class instantiations.
+Prior to initializing the engine, game functionality may be defined. This includes game variables, constants, functions, or class instantiations.
 
 Only game functionality that is **independant** of engine functionality may be performed here.
 
@@ -53,7 +53,6 @@ engine.LoadSubobjects();
 <em>
 Initializes the engine object and returns a PotatoEngine&. It is stored in the <code>engine</code> object. <code>LoadSubobjects()</code> is called.
 </em>
-
 <br>
 
 > Ensure `PotatoEngine::Get()` is called before anything else (see @ref game-setup "Game Setup" for more info)
@@ -75,10 +74,10 @@ Gets the game instance and sets the FPS and repeat threshold values
 @anchor level-setup
 ## Level Setup
 Load the persistent level. Fetch dynamic actors (TODO) and load static actors into world using @ref PersistentLevel::LoadStaticActors "LoadStaticActors()".  
-A valid save file must be placed under `Saves/`.
+The save file passed in must be reoccuring (eg. `save1.json` and `save2.json` may be used interchangably for unique save states)
 
 ```cpp
-PersistentLevel level("mySave.json"); // "Saves/mySave.json" exists!
+PersistentLevel level("mySave.json");
 
 level.LoadStaticActors();
 ```
@@ -134,7 +133,6 @@ engine.Resolve();
 ```
 <em>
 Calls <code>BeginPlay()</code> and <code>Resolve()</code> sequentially
-
 <br>
 
 </em>

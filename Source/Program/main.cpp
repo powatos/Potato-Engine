@@ -2,7 +2,7 @@
 #include <memory>
 
 #include <Core/PotatoEngine.hpp>
-#include <Core/Datastore/PersistentLevel.hpp>
+#include <Core/Data/PersistentLevel.hpp>
 #include <Debug/Debug.hpp>
 #include <Core/Event/EventController.hpp>
 #include <Game/Control/GameInstance.hpp>
@@ -24,6 +24,7 @@ void o() {
 void c() {
     LOG_DEFAULT(LogType::INFO, "e ended");
 }
+// todo: update all docs
 
 int main()
 {
@@ -38,7 +39,7 @@ int main()
 
     /// LEVEL SETUP
     [[maybe_unused]] World* world = instance->GetWorld();
-    PersistentLevel level("save.json");
+    PersistentLevel level("save1.json");
     level.LoadStaticActors();
 
     /// PLAYER SETUP

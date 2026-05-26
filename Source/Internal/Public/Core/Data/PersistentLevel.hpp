@@ -2,8 +2,9 @@
 #pragma once
 
 #include <fstream>
-#include <filesystem>
+#include <string>
 
+#include "DataManager.hpp"
 #include "Util/Vector2.hpp"
 
 /** 
@@ -16,7 +17,7 @@ struct PersistentLevel
 {
     /**
      * @brief Construct level object
-     * @param saveFileName Name of save file (under `saves/`)
+     * @param saveFileName Name of save file
      */
     PersistentLevel(const std::string& saveFileName);
     ~PersistentLevel() = default;
@@ -45,20 +46,38 @@ struct PersistentLevel
     template <typename Type>
     void WriteData(std::string key, Type value);
 
+    /**
+     * @brief Default fallback save file format
+     * @details This string is used as a placeholder whent the save file is 
+     * not found or empty
+     */
+    inline static const std::string fallbackSaveString = R"(
+    {
+        "StaticActors" : {
+            
+        },
+        "DynamicActors" : {
+
+        },
+        "Data" : {
+            
+        }
+    }   
+    )";
+
 private:
     int GetIntData( std::string key ) const;
     float GetFloatData( std::string key ) const;
     std::string GetStringData( std::string key ) const;
     Vector2 GetVector2Data( std::string key ) const;
 
-
     void WriteIntData( std::string key, int value );
     void WriteFloatData( std::string key, float value );
     void WriteStringData( std::string key, std::string value );
     void WriteVector2Data( std::string key, const Vector2& value );
 
-private:
-    std::filesystem::path saveFileAbsPath;
+    path saveFileAbsPath;
+
 };
 
 

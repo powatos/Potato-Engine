@@ -101,7 +101,7 @@ bool Logger::operator ()(LogType type, const std::string& message, Args... args)
     std::string colorMod = LogColorMap.at(type);
     
     LogFile << timestamp << " - ";
-    LogFile << colorMod << LogNameMap.at(type) << "\x1b[0m";
+    LogFile << colorMod << LogNameMap.at(type) << '\t' << "\x1b[0m";
     LogFile << " | ";
     LogFile << colorMod << fmt::format(message, std::forward<Args>(args)...) << "\x1b[0m" << std::endl;
 
