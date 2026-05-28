@@ -2,6 +2,8 @@
 
 #include "Game/World.hpp"
 #include "Debug/Debug.hpp"
+#include "Core/Control/Gamemode.hpp"
+#include "Game/Actors/Player.hpp"
 
 #include "GameInstance.hpp"
 
@@ -21,19 +23,43 @@ GameInstance::GameInstance() {
 
     world = new World();
 
-    if (__DEFAULT_INSTANTIATORS::get_PlayerController() == nullptr) {
-        LOG_DEFAULT(LogType::ERROR, "No PlayerController default instantiator on GameInstance");
+    InstantiateSubobjects();
+}
+
+void GameInstance::InstantiateSubobjects() {
+
+    // User-defined Instantiaters
+    auto c_pc = __DEFAULT_INSTANTIATORS::_PlayerController();
+    auto c_p = __DEFAULT_INSTANTIATORS::_Player();
+    auto c_gm = __DEFAULT_INSTANTIATORS::_Gamemode();
+    
+    // PlayerController
+    if (c_pc == nullptr) {
+        LOG_DEFAULT(LogType::WARNING, "No PlayerController default instantiator on GameInstance. Fallback to engine default.");
+        ActivePlayerController = new PlayerController();
     } else { 
-        ActivePlayerController = __DEFAULT_INSTANTIATORS::get_PlayerController()();
+        ActivePlayerController = c_pc();
     }
 
-    if (__DEFAULT_INSTANTIATORS::get_Player() == nullptr) {
-        LOG_DEFAULT(LogType::ERROR, "No Player default instantiator on GameInstance");
+    // Player
+    Player* player;
+    if (c_p == nullptr) {
+        LOG_DEFAULT(LogType::WARNING, "No Player default instantiator on GameInstance. Fallback to engine default.");
+        player = new Player();
     } else {
-        Player* p = __DEFAULT_INSTANTIATORS::get_Player()();
-        world->AddtoPool(p);
-        ActivePlayerController->AssignPlayer(p);
+        player = c_p();
     }
+    world->AddtoPool(player);
+    ActivePlayerController->AssignPlayer(player);
+
+    // Gamemode
+    if (c_gm == nullptr) {
+        LOG_DEFAULT(LogType::WARNING, "No Gamemode default instantiator on GameInstance. Fallback to engine default.");
+        ActiveGamemode = new Gamemode();
+    } else {
+        ActiveGamemode = c_gm();
+    }
+
 }
 
 void GameInstance::RequestShutdown() {

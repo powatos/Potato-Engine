@@ -26,7 +26,7 @@ class Gamemode;
 #define SET_DEFAULT_SUBCLASS(def, set) \
 static struct __##set##_DEFAULT_SUBCLASS_REGISTER { \
     __##set##_DEFAULT_SUBCLASS_REGISTER() { \
-        __DEFAULT_INSTANTIATORS::get_##def() = []() -> def* { return new set(); }; \
+        __DEFAULT_INSTANTIATORS::_##def() = []() -> def* { return new set(); }; \
     } \
 } __##set##_DEFAULT_SUBCLASS_REGISTER_i;
 
@@ -100,15 +100,15 @@ private:
 };
 
 namespace __DEFAULT_INSTANTIATORS {
-    inline std::function<Player*()>& get_Player() {
+    inline std::function<Player*()>& _Player() {
         static std::function<Player*()> f;
         return f;
     }
-    inline std::function<PlayerController*()>& get_PlayerController() {
+    inline std::function<PlayerController*()>& _PlayerController() {
         static std::function<PlayerController*()> f;
         return f;
     }
-    inline std::function<Gamemode*()>& get_Gamemode() {
+    inline std::function<Gamemode*()>& _Gamemode() {
         static std::function<Gamemode*()> f;
         return f;
     }
