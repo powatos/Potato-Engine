@@ -1,7 +1,7 @@
 /** @file UIController.cpp */
 
 #include "Debug/Debug.hpp"
-#include "Game/UI/Widgets/Widget.hpp"
+#include "UI/Widgets/Widget.hpp"
 #include "IOController.hpp"
 
 #include "UIController.hpp"

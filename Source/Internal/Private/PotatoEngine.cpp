@@ -6,7 +6,7 @@
 #include "Core/Event/EventController.hpp"
 #include "Systems/IOController.hpp"
 #include "Systems/UIController.hpp"
-#include "Game/UI/HUDController.hpp"
+#include "UI/HUDController.hpp"
 #include "Game/World.hpp"
 
 #include "Core/PotatoEngine.hpp"

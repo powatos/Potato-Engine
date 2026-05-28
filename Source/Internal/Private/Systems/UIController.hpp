@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "Game/UI/HUDController.hpp"
+#include "UI/HUDController.hpp"
 #include "Core/EngineSubsystem.hpp"
 
 /**

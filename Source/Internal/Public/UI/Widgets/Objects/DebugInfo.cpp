@@ -1,7 +1,7 @@
 /** @file DebugInfo.cpp */
 
 #include "Game/Control/GameInstance.hpp"
-#include "Game/UI/Widgets/TextElement.hpp"
+#include "UI/Widgets/TextElement.hpp"
 
 #include "DebugInfo.hpp"
 

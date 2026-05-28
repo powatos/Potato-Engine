@@ -18,8 +18,8 @@
 #include "Game/Control/PlayerController.hpp"
 #include "Game/Actors/Player.hpp"
 #include "Game/Actors/Camera.hpp"
-#include "Game/UI/Widgets/Widget.hpp"
-#include "Game/UI/Widgets/TextElement.hpp"
+#include "UI/Widgets/Widget.hpp"
+#include "UI/Widgets/TextElement.hpp"
 #include "UIController.hpp"
 
 #include "IOController.hpp"

@@ -1,7 +1,7 @@
 /** @file WidgetElement.hpp */
 #pragma once
 
-#include "Game/UI/UIElement.hpp"
+#include "UI/UIElement.hpp"
 #include "Core/Event/Tickable.hpp"
 
 /**

@@ -1,7 +1,7 @@
 /** @file DebugInfo.hpp */
 #pragma once
 
-#include "Game/UI/Widgets/Widget.hpp"
+#include "UI/Widgets/Widget.hpp"
 
 struct Vector2;
 

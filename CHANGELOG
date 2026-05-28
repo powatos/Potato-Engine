@@ -1,0 +1,9 @@
+CHANGELOG:
+made changelog file (nodoc)
+refactored UI objects to Public directory for easier categorical management
+
+TODO:
+figure out default instantiator overriding
+"level bp" class
+todo: use singleton template class for singletons
+put UI into public dir

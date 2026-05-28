@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "Core/Event/Tickable.hpp"
-#include "Game/UI/UIElement.hpp"
+#include "UI/UIElement.hpp"
 
 struct WidgetElement;
 
