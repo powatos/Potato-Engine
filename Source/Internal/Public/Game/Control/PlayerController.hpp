@@ -19,8 +19,6 @@ public:
     PlayerController();
     virtual ~PlayerController();
 
-    char temp;
-
     /** 
      * @brief Initializes controller
      * @details This method is called automatically and is intended for internal use only

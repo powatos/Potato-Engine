@@ -83,7 +83,7 @@ protected:
      * @details Put all pre-gameplay functionality here
      * @note Always call base method when overriding:
      * @code
-     * void ActorClass::BegainPlay() {
+     * void ActorClass::BeginPlay() {
      *     BaseActor::BeginPlay();
      *     // ...
      * }

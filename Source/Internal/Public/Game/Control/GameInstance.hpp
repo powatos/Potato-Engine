@@ -9,6 +9,7 @@
 
 class Player;
 class World;
+class Gamemode;
 
 /**
  * @def SET_DEFAULT_SUBCLASS(def, set)
@@ -16,10 +17,11 @@ class World;
  * @brief Registers classes as the default subobject for its class
  * @details Default subobjects are managed by the engine, but custom overrides can be made
  * by inheriting from the base.
+ * @param def Base class to set default for
+ * @param set User-defined class to set as default
  * @remark Call this macro at the top of the source file to set as default
- * @warning Trying to set multiple classes as the default for a subclass is undefined behaviour,
- * as the macro utilizes static struct instantiation which is prone to the [static initialization
- * order fiasco](https://en.cppreference.com/cpp/language/siof)
+ * @warning Trying to set multiple classes as the default for a subclass is undefined behaviour (see [static initialization
+ * order fiasco](https://en.cppreference.com/cpp/language/siof))
  */
 #define SET_DEFAULT_SUBCLASS(def, set) \
 static struct __##set##_DEFAULT_SUBCLASS_REGISTER { \
@@ -89,7 +91,11 @@ private:
 private:
 
     PlayerController* ActivePlayerController;
+    Gamemode* ActiveGamemode;
+
     World* world;
+
+    void InstantiateSubobjects();
 
 };
 
@@ -100,6 +106,10 @@ namespace __DEFAULT_INSTANTIATORS {
     }
     inline std::function<PlayerController*()>& get_PlayerController() {
         static std::function<PlayerController*()> f;
+        return f;
+    }
+    inline std::function<Gamemode*()>& get_Gamemode() {
+        static std::function<Gamemode*()> f;
         return f;
     }
 }

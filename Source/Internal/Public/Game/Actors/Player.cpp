@@ -8,8 +8,6 @@
 
 #include "Player.hpp"
 
-SET_DEFAULT_SUBCLASS(Player, Player)
-
 Player::Player() {
     Texture = 'P';
     SetSize(Vector2(2,2));
@@ -26,8 +24,6 @@ void Player::BeginPlay() {
 
 void Player::Tick([[maybe_unused]] float dt) {
     Entity::Tick(dt);
-
-    // Texture = ((Texture - '0') + 1) % 10 + '0';
 
 }
 

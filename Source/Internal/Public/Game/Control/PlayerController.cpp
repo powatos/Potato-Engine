@@ -14,10 +14,7 @@
 
 #include "PlayerController.hpp"
 
-SET_DEFAULT_SUBCLASS(PlayerController, PlayerController)
-
 PlayerController::PlayerController() {
-    temp = 'u';
 }
 
 void PlayerController::Initialize() {

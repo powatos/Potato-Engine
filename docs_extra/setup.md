@@ -2,13 +2,14 @@
 
 # Engine Setup
 
-This page covers setup of the engine prior to making the game
+This page covers setup of the engine prior to making the game.
+
+**Note: code examples omit header includes for visibility. See [Header Includes](#header-includes) for more information**
 
 @remark The engine is still under development and this page is subject to change.
 
 TODO: includes
 
-@anchor game-setup
 ## Game Setup
 Prior to initializing the engine, game functionality may be defined. This includes game variables, constants, functions, or class instantiations.
 
@@ -42,7 +43,17 @@ int main() {
 A welcome message function, as well as game constants are defined prior to initializing the engine
 </em>
 
-@anchor initalizing-the-engine
+## Header Includes
+Potato Engine uses modular class linking. All engine classes must be included to the active code file:
+```cpp
+#include <Core/PotatoEngine>
+#include <Game/World.hpp>
+#include <Debug/Debug.hpp>
+// ...
+```
+For all engine classes, the exact header path can be found at the top of the class page.
+
+
 ## Initializing the engine
 The global engine object must be initialized using @ref PotatoEngine::Get "Get()", prior to any engine operations. Engine subobjects must also be loaded using @ref PotatoEngine::LoadSubobjects "LoadSubobjects()".
 
@@ -55,9 +66,8 @@ Initializes the engine object and returns a PotatoEngine&. It is stored in the <
 </em>
 <br>
 
-> Ensure `PotatoEngine::Get()` is called before anything else (see @ref game-setup "Game Setup" for more info)
+> Ensure `PotatoEngine::Get()` is called before anything else (see [Game Setup](#game-setup) for more info)
 
-@anchor instance-setup
 ## Instance Settings
 Setup engine constants and settings using `GameInstance`.
 
@@ -71,7 +81,6 @@ instance->MS_REPEAT_THRESHOLD = 195;
 Gets the game instance and sets the FPS and repeat threshold values
 </em>
 
-@anchor level-setup
 ## Level Setup
 Load the persistent level. Fetch dynamic actors (TODO) and load static actors into world using @ref PersistentLevel::LoadStaticActors "LoadStaticActors()".  
 The save file passed in must be reoccuring (eg. `save1.json` and `save2.json` may be used interchangably for unique save states)
@@ -101,7 +110,6 @@ InventoryWidget* inventoryDisplay = HUDController->AddWidget<InventoryWidget>("i
 Adds health bar, minimap, and inventory widgets to the HUD. Note that these are placeholder classes not implemented by the engine.
 </em>
 
-@anchor other-game-setup
 ## Other Game Setup
 Other game settings that involve engine functionality may be performed here. This includes player setup or player controller settings.
 
@@ -118,7 +126,6 @@ player->SetVisibility(false);
 Sets the player texture to 'P' and hides the actor (prior to game start).
 </em>
 
-@anchor game-loop
 ## Game Loop
 Start the main game loop using @ref PotatoEngine::BeginPlay "BeginPlay()" and handle loop exit using @ref PotatoEngine::Resolve "Resolve()".
 
@@ -139,7 +146,6 @@ Calls <code>BeginPlay()</code> and <code>Resolve()</code> sequentially
 
 > Ensure `Resolve()` is called prior to post-game functionality. This is vital to ensure proper memory cleanup for engine internals.
 
-@anchor exit
 ## Exit
 Complete post-game operations and exit program.
 
@@ -166,7 +172,6 @@ int main() {
 After resolving engine, a goodbye message is displayed and the program returns
 </em>
 
-@anchor example
 # Example
 This is a full example of a prototype game main function
 ```cpp

@@ -1,9 +1,20 @@
-CHANGELOG:
-made changelog file (nodoc)
-refactored UI objects to Public directory for easier categorical management
+Version v1.1-pre
 
-TODO:
-figure out default instantiator overriding
-"level bp" class
-todo: use singleton template class for singletons
-put UI into public dir
+CHANGELOG:  
+made changelog file (nodoc)  
+refactored UI objects to Public directory for easier categorical management  
+made gamemode class  
+subclass now automatically defaults to engine default if no instantiator is defined
+
+PATCHLOG:
+fixed an issue where collision restitution was being calculated incorrectly
+
+TODO:  
+todo: use singleton template class for singletons  
+
+---
+Update changelog for every change made to engine  
+Use this to create release notes on every release  
+Update version on every release  
+Reset changelog ON every release commit (last change before release never appears on remote)  
+Todo is temporary  

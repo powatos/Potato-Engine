@@ -24,7 +24,6 @@ void o() {
 void c() {
     LOG_DEFAULT(LogType::INFO, "e ended");
 }
-// todo: update all docs
 
 int main()
 {
