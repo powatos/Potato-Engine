@@ -31,7 +31,7 @@ public:
         bool doGravity = true; ///< Whether gravity should be applied to actors in world
         float clipDampeningFactor = 1.f; ///< Dampening factor for clipping collisions (1 = no dampening, 0 = full clip)
         float clipAllowed = 0.f; ///< Allowed penetration for clipping collisions in game units (0 = no penetration
-        float bounceThreshold = 4.f; ///< Minimum normal velocity for bounce to occur in collisions
+        float bounceThreshold = 6.f; ///< Minimum normal velocity for bounce to occur in collisions
     };
 
     /**

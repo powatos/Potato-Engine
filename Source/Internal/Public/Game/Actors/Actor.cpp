@@ -20,6 +20,7 @@ Actor::Actor() {
     Rotation = 0.f;
     Visible = true;
 
+    Bounciness = 0.f;
     Mass = 10.f;
     SimulatePhysics = true;
     Movability = ActorMovability::Movable;

@@ -45,10 +45,9 @@ int main()
     /// PLAYER SETUP
     PlayerController* playerController = instance->GetPlayerController();
     Player* player = playerController->GetPlayer();
-    player->SetPosition(Vector2(0, 1.5));
+    player->SetPosition(Vector2(3, 3));
 
-    player->Texture = '0';
-    player->AddImpulse(Vector2(-1, 0));
+    player->AddImpulse(Vector2(0, 10));
 
     /// UI SETUP
     [[maybe_unused]] IHUDController* HUDController = engine.GetHUDController();
