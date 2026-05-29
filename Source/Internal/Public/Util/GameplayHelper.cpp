@@ -23,7 +23,7 @@ bool GameplayHelper::IsPositionInCameraFrame(const Vector2& pos, Camera* camera)
 std::vector<Actor*> GameplayHelper::GetOverlappingActors(const Actor* actor) {
     std::vector<Actor*> result{};
 
-    for (Actor* otherActor : GameInstance::get()->GetWorld()->GetAllActors()) {
+    for (Actor* otherActor : GameInstance::Get()->GetWorld()->GetAllActors()) {
         if (actor != otherActor && IsActorOverlapping(actor, otherActor)) {
             result.push_back(otherActor);
         }

@@ -38,7 +38,7 @@ if (MSVC)
     )
 else()
     target_compile_options(PotatoEngine PRIVATE 
-        -Wall -Wpedantic
+        -Wall -Wpedantic -Wno-unknown-pragmas
         $<$<CONFIG:DEBUG>:-g -O0>
         $<$<CONFIG:RELEASE>:-O3>
     )
@@ -69,7 +69,7 @@ if (GAME_SOURCES)
         )
     else()
         target_compile_options(Program PRIVATE 
-            -Wall -Wpedantic
+            -Wall -Wpedantic -Wno-unknown-pragmas
             $<$<CONFIG:DEBUG>:-g -O0>
             $<$<CONFIG:RELEASE>:-O3>
         )
@@ -85,11 +85,6 @@ if (GAME_SOURCES)
         Curses::Curses
     )
 
-    # add_custom_command(TARGET Program POST_BUILD
-    # COMMAND ${CMAKE_COMMAND} -E copy_directory
-    #         ${CMAKE_CURRENT_SOURCE_DIR}/Data/
-    #         $<TARGET_FILE_DIR:Program>/Data/
-    # )
     add_custom_command(TARGET Program POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:Program>/Data
     COMMAND ${CMAKE_COMMAND} -E copy_directory

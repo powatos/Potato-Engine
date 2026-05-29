@@ -4,21 +4,19 @@
 #include <unordered_map>
 #include <any>
 
-#include "Core/EngineSubsystem.hpp"
 #include "NativeEventBinding.hpp"
 #include "Debug/Debug.hpp"
+
+#include "Core/Singleton.hpp"
+#include "Core/EngineSubsystem.hpp"
 
 /**
  * @brief Class for event managing
  */
-class EventController : public IEngineSubsystem
+class EventController : public Singleton<EventController>, public IEngineSubsystem
 {
+    friend class Singleton<EventController>;
 public:
-/**
-     * @brief Gets singleton instance
-     * @returns instance
-     */
-    static EventController* get();
     virtual void Resolve() noexcept override;
 
     /**

@@ -7,13 +7,6 @@
 #include "UIController.hpp"
 
 
-[[maybe_unused]] UIController* UIController::get() {
-    // constructed on first call
-    static UIController instance;
-    
-    return &instance;
-}
-
 UIController::UIController() {
     LOG_DEFAULT(LogType::VITAL, "UIController constructed");
 
@@ -21,13 +14,13 @@ UIController::UIController() {
 
 void UIController::RegisterWidget(Widget* widget) {
 
-    IOController::get()->RegisterWidget(widget);
+    IOController::Get()->RegisterWidget(widget);
     ActiveWidgets.push_back(widget);
 
 }
 
 void UIController::RemoveWidget(std::string UID) {
-    IOController::get()->RemoveWidget(UID);
+    IOController::Get()->RemoveWidget(UID);
 
     Widget* w = GetWidget(UID);
     ActiveWidgets.erase(std::remove(ActiveWidgets.begin(), ActiveWidgets.end(), w), ActiveWidgets.end());

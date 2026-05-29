@@ -30,7 +30,7 @@ int main()
     /// ENGINE SETUP
     PotatoEngine& engine = PotatoEngine::Get();
     engine.LoadSubobjects();
-    GameInstance* instance = GameInstance::get();
+    GameInstance* instance = GameInstance::Get();
     
     // ideal 195
     instance->MS_REPEAT_THRESHOLD = 195;

@@ -4,6 +4,7 @@
 #include <functional>
 #include <type_traits>
 
+#include "Core/Singleton.hpp"
 #include "Game/Control/PlayerController.hpp"
 #include "Core/EngineSubsystem.hpp"
 
@@ -35,14 +36,10 @@ static struct __##set##_DEFAULT_SUBCLASS_REGISTER { \
  * @details Set global constants and get objects using the @ref get() "instance". \n Subclasses must be registered 
  * using @ref SET_DEFAULT_SUBCLASS(def, set) "SET_DEFAULT_SUBCLASS".
  */
-class GameInstance : public IEngineSubsystem
+class GameInstance : public Singleton<GameInstance>, public IEngineSubsystem
 {
+    friend class Singleton<GameInstance>;
 public:
-    /**
-     * @brief Gets singleton instance
-     * @returns instance
-     */
-    static GameInstance* get();
     virtual void Resolve() noexcept override;
 
     void LoadSubobjects();

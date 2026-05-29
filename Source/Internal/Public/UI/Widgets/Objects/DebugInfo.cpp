@@ -26,7 +26,7 @@ DebugInfo::DebugInfo(std::string UID) : Widget(std::move(UID)) {
 void DebugInfo::Tick([[maybe_unused]] float dt) {
     Widget::Tick(dt);
 
-    PlayerController* plrCtrl = GameInstance::get()->GetPlayerController();
+    PlayerController* plrCtrl = GameInstance::Get()->GetPlayerController();
     Vector2 playerPos = plrCtrl->GetPlayer()->GetPosition();
     Vector2 playerVel = plrCtrl->GetPlayer()->GetVelocity();
     

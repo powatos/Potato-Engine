@@ -5,19 +5,15 @@
 
 #include "Timer.hpp"
 
+#include "Core/Singleton.hpp"
 #include "Core/Event/Tickable.hpp"
 
 /**
  * @brief Class that interfaces and handles all timers
  */
-class TimerManager : public Tickable
+class TimerManager : public Singleton<TimerManager>, public Tickable
 {
-    TimerManager();
-    ~TimerManager(); 
-    TimerManager(const TimerManager&) = delete;
-    TimerManager& operator = (const TimerManager&) = delete;
-    TimerManager(TimerManager&&) = delete;
-    TimerManager& operator = (TimerManager&&) = delete;
+    friend class Singleton<TimerManager>;
 public:
     /**
      * @brief Gets singleton instance
@@ -74,6 +70,9 @@ protected:
     virtual void Tick([[maybe_unused]] float dt) override;
 
 private:
+    TimerManager();
+    ~TimerManager(); 
+
     std::vector<Timer> ActiveTimers;
     std::vector<Timer> PendingTimers;
 };

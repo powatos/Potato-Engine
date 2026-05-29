@@ -19,7 +19,7 @@ PlayerController::PlayerController() {
 
 void PlayerController::Initialize() {
 
-    World* world = GameInstance::get()->GetWorld();
+    World* world = GameInstance::Get()->GetWorld();
 
     // Create camera
     ActiveCamera = world->SpawnActor<Camera>();

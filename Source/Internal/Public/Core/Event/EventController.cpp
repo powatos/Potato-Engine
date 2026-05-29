@@ -1,12 +1,6 @@
 
 #include "EventController.hpp"
 
-EventController* EventController::get() {
-    static EventController instance;
-    
-    return &instance;
-}
-
 EventController::EventController() {
     LOG_DEFAULT(LogType::VITAL, "EventController constructed");
 

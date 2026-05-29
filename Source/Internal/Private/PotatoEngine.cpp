@@ -17,11 +17,11 @@ PotatoEngine::PotatoEngine() {
 
     Debug::BindDebugLogs();
 
-    SubsystemStack.push_back( Engine::get() );
-    SubsystemStack.push_back( IOController::get() );
-    SubsystemStack.push_back( UIController::get() );
-    SubsystemStack.push_back( GameInstance::get() );
-    SubsystemStack.push_back( EventController::get() );
+    SubsystemStack.push_back( Engine::Get() );
+    SubsystemStack.push_back( IOController::Get() );
+    SubsystemStack.push_back( UIController::Get() );
+    SubsystemStack.push_back( GameInstance::Get() );
+    SubsystemStack.push_back( EventController::Get() );
 
 }
 
@@ -32,17 +32,17 @@ PotatoEngine& PotatoEngine::Get()
 }
 
 void PotatoEngine::LoadSubobjects() {
-    InputController = IOController::get();
-    HUDController = UIController::get();
-    NativeEventController = EventController::get();
+    InputController = IOController::Get();
+    HUDController = UIController::Get();
+    NativeEventController = EventController::Get();
 
-    GameInstance::get()->LoadSubobjects();
+    GameInstance::Get()->LoadSubobjects();
 }
 
 void PotatoEngine::BeginPlay()
 {
-    Engine* engine = Engine::get();
-    GameInstance* instance = GameInstance::get();
+    Engine* engine = Engine::Get();
+    GameInstance* instance = GameInstance::Get();
     World* world = instance->GetWorld();
 
     for (IEngineSubsystem* sys : SubsystemStack) {

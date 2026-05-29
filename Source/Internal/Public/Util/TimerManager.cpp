@@ -3,11 +3,6 @@
 
 #include "TimerManager.hpp"
 
-TimerManager* TimerManager::get() {
-    static TimerManager instance;
-    return &instance;
-}
-
 TimerManager::TimerManager() {
     LOG_DEFAULT(LogType::VITAL, "TimerManager constructed");
 

@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "Core/Singleton.hpp"
 #include "UI/HUDController.hpp"
 #include "Core/EngineSubsystem.hpp"
 
@@ -26,10 +27,10 @@
 
 class Widget;
 
-class UIController : public IEngineSubsystem, public IHUDController
+class UIController : public Singleton<UIController>, public IEngineSubsystem, public IHUDController
 {
+    friend class Singleton<UIController>;
 public:
-    [[maybe_unused]] static UIController* get();
     virtual void Resolve() noexcept override;
 
     const std::vector<Widget*>& GetActiveWidgets();
@@ -42,11 +43,6 @@ public:
 private:
     UIController();
     ~UIController();
-    UIController(const UIController&) = delete;
-    UIController& operator = (const UIController&) = delete;
-    UIController(UIController&&) = delete;
-    UIController& operator = (UIController&&) = delete;
-
 
 protected:
 

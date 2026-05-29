@@ -5,6 +5,7 @@
 #include <functional>
 #include <vector>
 
+#include "Core/Singleton.hpp"
 #include "Core/EngineSubsystem.hpp"
 #include "Core/Input/InputController.hpp"
 #include "Core/Event/Tickable.hpp"
@@ -16,10 +17,10 @@ using BindingMap = std::unordered_map<Keycode, std::vector<InputBinding>, __Keyc
 struct WidgetMapper;
 class Widget;
 
-class IOController : public IEngineSubsystem, public IInputController, public Tickable
+class IOController : public Singleton<IOController>, public IEngineSubsystem, public IInputController, public Tickable
 {
+    friend class Singleton<IOController>;
 public:
-    [[maybe_unused]] static IOController* get();
     virtual void Resolve() noexcept override;
     virtual void _BeginPlay() override;
 
@@ -40,10 +41,6 @@ public:
 private:
     IOController();
     ~IOController();
-    IOController(const IOController&) = delete;
-    IOController& operator = (const IOController&) = delete;
-    IOController(IOController&&) = delete;
-    IOController& operator = (IOController&&) = delete;
 
     void UnregisterBindingFrom(BindingMap&, std::string deleteName);
     void UnregisterAllBindingsFrom(BindingMap&, void* object);

@@ -7,13 +7,6 @@
 
 #include "GameInstance.hpp"
 
-[[maybe_unused]] GameInstance* GameInstance::get() {
-    // constructed on first call
-    static GameInstance instance;
-    
-    return &instance;
-}
-
 GameInstance::GameInstance() {
     LOG_DEFAULT(LogType::VITAL, "GameInstance constructed");
     

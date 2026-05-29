@@ -28,13 +28,6 @@ static constexpr char toggleCase(char c);
 void crashHandler(int);
 static constexpr Keycode GetKeycode(int ch);
 
-[[maybe_unused]] IOController* IOController::get() {
-    // constructed on first call
-    static IOController instance;
-    
-    return &instance;
-}
-
 IOController::IOController() : FRAMES_PER_SECOND(30.f) {
     LOG_DEFAULT(LogType::VITAL, "IOController constructed");
 
@@ -78,7 +71,7 @@ void IOController::_BeginPlay() {
     box(boxWindow, 0, 0);
     wrefresh(boxWindow);
 
-    GameInstance* instance = GameInstance::get();
+    GameInstance* instance = GameInstance::Get();
 
     FRAMES_PER_SECOND = instance->FRAMES_PER_SECOND;
     MS_REPEAT_THRESHOLD = instance->MS_REPEAT_THRESHOLD;
@@ -100,8 +93,8 @@ void IOController::HandleInput() {
     const Keycode key = GetKeycode(_lch);
 
     // DEBUG
-    if (key == Keycode::Escape) { LOG_DEFAULT(LogType::DEBUG, "esc"); GameInstance::get()->RequestShutdown(); }
-    if (key == Keycode::T) { auto* _ = UIController::get()->GetWidget("W_DebugInfo"); _->SetVisibility(!_->isVisible()); }
+    if (key == Keycode::Escape) { LOG_DEFAULT(LogType::DEBUG, "esc"); GameInstance::Get()->RequestShutdown(); }
+    if (key == Keycode::T) { auto _ = UIController::Get()->GetWidget("W_DebugInfo"); _->SetVisibility(!_->isVisible()); }
 
     if (InputBindingsImpulse.find(key) != InputBindingsImpulse.end()) {
         ImpulseKey = key;
@@ -150,7 +143,7 @@ void IOController::HandleInput() {
         }
     }
 
-    // dynamic_cast<TextElement*>(UIController::get()->GetWidget("W_DebugInfo")->GetElement("KeyDisplay"))->field = std::to_string(static_cast<int>(ActiveKey));
+    // dynamic_cast<TextElement*>(UIController::Get()->GetWidget("W_DebugInfo")->GetElement("KeyDisplay"))->field = std::to_string(static_cast<int>(ActiveKey));
 
 }
 
@@ -167,7 +160,7 @@ void IOController::DrawLevel() {
 
     werase(displayWindow);
     
-    const GameInstance* Instance = GameInstance::get();
+    const GameInstance* Instance = GameInstance::Get();
     const ActorPool& renderActors = Instance->GetWorld()->GetAllActors();
 
     Camera* camera = Instance->GetPlayerController()->GetCamera();

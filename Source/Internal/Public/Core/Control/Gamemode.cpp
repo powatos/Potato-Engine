@@ -7,11 +7,11 @@
 
 void Gamemode::BeginPlay() {
     LOG_DEFAULT(LogType::INFO, "Gamemode BeginPlay called");
-    TimerManager::get()->AddTimer("recordSecond", 1.0, this, &Gamemode::RecordSecond);
+    TimerManager::Get()->AddTimer("recordSecond", 1.0, this, &Gamemode::RecordSecond);
 
 }
 
 void Gamemode::RecordSecond() {
     LOG_DEFAULT(LogType::DEBUG, "sec");
-    TimerManager::get()->AddTimer("recordSecond1", 1.0, this, &Gamemode::RecordSecond);
+    TimerManager::Get()->AddTimer("recordSecond1", 1.0, this, &Gamemode::RecordSecond);
 }
