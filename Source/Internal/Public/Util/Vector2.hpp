@@ -1,8 +1,8 @@
 /** @file Vector2.hpp */
 #pragma once
 
-#include <string>
 #include <cmath>
+#include <string>
 
 /**
  * @brief Standard 2-dimensional vector

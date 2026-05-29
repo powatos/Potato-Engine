@@ -2,12 +2,13 @@
 
 #include <algorithm>
 
-#include "Util/Vector2.hpp"
-#include "Debug/Debug.hpp"
-#include "Game/World.hpp"
-#include "Core/PotatoEngine.hpp"
-#include "Core/Event/EventController.hpp"
 #include "Core/Control/GameInstance.hpp"
+#include "Core/Event/EventController.hpp"
+#include "Core/PotatoEngine.hpp"
+#include "Game/World.hpp"
+
+#include "Debug/Debug.hpp"
+#include "Util/Vector2.hpp"
 
 #include "Actor.hpp"
 

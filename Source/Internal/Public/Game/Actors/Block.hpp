@@ -1,4 +1,5 @@
 /** @file Block.hpp */
+#pragma once
 
 #include "Game/Actors/Actor.hpp"
 

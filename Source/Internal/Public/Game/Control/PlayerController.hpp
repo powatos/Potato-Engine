@@ -1,9 +1,9 @@
 /** @file PlayerController.hpp */
 #pragma once
 
-#include "Game/Actors/Player.hpp"
-#include "Game/Actors/Camera.hpp"
 #include "Core/Event/Tickable.hpp"
+#include "Game/Actors/Camera.hpp"
+#include "Game/Actors/Player.hpp"
 
 /**
  * @brief Main managing class for the player, controlling interactions and non-local behavior

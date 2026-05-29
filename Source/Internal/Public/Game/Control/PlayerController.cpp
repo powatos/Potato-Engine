@@ -2,15 +2,16 @@
 
 #include <algorithm>
 
-#include "Game/Actors/Player.hpp"
-#include "Game/Actors/Camera.hpp"
-#include "Core/PotatoEngine.hpp"
 #include "Core/Control/GameInstance.hpp"
-#include "Game/World.hpp"
-#include "Core/Input/InputController.hpp"
 #include "Core/Event/EventController.hpp"
-#include "Util/GameplayHelper.hpp"
+#include "Core/Input/InputController.hpp"
+#include "Core/PotatoEngine.hpp"
+#include "Game/Actors/Camera.hpp"
+#include "Game/Actors/Player.hpp"
+#include "Game/World.hpp"
+
 #include "Debug/Debug.hpp"
+#include "Util/GameplayHelper.hpp"
 
 #include "PlayerController.hpp"
 

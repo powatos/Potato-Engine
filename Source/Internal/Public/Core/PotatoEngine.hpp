@@ -1,5 +1,4 @@
 /** @file PotatoEngine.hpp */
-// no pragma once; promote one time inclusion
 
 #include <memory>
 #include <vector>

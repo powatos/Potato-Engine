@@ -1,9 +1,10 @@
 /** @file World.cpp */
 
-#include "Debug/Debug.hpp"
-#include "Game/Actors/Player.hpp"
-#include "Util/GameplayHelper.hpp"
 #include "Game/Actors/Block.hpp"
+#include "Game/Actors/Player.hpp"
+
+#include "Debug/Debug.hpp"
+#include "Util/GameplayHelper.hpp"
 
 #include "World.hpp"
 

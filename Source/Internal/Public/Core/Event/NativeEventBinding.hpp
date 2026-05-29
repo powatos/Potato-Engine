@@ -1,4 +1,4 @@
-/** @file InputBinding.hpp */
+/** @file NativeEventBinding.hpp */
 #pragma once
 
 #include <string>

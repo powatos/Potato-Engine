@@ -1,14 +1,14 @@
 /** @file EventController.hpp */
 #pragma once
 
-#include <unordered_map>
 #include <any>
+#include <unordered_map>
 
-#include "NativeEventBinding.hpp"
-#include "Debug/Debug.hpp"
-
-#include "Core/Singleton.hpp"
 #include "Core/EngineSubsystem.hpp"
+#include "Core/Singleton.hpp"
+#include "NativeEventBinding.hpp"
+
+#include "Debug/Debug.hpp"
 
 /**
  * @brief Class for event managing

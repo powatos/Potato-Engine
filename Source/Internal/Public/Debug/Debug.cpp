@@ -4,6 +4,7 @@
 #include <iomanip>
 
 #include "fmt/chrono.h"
+
 #include "Debug.hpp"
 
 Logger LOG_DEFAULT;

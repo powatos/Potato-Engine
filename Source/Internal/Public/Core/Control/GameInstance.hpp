@@ -4,9 +4,9 @@
 #include <functional>
 #include <type_traits>
 
+#include "Core/EngineSubsystem.hpp"
 #include "Core/Singleton.hpp"
 #include "Game/Control/PlayerController.hpp"
-#include "Core/EngineSubsystem.hpp"
 
 class Player;
 class World;

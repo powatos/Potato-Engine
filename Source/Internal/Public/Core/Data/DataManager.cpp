@@ -1,7 +1,8 @@
 /** @file DataManager.cpp */
 
-#include "DataManager.hpp"
 #include "Debug/Debug.hpp"
+
+#include "DataManager.hpp"
 
 path DataManager::GetDataDir() {
     

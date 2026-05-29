@@ -1,19 +1,16 @@
 /** @file IOController.hpp */
 #pragma once
 
-#include <unordered_map>
 #include <functional>
+#include <unordered_map>
 #include <vector>
 
-#include "Core/Singleton.hpp"
 #include "Core/EngineSubsystem.hpp"
-#include "Core/Input/InputController.hpp"
 #include "Core/Event/Tickable.hpp"
+#include "Core/Input/InputController.hpp"
+#include "Core/Singleton.hpp"
 
 using BindingMap = std::unordered_map<Keycode, std::vector<InputBinding>, __KeycodeHash>;
-
-// struct _win_st;
-// typedef struct _win_st WINDOW;
 struct WidgetMapper;
 class Widget;
 

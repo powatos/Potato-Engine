@@ -3,9 +3,9 @@
 
 #include <vector>
 
+#include "Core/EngineSubsystem.hpp"
 #include "Core/Singleton.hpp"
 #include "UI/HUDController.hpp"
-#include "Core/EngineSubsystem.hpp"
 
 /**
  * UI construction chain

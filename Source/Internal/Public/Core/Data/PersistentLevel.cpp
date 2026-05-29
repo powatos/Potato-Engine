@@ -1,12 +1,13 @@
 /** @file PersistentLevel.cpp */
 
-#include "Util/Vector2.hpp"
 #include "Archivable.hpp"
 #include "Core/Control/GameInstance.hpp"
-#include "Debug/Debug.hpp"
 #include "Game/World.hpp"
-
 #include "nlohmann/json.hpp"
+
+#include "Debug/Debug.hpp"
+#include "Util/Vector2.hpp"
+
 #include "PersistentLevel.hpp"
 
 using json = nlohmann::json;

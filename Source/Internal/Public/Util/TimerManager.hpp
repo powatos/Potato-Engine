@@ -3,10 +3,9 @@
 
 #include <vector>
 
-#include "Timer.hpp"
-
-#include "Core/Singleton.hpp"
 #include "Core/Event/Tickable.hpp"
+#include "Core/Singleton.hpp"
+#include "Timer.hpp"
 
 /**
  * @brief Class that interfaces and handles all timers

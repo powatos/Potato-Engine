@@ -1,10 +1,11 @@
 /** @file GameplayHelper.cpp */
 
-#include "Game/Actors/Camera.hpp"
-#include "Util/Vector2.hpp"
 #include "Core/Control/GameInstance.hpp"
-#include "Game/World.hpp"
 #include "Game/Actors/Actor.hpp"
+#include "Game/Actors/Camera.hpp"
+#include "Game/World.hpp"
+
+#include "Util/Vector2.hpp"
 
 #include "GameplayHelper.hpp"
 

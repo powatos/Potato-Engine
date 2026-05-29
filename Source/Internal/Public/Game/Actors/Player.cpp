@@ -1,10 +1,11 @@
 /** @file Player.cpp */
 
+#include "Core/Control/GameInstance.hpp"
 #include "Core/Input/InputController.hpp"
 #include "Core/PotatoEngine.hpp"
+
 #include "Debug/Debug.hpp"
 #include "Util/GameplayHelper.hpp"
-#include "Core/Control/GameInstance.hpp"
 
 #include "Player.hpp"
 

@@ -1,7 +1,6 @@
 /** @file Timer.hpp */
 #pragma once
 
-// #include "Core/Event/NativeEventBinding.hpp"
 #include "Core/Event/EventDelegate.hpp"
 
 /**

@@ -1,9 +1,9 @@
 /** @file Archivable.hpp */
 #pragma once
 
-#include <unordered_map>
 #include <functional>
 #include <string>
+#include <unordered_map>
 
 /**
  * @def ARCHIVE_STATIC(type)

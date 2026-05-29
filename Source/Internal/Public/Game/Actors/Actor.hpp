@@ -3,6 +3,7 @@
 
 #include "Core/Data/Archivable.hpp"
 #include "Core/Event/Tickable.hpp"
+
 #include "Util/Vector2.hpp"
 
 enum class ActorMovability

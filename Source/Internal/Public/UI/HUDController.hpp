@@ -1,7 +1,6 @@
 /** @file HUDController.hpp */
 #pragma once
 
-
 class Widget;
 
 /**

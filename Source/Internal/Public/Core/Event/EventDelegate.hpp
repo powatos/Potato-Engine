@@ -3,8 +3,9 @@
 
 #include <functional>
 
-#include "Debug/Debug.hpp"
 #include "Game/Control/PlayerController.hpp"
+
+#include "Debug/Debug.hpp"
 
 /**
  * @brief A wrapper that carries response delegate information

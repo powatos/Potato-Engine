@@ -1,3 +1,4 @@
+/** @file TimerManager.cpp */
 
 #include "Debug/Debug.hpp"
 

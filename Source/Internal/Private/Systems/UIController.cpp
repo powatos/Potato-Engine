@@ -1,12 +1,11 @@
 /** @file UIController.cpp */
 
-#include "Debug/Debug.hpp"
-#include "UI/Widgets/Widget.hpp"
 #include "IOController.hpp"
+#include "UI/Widgets/Widget.hpp"
+
+#include "Debug/Debug.hpp"
 
 #include "UIController.hpp"
-
-
 UIController::UIController() {
     LOG_DEFAULT(LogType::VITAL, "UIController constructed");
 

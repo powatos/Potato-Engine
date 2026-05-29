@@ -1,9 +1,10 @@
 /** @file GameInstance.cpp */
 
-#include "Game/World.hpp"
-#include "Debug/Debug.hpp"
 #include "Core/Control/Gamemode.hpp"
 #include "Game/Actors/Player.hpp"
+#include "Game/World.hpp"
+
+#include "Debug/Debug.hpp"
 
 #include "GameInstance.hpp"
 

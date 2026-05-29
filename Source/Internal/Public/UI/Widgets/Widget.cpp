@@ -1,8 +1,10 @@
 /** @file Widget.cpp */
 
-#include "Debug/Debug.hpp"
-#include "Widget.hpp"
 #include "WidgetElement.hpp"
+
+#include "Debug/Debug.hpp"
+
+#include "Widget.hpp"
 
 Widget::Widget(std::string UID) : UID(UID) {
     SetScreenPosition(Vector2(0.f,0.f));

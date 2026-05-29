@@ -5,6 +5,7 @@
 #include <string>
 
 #include "DataManager.hpp"
+
 #include "Util/Vector2.hpp"
 
 /** 

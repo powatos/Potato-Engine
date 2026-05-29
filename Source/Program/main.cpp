@@ -1,19 +1,19 @@
 
-#include <memory>
-
-#include <Core/PotatoEngine.hpp>
-#include <Core/Data/PersistentLevel.hpp>
-#include <Debug/Debug.hpp>
-#include <Core/Event/EventController.hpp>
 #include <Core/Control/GameInstance.hpp>
-#include <Game/World.hpp>
-#include <Game/Actors/Player.hpp>
-#include <Util/Vector2.hpp>
-#include <UI/HUDController.hpp>
+#include <Core/Data/PersistentLevel.hpp>
+#include <Core/Event/EventController.hpp>
 #include <Core/Input/InputController.hpp>
-#include <UI/Widgets/Objects/DebugInfo.hpp>
+#include <Core/PotatoEngine.hpp>
 #include <Game/Actors/Block.hpp>
+#include <Game/Actors/Player.hpp>
+#include <Game/World.hpp>
+#include <UI/HUDController.hpp>
+#include <UI/Widgets/Objects/DebugInfo.hpp>
 
+#include <Debug/Debug.hpp>
+#include <Util/Vector2.hpp>
+
+#include <memory>
 
 void t() {
     LOG_DEFAULT(LogType::INFO, "e triggered");

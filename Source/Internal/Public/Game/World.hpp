@@ -1,11 +1,12 @@
 /** @file World.hpp */
 #pragma once
 
-#include <vector>
 #include <type_traits>
+#include <vector>
+
+#include "Game/Actors/Actor.hpp"
 
 #include "Util/Vector2.hpp"
-#include "Game/Actors/Actor.hpp"
 
 /** @brief Collection of actors in world */
 using ActorPool = std::vector<Actor*>;

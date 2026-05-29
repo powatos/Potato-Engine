@@ -1,7 +1,7 @@
 /** @file Tickable.cpp */
 
-#include "Core/PotatoEngine.hpp"
 #include "Core/Event/EventController.hpp"
+#include "Core/PotatoEngine.hpp"
 
 #include "Tickable.hpp"
 

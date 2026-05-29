@@ -1,14 +1,14 @@
 /** @file PotatoEngine.cpp */
-
-#include "Debug/Debug.hpp"
 #include "Core/Control/GameInstance.hpp"
 #include "Core/Control/Gamemode.hpp"
-#include "Engine.hpp"
 #include "Core/Event/EventController.hpp"
+#include "Engine.hpp"
+#include "Game/World.hpp"
 #include "Systems/IOController.hpp"
 #include "Systems/UIController.hpp"
 #include "UI/HUDController.hpp"
-#include "Game/World.hpp"
+
+#include "Debug/Debug.hpp"
 
 #include "Core/PotatoEngine.hpp"
 

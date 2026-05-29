@@ -1,9 +1,9 @@
 /** @file Engine.hpp */
 #pragma once
 
-#include "Core/Singleton.hpp"
 #include "Core/EngineSubsystem.hpp"
 #include "Core/Event/EventDelegate.hpp"
+#include "Core/Singleton.hpp"
 
 class Engine : public Singleton<Engine>, public IEngineSubsystem
 {
