@@ -1,16 +1,8 @@
 Version v1.1-pre
 
 CHANGELOG:  
-made changelog file (nodoc)  
-refactored UI objects to Public directory for easier categorical management  
-made gamemode class  
-subclass now automatically defaults to engine default if no instantiator is defined  
-added timers via TimerManager  
-abstracted singletons to template wrapper  
-
 
 PATCHLOG:
-fixed an issue where collision restitution was being calculated incorrectly
 
 TODO:  
 

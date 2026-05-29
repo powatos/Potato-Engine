@@ -31,12 +31,12 @@ PotatoEngine& PotatoEngine::Get()
     return engine;
 }
 
-void PotatoEngine::LoadSubobjects() {
+void PotatoEngine::LoadSubclasses() {
     InputController = IOController::Get();
     HUDController = UIController::Get();
     NativeEventController = EventController::Get();
 
-    GameInstance::Get()->LoadSubobjects();
+    GameInstance::Get()->LoadSubclasses();
 }
 
 void PotatoEngine::BeginPlay()

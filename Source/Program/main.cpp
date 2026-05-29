@@ -29,7 +29,7 @@ int main()
 {
     /// ENGINE SETUP
     PotatoEngine& engine = PotatoEngine::Get();
-    engine.LoadSubobjects();
+    engine.LoadSubclasses();
     GameInstance* instance = GameInstance::Get();
     
     // ideal 195

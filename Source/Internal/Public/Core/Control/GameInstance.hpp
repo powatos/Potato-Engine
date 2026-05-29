@@ -15,8 +15,8 @@ class Gamemode;
 /**
  * @def SET_DEFAULT_SUBCLASS(def, set)
  * @relates GameInstance
- * @brief Registers classes as the default subobject for its class
- * @details Default subobjects are managed by the engine, but custom overrides can be made
+ * @brief Registers classes as the default subclass for its class
+ * @details Default subclasses are managed by the engine, but custom overrides can be made
  * by inheriting from the base.
  * @param def Base class to set default for
  * @param set User-defined class to set as default
@@ -32,7 +32,7 @@ static struct __##set##_DEFAULT_SUBCLASS_REGISTER { \
 } __##set##_DEFAULT_SUBCLASS_REGISTER_i;
 
 /**
- * @brief Singleton with various game properties and functions. This class also manages game subobjects
+ * @brief Singleton with various game properties and functions. This class also manages game subclasses
  * @details Set global constants and get objects using the @ref get() "instance". \n Subclasses must be registered 
  * using @ref SET_DEFAULT_SUBCLASS(def, set) "SET_DEFAULT_SUBCLASS".
  */
@@ -42,7 +42,7 @@ class GameInstance : public Singleton<GameInstance>, public IEngineSubsystem
 public:
     virtual void Resolve() noexcept override;
 
-    void LoadSubobjects();
+    void LoadSubclasses();
 
     /** @brief Gets @ref World "world" object @returns @ref World "World" object */
     World* GetWorld() const;
@@ -94,7 +94,7 @@ private:
 
     World* world;
 
-    void InstantiateSubobjects();
+    void InstantiateSubclasses();
 
 };
 

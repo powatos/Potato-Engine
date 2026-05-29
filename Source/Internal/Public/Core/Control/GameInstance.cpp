@@ -17,10 +17,10 @@ GameInstance::GameInstance() {
 
     world = new World();
 
-    InstantiateSubobjects();
+    InstantiateSubclasses();
 }
 
-void GameInstance::InstantiateSubobjects() {
+void GameInstance::InstantiateSubclasses() {
 
     // User-defined Instantiaters
     auto c_pc = __DEFAULT_INSTANTIATORS::_PlayerController();
@@ -60,7 +60,7 @@ void GameInstance::RequestShutdown() {
     _isMainTickRunning = false;
 }
 
-void GameInstance::LoadSubobjects() {
+void GameInstance::LoadSubclasses() {
     ActivePlayerController->Initialize();
     ActivePlayerController->SetupInputBindings();
 }

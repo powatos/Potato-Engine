@@ -27,10 +27,10 @@ public:
     static PotatoEngine& Get();
 
     /**
-     * @brief Loads all subobjects and calls corresponding initializing methods
+     * @brief Loads all subclasses and calls corresponding initializing methods
      * @warning Must be called before BeginPlay()
      */
-    void LoadSubobjects();
+    void LoadSubclasses();
 
     /**
      * @brief Starts gameplay
@@ -39,7 +39,7 @@ public:
     void BeginPlay();
 
     /**
-     * @brief Resolve all subobjects and perform resolving engine functionality
+     * @brief Resolve all subclasses and perform resolving engine functionality
      * @warning Must be called before exiting program
      */
     void Resolve() noexcept;
