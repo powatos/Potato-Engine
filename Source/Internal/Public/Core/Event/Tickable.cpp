@@ -49,4 +49,7 @@ void Tickable::SetTickingPostPhysics(bool isEnabled) {
 void Tickable::Tick([[maybe_unused]] float dt) {
 
 }
-Tickable::~Tickable() {}
+Tickable::~Tickable() {
+    SetTicking(false); 
+    SetTickingPostPhysics(false);   
+}

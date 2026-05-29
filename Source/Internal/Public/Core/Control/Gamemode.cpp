@@ -1,8 +1,17 @@
 
-#include "Game/Control/GameInstance.hpp"
+#include "Core/Control/GameInstance.hpp"
+#include "Util/TimerManager.hpp"
+#include "Debug/Debug.hpp"
 
 #include "Gamemode.hpp"
 
 void Gamemode::BeginPlay() {
-    
+    LOG_DEFAULT(LogType::INFO, "Gamemode BeginPlay called");
+    TimerManager::get()->AddTimer("recordSecond", 1.0, this, &Gamemode::RecordSecond);
+
+}
+
+void Gamemode::RecordSecond() {
+    LOG_DEFAULT(LogType::DEBUG, "sec");
+    TimerManager::get()->AddTimer("recordSecond1", 1.0, this, &Gamemode::RecordSecond);
 }

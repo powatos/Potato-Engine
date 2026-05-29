@@ -73,6 +73,7 @@ void GameInstance::LoadSubobjects() {
 
 World* GameInstance::GetWorld() const { return world; }
 PlayerController* GameInstance::GetPlayerController() const { return ActivePlayerController; }
+Gamemode* GameInstance::GetGamemode() const { return ActiveGamemode; }
 
 void GameInstance::Resolve() noexcept {
     LOG_DEFAULT(LogType::VITAL, "Resolving GameInstance");

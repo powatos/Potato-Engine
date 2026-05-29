@@ -4,7 +4,7 @@
 #include <functional>
 #include <type_traits>
 
-#include "PlayerController.hpp"
+#include "Game/Control/PlayerController.hpp"
 #include "Core/EngineSubsystem.hpp"
 
 class Player;
@@ -51,6 +51,8 @@ public:
     World* GetWorld() const;
     /** @brief Gets @ref PlayerController "player controller" object @returns @ref PlayerController "player controller" object */
     PlayerController* GetPlayerController() const;
+    /** @brief Gets @ref Gamemode "gamemode" object @returns Gamemode "gamemode" object */
+    Gamemode* GetGamemode() const;
 
     /**
      * @brief Requests to queue engine shutdown

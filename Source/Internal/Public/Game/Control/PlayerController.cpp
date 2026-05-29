@@ -5,7 +5,7 @@
 #include "Game/Actors/Player.hpp"
 #include "Game/Actors/Camera.hpp"
 #include "Core/PotatoEngine.hpp"
-#include "GameInstance.hpp"
+#include "Core/Control/GameInstance.hpp"
 #include "Game/World.hpp"
 #include "Core/Input/InputController.hpp"
 #include "Core/Event/EventController.hpp"

@@ -14,7 +14,7 @@
 #include "Util/Vector2.hpp"
 #include "Game/World.hpp"
 #include "Util/GameplayHelper.hpp"
-#include "Game/Control/GameInstance.hpp"
+#include "Core/Control/GameInstance.hpp"
 #include "Game/Control/PlayerController.hpp"
 #include "Game/Actors/Player.hpp"
 #include "Game/Actors/Camera.hpp"

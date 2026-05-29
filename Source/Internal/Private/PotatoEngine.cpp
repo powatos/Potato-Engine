@@ -1,7 +1,8 @@
 /** @file PotatoEngine.cpp */
 
 #include "Debug/Debug.hpp"
-#include "Game/Control/GameInstance.hpp"
+#include "Core/Control/GameInstance.hpp"
+#include "Core/Control/Gamemode.hpp"
 #include "Engine.hpp"
 #include "Core/Event/EventController.hpp"
 #include "Systems/IOController.hpp"
@@ -54,6 +55,7 @@ void PotatoEngine::BeginPlay()
         actor->DispatchBeginPlay();
     }
 
+    instance->GetGamemode()->BeginPlay();
 
     engine->main();
 }

@@ -4,7 +4,7 @@
 #include "Core/PotatoEngine.hpp"
 #include "Debug/Debug.hpp"
 #include "Util/GameplayHelper.hpp"
-#include "Game/Control/GameInstance.hpp"
+#include "Core/Control/GameInstance.hpp"
 
 #include "Player.hpp"
 

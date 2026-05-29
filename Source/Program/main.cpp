@@ -5,7 +5,7 @@
 #include <Core/Data/PersistentLevel.hpp>
 #include <Debug/Debug.hpp>
 #include <Core/Event/EventController.hpp>
-#include <Game/Control/GameInstance.hpp>
+#include <Core/Control/GameInstance.hpp>
 #include <Game/World.hpp>
 #include <Game/Actors/Player.hpp>
 #include <Util/Vector2.hpp>

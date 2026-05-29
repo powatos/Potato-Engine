@@ -7,7 +7,7 @@
 #include "Game/World.hpp"
 #include "Core/PotatoEngine.hpp"
 #include "Core/Event/EventController.hpp"
-#include "Game/Control/GameInstance.hpp"
+#include "Core/Control/GameInstance.hpp"
 
 #include "Actor.hpp"
 

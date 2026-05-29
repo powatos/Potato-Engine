@@ -7,6 +7,7 @@
 
 /**
  * @brief Wrapper for native event bindings
+ * * @tparam CallbackArgs... arguments to pass when notifying the callback function
  */
 template<typename ...CallbackArgs>
 struct NativeEventBinding
@@ -35,6 +36,7 @@ public:
 
     /**
      * @brief Constructs binding with standalone callback
+     * @warning This construction is not recommended. @sa @ref  "TODO<...>(...)"
      * @param name Identifier for binding
      * @param callback Function to notify
      */

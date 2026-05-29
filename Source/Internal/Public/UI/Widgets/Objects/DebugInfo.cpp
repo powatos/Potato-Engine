@@ -1,6 +1,6 @@
 /** @file DebugInfo.cpp */
 
-#include "Game/Control/GameInstance.hpp"
+#include "Core/Control/GameInstance.hpp"
 #include "UI/Widgets/TextElement.hpp"
 
 #include "DebugInfo.hpp"

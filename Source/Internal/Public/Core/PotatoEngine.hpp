@@ -7,7 +7,6 @@
 #include "EngineSubsystem.hpp"
 
 class IInputController;
-// class ITickController;
 class EventController;
 class IHUDController;
 
@@ -59,7 +58,6 @@ protected:
     std::vector<IEngineSubsystem*> SubsystemStack;
 
     IInputController* InputController;
-    // ITickController* TickController;
     IHUDController* HUDController;
     EventController* NativeEventController;
 };

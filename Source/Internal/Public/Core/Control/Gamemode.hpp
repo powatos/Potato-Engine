@@ -23,5 +23,7 @@ public:
      * @endcode
      */
     virtual void BeginPlay();
+
+    void RecordSecond();
     
 };

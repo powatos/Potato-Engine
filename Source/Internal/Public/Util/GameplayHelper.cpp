@@ -2,7 +2,7 @@
 
 #include "Game/Actors/Camera.hpp"
 #include "Util/Vector2.hpp"
-#include "Game/Control/GameInstance.hpp"
+#include "Core/Control/GameInstance.hpp"
 #include "Game/World.hpp"
 #include "Game/Actors/Actor.hpp"
 
