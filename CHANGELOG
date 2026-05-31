@@ -1,14 +1,15 @@
-Version v1.1-pre
+Version v1.2-pre
 
 CHANGELOG:  
 
 PATCHLOG:
+hotfix: collision event update and force default gamemode corrected
 
 TODO:  
 
 ---
 Update changelog for every change made to engine  
 Use this to create release notes on every release  
-Update version on every release  
-Reset changelog ON every release commit (last change before release never appears on remote)  
+Update version AFTER that release is made  
+Reset changelog AFTER every release    
 Todo is temporary  

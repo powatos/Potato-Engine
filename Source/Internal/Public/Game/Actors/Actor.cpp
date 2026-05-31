@@ -43,6 +43,10 @@ void Actor::Tick([[maybe_unused]] float dt) {
     Tickable::Tick(dt);
 }
 
+void Actor::OnHit(const HitResult& hitResult) {
+    // LOG_DEFAULT(LogType::DEBUG, "Actor hit at {} with {} overlap", hitResult.hitPosition.ToString(), hitResult.hitOverlap.ToString());
+}
+
 Actor::~Actor() {
 
 }

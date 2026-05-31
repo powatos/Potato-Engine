@@ -3,6 +3,7 @@
 
 #include "Core/Data/Archivable.hpp"
 #include "Core/Event/Tickable.hpp"
+#include "Game/HitResult.hpp"
 
 #include "Util/Vector2.hpp"
 
@@ -71,6 +72,12 @@ public:
      * @brief Internal function used to queue BeginPlay() on actor
      */
     void DispatchBeginPlay();
+
+    /**
+     * @brief Called when actor collides with another actor
+     * @param hitResult Information about the hit
+     */
+    void OnHit(const HitResult& hitResult);
 
     /**
      * @brief Single-char texture for actor

@@ -2,6 +2,7 @@
 
 #include "Game/Actors/Block.hpp"
 #include "Game/Actors/Player.hpp"
+#include "Game/HitResult.hpp"
 
 #include "Debug/Debug.hpp"
 #include "Util/GameplayHelper.hpp"
@@ -53,6 +54,8 @@ void World::TickPostPhysics(float dt) {
         for (Actor* b : actorPool) {
             if (a >= b) { continue; } // pointer trick to avoid checking pairs twice and against self
             if (!b->isSimulatingPhysics()) { continue; }
+            if (a->GetMovability() == ActorMovability::Static
+                && b->GetMovability() == ActorMovability::Static ) { continue; }
 
             const Vector2 aPos = a->GetPosition();
             const Vector2 bPos = b->GetPosition();
@@ -86,8 +89,10 @@ void World::UpdateActorPhysics(Actor* actor, float dt) {
 }
 
 void World::ResolveCollision(Actor* a, Actor* b, const Vector2& aPos, const Vector2& bPos) {
-    const Vector2 aHalfSize = a->GetSize() * 0.5f;
-    const Vector2 bHalfSize = b->GetSize() * 0.5f;
+    const Vector2 aSize = a->GetSize();
+    const Vector2 bSize = b->GetSize();
+    const Vector2 aHalfSize = aSize * 0.5f;
+    const Vector2 bHalfSize = bSize * 0.5f;
     const Vector2 aCenter = Vector2( aPos.x + aHalfSize.x , aPos.y - aHalfSize.y );
     const Vector2 bCenter = Vector2( bPos.x + bHalfSize.x , bPos.y - bHalfSize.y );
     const float dx = bCenter.x - aCenter.x;
@@ -98,20 +103,30 @@ void World::ResolveCollision(Actor* a, Actor* b, const Vector2& aPos, const Vect
     // check for actual overlap
     if ( !(overlapX > 0.f && overlapY > 0.f) ) { return; }
 
-    // calculate overlap details
-    Vector2 normal{};
+    // calculate hit details
+    HitResult hitResult;
+
     float penetration{};
     if (overlapX < overlapY) {
         penetration = overlapX;
-        normal.x = dx > 0.f ? -1.f : 1.f;
+        hitResult.hitNormal.x = dx > 0.f ? -1.f : 1.f;
     } else {
         penetration = overlapY;
-        normal.y = dy > 0.f ? -1.f : 1.f;
+        hitResult.hitNormal.y = dy > 0.f ? -1.f : 1.f;
     }
+    
+    // overlap box
+    const float left = std::max(aPos.x, bPos.x);
+    const float right = std::min(aPos.x + aSize.x, bPos.x + bSize.x);
+    const float top = std::min(aPos.y, bPos.y);
+    const float bot = std::max(aPos.y - aSize.y, bPos.y - bSize.y);
+
+    hitResult.hitOverlap = Vector2(right - left, top - bot);
+    hitResult.hitPosition = Vector2(left, top);
 
     // calculate correction details
     const float seperationAmount = std::max(penetration - Settings.clipAllowed, 0.f) * Settings.clipDampeningFactor;
-    const Vector2 correctionVector = normal * seperationAmount;
+    const Vector2 correctionVector = hitResult.hitNormal * seperationAmount;
 
     // weighted correction based on mass
     const float aInvMass = a->GetMovability() == ActorMovability::Static ? 0.f : (1.f / a->GetMass());
@@ -126,7 +141,7 @@ void World::ResolveCollision(Actor* a, Actor* b, const Vector2& aPos, const Vect
 
     // apply impulse based on newtons law of restitution
     const Vector2 relativeVel = a->GetVelocity() - b->GetVelocity() ;
-    const float normalVel = relativeVel.Dot(normal);
+    const float normalVel = relativeVel.Dot(hitResult.hitNormal);
 
     if (normalVel < 0.f && totalInvMass > 0.f) {
         float restitution = a->GetBounce() * b->GetBounce(); // amount of bounce
@@ -134,15 +149,20 @@ void World::ResolveCollision(Actor* a, Actor* b, const Vector2& aPos, const Vect
         if (std::abs(normalVel) < Settings.bounceThreshold) { restitution = 0.f; } // low restitutions dont bounce
 
         const float impulseMag = -(1.f + restitution) * normalVel / totalInvMass;
-        const Vector2 impulse = normal * impulseMag;
+        const Vector2 impulse = hitResult.hitNormal * impulseMag;
 
         // conservation of energy
         a->AddImpulse(impulse * aInvMass);
         b->AddImpulse(-impulse * bInvMass);
     }
 
-    //a.FireOverlap();
-    //b.FireOverlap();
+    HitResult HitResultA = hitResult;
+    HitResultA.otherActor = b;
+    a->OnHit(HitResultA);
+
+    HitResult HitResultB = hitResult;
+    HitResultB.otherActor = a;
+    b->OnHit(HitResultB);
 }
 
 void World::DestroyActor(Actor* actor) {
