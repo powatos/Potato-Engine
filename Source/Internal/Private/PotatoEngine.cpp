@@ -23,6 +23,9 @@ PotatoEngine::PotatoEngine() {
     SubsystemStack.push_back( GameInstance::Get() );
     SubsystemStack.push_back( EventController::Get() );
 
+    // if (key == Keycode::Escape) { LOG_DEFAULT(LogType::DEBUG, "esc"); GameInstance::Get()->RequestShutdown(); }
+
+
 }
 
 PotatoEngine& PotatoEngine::Get()
@@ -45,18 +48,27 @@ void PotatoEngine::BeginPlay()
     GameInstance* instance = GameInstance::Get();
     World* world = instance->GetWorld();
 
+    // Bind exit key (intentional lambda to surpress unregisters)
+    InputController->RegisterInputBinding(InputBinding(
+        Keycode::Escape, 
+        InputType::Impulse, 
+        "ExitGame", 
+        []() { GameInstance::Get()->RequestShutdown(); }
+    ));
+    
+
+    // Dispatch on subsystems
     for (IEngineSubsystem* sys : SubsystemStack) {
         sys->_BeginPlay();
     }
 
-    world->_BeginPlay();
+    // Dispatch on world (dispatches actors)
+    world->BeginPlay();
 
-    for (Actor* actor : world->GetAllActors()) {
-        actor->DispatchBeginPlay();
-    }
-
+    // Dispatch on gamemode
     instance->GetGamemode()->BeginPlay();
 
+    // Begin game loop
     engine->main();
 }
 

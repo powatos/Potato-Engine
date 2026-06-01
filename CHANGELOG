@@ -1,11 +1,11 @@
-Version v1.2-pre
+Version v1.3-pre
 
 CHANGELOG:  
 
 PATCHLOG:
-hotfix: collision event update and force default gamemode corrected
 
 TODO:  
+- update docs: LoadSubclasses, directories, etc
 
 ---
 Update changelog for every change made to engine  

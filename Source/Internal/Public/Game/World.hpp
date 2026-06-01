@@ -48,7 +48,7 @@ public:
     World();
     ~World();
 
-    void _BeginPlay();
+    void BeginPlay();
 
     /**
      * @brief Spawns Actor into world

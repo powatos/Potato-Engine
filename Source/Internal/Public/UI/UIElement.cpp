@@ -28,4 +28,6 @@ bool UIElement::isVisible() const {
 void UIElement::SetVisibility(bool visibility) {
     Visible = visibility;
 }
-
+void UIElement::ToggleVisibility() {
+    Visible = !Visible;
+}

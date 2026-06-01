@@ -44,6 +44,7 @@ public:
 
     /**
      * @brief Constructs binding with standalone callback
+     * @note Only use for bindings that will never be unregistered. Otherwise, prefer object-binding @sa InputBinding(Keycode, InputType, std::string, T*, void(T::*)())
      * @param key Keycode to bind to
      * @param type InputType to bind to
      * @param name Identifier for binding

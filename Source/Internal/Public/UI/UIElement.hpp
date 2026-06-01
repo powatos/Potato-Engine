@@ -30,6 +30,8 @@ public:
     bool isVisible() const;
     /** @brief Sets visibility of UI @param visibility Visibility to set */
     void SetVisibility(bool visibility); // make virtual to override for post-visibility change functionality (always call base method in first line)
+    /** @brief Toggles visibility of UI */
+    void ToggleVisibility();
 
 private:
     Vector2 ScreenSize;

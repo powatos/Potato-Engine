@@ -92,10 +92,6 @@ void IOController::HandleInput() {
 
     const Keycode key = GetKeycode(_lch);
 
-    // DEBUG
-    if (key == Keycode::Escape) { LOG_DEFAULT(LogType::DEBUG, "esc"); GameInstance::Get()->RequestShutdown(); }
-    if (key == Keycode::T) { auto _ = UIController::Get()->GetWidget("W_DebugInfo"); _->SetVisibility(!_->isVisible()); }
-
     if (InputBindingsImpulse.find(key) != InputBindingsImpulse.end()) {
         ImpulseKey = key;
         return;
@@ -142,8 +138,6 @@ void IOController::HandleInput() {
             }
         }
     }
-
-    // dynamic_cast<TextElement*>(UIController::Get()->GetWidget("W_DebugInfo")->GetElement("KeyDisplay"))->field = std::to_string(static_cast<int>(ActiveKey));
 
 }
 

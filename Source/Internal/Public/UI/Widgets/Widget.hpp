@@ -1,6 +1,7 @@
 /** @file Widget.hpp */
 #pragma once
 
+#include <unordered_map>
 #include <vector>
 
 #include "Core/Event/Tickable.hpp"

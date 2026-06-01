@@ -15,7 +15,7 @@ World::World() {
     
 }
 
-void World::_BeginPlay() {
+void World::BeginPlay() {
     const int wallWidth = 5;
 
     Block* wallB = SpawnActor<Block>(Vector2(0, -1));
@@ -35,6 +35,11 @@ void World::_BeginPlay() {
     wallU->Texture = 'W';
 
     SetTickingPostPhysics(true);
+
+    
+    for (Actor* actor : actorPool) {
+        actor->DispatchBeginPlay();
+    }
 }
 
 void World::TickPostPhysics(float dt) {

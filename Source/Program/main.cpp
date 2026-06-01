@@ -52,7 +52,14 @@ int main()
     [[maybe_unused]] IHUDController* HUDController = engine.GetHUDController();
 
     /// DEBUG
-    [[maybe_unused]] DebugInfo *debugInfoWidget = HUDController->AddWidget<DebugInfo>("W_DebugInfo");
+    [[maybe_unused]] DebugInfo* debugInfoWidget = HUDController->AddWidget<DebugInfo>("W_DebugInfo");
+    engine.GetInputController()->RegisterInputBinding(InputBinding(
+        Keycode::T, 
+        InputType::Impulse, 
+        "ToggleDebugInfo", 
+        static_cast<UIElement*>(debugInfoWidget), 
+        &DebugInfo::ToggleVisibility
+    ));
 
     /// PLAY
     engine.BeginPlay();

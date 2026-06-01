@@ -4,13 +4,13 @@
 #include <functional>
 #include <type_traits>
 
+#include "Game/World.hpp"
+#include "Game/Actors/Player.hpp"
+#include "Gamemode.hpp"
+
 #include "Core/EngineSubsystem.hpp"
 #include "Core/Singleton.hpp"
 #include "Game/Control/PlayerController.hpp"
-
-class Player;
-class World;
-class Gamemode;
 
 /**
  * @def SET_DEFAULT_SUBCLASS(def, set)

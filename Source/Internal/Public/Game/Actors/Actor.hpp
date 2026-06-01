@@ -74,10 +74,11 @@ public:
     void DispatchBeginPlay();
 
     /**
-     * @brief Called when actor collides with another actor
+     * @brief Called internally when actor collides with another actor
+     * @warning This function is meant for internal calls only. Do not call this function manually.
      * @param hitResult Information about the hit
      */
-    void OnHit(const HitResult& hitResult);
+    virtual void OnHit(const HitResult& hitResult);
 
     /**
      * @brief Single-char texture for actor

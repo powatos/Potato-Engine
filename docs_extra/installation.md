@@ -102,11 +102,18 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(PotatoEngine)
 
-# Ensure this matches the path to your main file
-add_executable(Game src/main.cpp)
+# Ensure all source code is captured under SOURCES
+# This template assumes project is structured with all source code under root/src/
+file(GLOB_RECURSE SOURCES 
+    "src/*.h"
+    "src/*.hpp"
+    "src/*.cpp"
+)
+
+add_executable(myGameExec ${SOURCES})
 
 # Link libraries to the game
-target_link_libraries(Game PRIVATE PotatoEngine::PotatoEngine)
+target_link_libraries(myGameExec PRIVATE PotatoEngine::PotatoEngine)
 ```
 
 ## Engine externals
@@ -167,16 +174,15 @@ SCRIPT=$(basename "$0")
 CBTYPE=${2:-Debug}
 
 case "$1" in
-    "conf") # ./game conf Debug|Release, generate build files
-        rm -rf $OBJDIR
+    "conf") # ./game.sh conf Debug|Release, generate build files
         cmake -B $OBJDIR -DCMAKE_BUILD_TYPE=$CBTYPE
         echo "Rebuild complete"
         ;;
-    "build"|"b") # ./game build|b, build project
+    "build"|"b") # ./game.sh build|b, build project
         cmake --build $OBJDIR
         echo "Build complete"
         ;;
-    "run"|"r") # ./game run|r, run game
+    "run"|"r") # ./game.sh run|r, run game
         if  [[ -f $OBJDIR/$GAME_TARGET ]]; then
             ./$OBJDIR/$GAME_TARGET
         else
@@ -184,11 +190,11 @@ case "$1" in
             exit 1
         fi
         ;;
-    "clean"|"-c") # ./game clean|-c, reset build
+    "clean"|"-c") # ./game.sh clean|-c, reset build
         rm -rf $OBJDIR
         echo "Cleaned up binaries"
         ;;
-    "flush"|"-f") # ./game flush|-f, flush log file
+    "flush"|"-f") # ./game.sh flush|-f, flush log file
         > $LOGFILE
 	    echo "Flushed $LOGFILE"
         ;;

@@ -24,6 +24,5 @@ public:
      */
     virtual void BeginPlay();
 
-    void RecordSecond();
     
 };
