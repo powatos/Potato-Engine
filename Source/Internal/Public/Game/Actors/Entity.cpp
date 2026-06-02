@@ -5,7 +5,8 @@
 #include "Entity.hpp"
 
 Entity::Entity() {
-
+    MaxHealth = 100.f;
+    Health = MaxHealth;
 }
 
 Entity::~Entity() {

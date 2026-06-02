@@ -15,10 +15,6 @@ TODO:
 - make timers w variadic arg template
 move engine wide MEMBER definitons to constructor, keep ONLY engine functions in Init/beginplay
 
-
-MaxHealth = 100.f;
-Health = MaxHealth;
-
 ---
 Update changelog for every change made to engine  
 Use this to create release notes on every release  
