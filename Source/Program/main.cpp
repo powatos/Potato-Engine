@@ -15,16 +15,6 @@
 
 #include <memory>
 
-void t() {
-    LOG_DEFAULT(LogType::INFO, "e triggered");
-}
-void o() {
-    LOG_DEFAULT(LogType::INFO, "e ongoing");
-}
-void c() {
-    LOG_DEFAULT(LogType::INFO, "e ended");
-}
-
 int main()
 {
     /// ENGINE SETUP
@@ -46,8 +36,6 @@ int main()
     Player* player = playerController->GetPlayer();
     player->SetPosition(Vector2(1, 1));
 
-    player->AddImpulse(Vector2(0, 10));
-
     /// UI SETUP
     [[maybe_unused]] IHUDController* HUDController = engine.GetHUDController();
 
@@ -60,10 +48,6 @@ int main()
         static_cast<UIElement*>(debugInfoWidget), 
         &DebugInfo::ToggleVisibility
     ));
-
-    Block* t = world->SpawnActor<Block>(Vector2(4, 5));
-    t->SetSize(Vector2(5, 1));
-    t->SetCollisionType(CollisionType::Overlap);
 
     /// PLAY
     engine.BeginPlay();

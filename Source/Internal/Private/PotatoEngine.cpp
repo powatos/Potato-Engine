@@ -1,4 +1,7 @@
 /** @file PotatoEngine.cpp */
+
+#include <stdio.h>
+
 #include "Core/Control/GameInstance.hpp"
 #include "Core/Control/Gamemode.hpp"
 #include "Core/Event/EventController.hpp"
@@ -12,20 +15,20 @@
 
 #include "Core/PotatoEngine.hpp"
 
+void startupMessage();
+
 PotatoEngine::PotatoEngine() {
+    startupMessage();
+
     Debug::BindDebugLogs();
 
     LOG_DEFAULT(LogType::VITAL, "PotatoEngine constructed");
-
 
     SubsystemStack.push_back( Engine::Get() );
     SubsystemStack.push_back( IOController::Get() );
     SubsystemStack.push_back( UIController::Get() );
     SubsystemStack.push_back( GameInstance::Get() );
     SubsystemStack.push_back( EventController::Get() );
-
-    // if (key == Keycode::Escape) { LOG_DEFAULT(LogType::DEBUG, "esc"); GameInstance::Get()->RequestShutdown(); }
-
 
 }
 
@@ -92,4 +95,11 @@ void PotatoEngine::Resolve() noexcept {
 
 PotatoEngine::~PotatoEngine() {
     LOG_DEFAULT(LogType::VITAL, "PotatoEngine destroying");
+}
+
+
+void startupMessage() {
+    printf("> POTATO ENGINE\n");
+    printf("> @powatos\n");
+    printf("\n> Loading...\n");
 }

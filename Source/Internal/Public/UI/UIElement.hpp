@@ -12,26 +12,17 @@ class UIElement
 {
 public:
     virtual ~UIElement() = default;
-
-    /** @brief Gets size of UI @returns Vector with x and y size components */
-    Vector2 GetScreenSize() const;
-    /** @brief Sets size of UI @param size Vector with x and y size components */
-    void SetScreenSize(const Vector2& size);
-
-    /** @brief Gets screen position of UI @returns Vector with x and y screen positions */
-    Vector2 GetScreenPosition() const;
-    /** @brief Sets screen position of UI @param ScreenPosition vector with x and y screen positions */
-    void SetScreenPosition(const Vector2& ScreenPosition); // make virtual to override for post-visibility change functionality (always call base method in first line)
     
-    /** @brief Adds offset to UI position @param offset Vector with offset direction */
-    void AddScreenOffset(const Vector2& offset);
-    
-    /** @brief Checks if UI is visible @returns true if visible */
-    bool isVisible() const;
-    /** @brief Sets visibility of UI @param visibility Visibility to set */
-    void SetVisibility(bool visibility); // make virtual to override for post-visibility change functionality (always call base method in first line)
-    /** @brief Toggles visibility of UI */
-    void ToggleVisibility();
+    Vector2 GetScreenSize() const; ///< @brief Gets size of UI @returns Vector with x and y size components
+    void SetScreenSize(const Vector2& size); ///< @brief Sets size of UI @param size Vector with x and y size components
+
+    Vector2 GetScreenPosition() const; ///< @brief Gets screen position of UI @returns Vector with x and y screen positions
+    void SetScreenPosition(const Vector2& ScreenPosition); ///< @brief Sets screen position of UI @param ScreenPosition vector with x and y screen positions
+    void AddScreenOffset(const Vector2& offset); ///< @brief Adds offset to UI position @param offset Vector with offset direction
+
+    bool isVisible() const; ///< @brief Checks if UI is visible @returns true if visible
+    void SetVisibility(bool visibility); ///< @brief Sets visibility of UI @param visibility Visibility to set
+    void ToggleVisibility(); ///< @brief Toggles visibility of UI
 
 private:
     Vector2 ScreenSize;

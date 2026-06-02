@@ -9,11 +9,10 @@ CHANGELOG:
 
 PATCHLOG:
 - Fixed an issue where setting `world.settings.doGravity` didn't affect gravity
+- Fixed an issue where Entity health wasn't initialized correctly
 
 TODO:  
-- update docs: LoadSubclasses, directories, etc
 - make timers w variadic arg template
-move engine wide MEMBER definitons to constructor, keep ONLY engine functions in Init/beginplay
 
 ---
 Update changelog for every change made to engine  

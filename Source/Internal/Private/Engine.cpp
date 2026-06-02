@@ -18,11 +18,6 @@ Engine::Engine() {
 }
 
 void Engine::BeginPlay() {
-    IOController* Controller = IOController::Get();
-    GameInstance* Instance = GameInstance::Get();
-
-    Instance->_isMainTickRunning = true;
-    Controller->SetTicking(true);
 
 }
 

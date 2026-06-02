@@ -16,6 +16,10 @@
 #include "PlayerController.hpp"
 
 PlayerController::PlayerController() {
+    TargetMovementVelocity = 1000.f;
+    JumpForce = 20.f;
+
+    CameraFollowsPlayer = false;
 }
 
 void PlayerController::Initialize() {
@@ -26,10 +30,6 @@ void PlayerController::Initialize() {
     ActiveCamera = world->SpawnActor<Camera>();
 
     SetTicking(true);
-    TargetMovementVelocity = 1000.f;
-    JumpForce = 20.f;
-
-    CameraFollowsPlayer = false;
 }
 
 void PlayerController::Tick([[maybe_unused]] float dt) {

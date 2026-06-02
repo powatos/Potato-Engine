@@ -29,6 +29,8 @@ void GameInstance::BeginPlay() {
     // call BeginPlay on subclasses
     // ActivePlayerController->BeginPlay();
     ActiveGamemode->BeginPlay();
+
+    _isMainTickRunning = true;
 }
 
 void GameInstance::InstantiateSubclasses() {

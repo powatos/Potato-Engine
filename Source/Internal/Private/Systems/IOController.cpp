@@ -34,7 +34,16 @@ IOController::IOController() : FRAMES_PER_SECOND(30.f) {
     ActiveKey = Keycode::UNKNOWN;
     ImpulseKey = Keycode::UNKNOWN;
 
-    // disables escape delay (shorten if arrow/f keys not working)
+    GameInstance* instance = GameInstance::Get();
+
+    FRAMES_PER_SECOND = instance->FRAMES_PER_SECOND;
+    MS_REPEAT_THRESHOLD = instance->MS_REPEAT_THRESHOLD;
+
+}
+
+void IOController::BeginPlay() {
+
+    // disables escape delay (shorten if arrow/func keys not working)
 #if defined(_WIN32) || defined(_WIN64)
     _putenv_s("ESCDELAY", "25");
 #else
@@ -61,21 +70,12 @@ IOController::IOController() : FRAMES_PER_SECOND(30.f) {
     signal(SIGSEGV, crashHandler);
     
     LOG_DEFAULT(LogType::INFO, "ncurses window initialized");
-
-}
-
-void IOController::BeginPlay() {
-
-    WINDOW* boxWindow = static_cast<WINDOW*>(BoxWindow);
     
+    // window border
     box(boxWindow, 0, 0);
     wrefresh(boxWindow);
 
-    GameInstance* instance = GameInstance::Get();
-
-    FRAMES_PER_SECOND = instance->FRAMES_PER_SECOND;
-    MS_REPEAT_THRESHOLD = instance->MS_REPEAT_THRESHOLD;
-
+    SetTicking(true);
 }
 
 void IOController::HandleInput() {

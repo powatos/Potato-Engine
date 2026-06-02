@@ -14,12 +14,13 @@ Player::Player() {
     SetSize(Vector2(2,2));
     SetBounce(0.6f);
     SetUseAsymmetricGravity(true);
+    SetSimulatingPhysics(true);
+
 }
 
 void Player::BeginPlay() {
     Actor::BeginPlay();
 
-    SetSimulatingPhysics(true);
     SetTicking(true);
 }
 

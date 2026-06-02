@@ -98,7 +98,7 @@ include(FetchContent)
 FetchContent_Declare(
     PotatoEngine
     GIT_REPOSITORY https://github.com/powatos/Potato-Engine.git
-    GIT_TAG v1.0-alpha # change to your version preference
+    GIT_TAG vX.Y.Z # change to your engine version
 )
 FetchContent_MakeAvailable(PotatoEngine)
 
@@ -169,7 +169,7 @@ Build scripts are reccommended to enhance development:
 ```bash
 #!/bin/bash
 
-GAME_TARGET=myGame # replace with your target executable 
+GAME_TARGET=myGameExec # replace with your target executable 
 
 OBJDIR=build/
 LOGFILE=logs/debug.log
@@ -211,5 +211,5 @@ esac
 ```
 <em>
 Build script in <code>./game.sh</code> used for automating building procedures.  
-Ensure the script is runnable before using: <code>chmod +x game.sh</code> (may have to git bash on windows)
+Ensure the script is runnable before using: <code>chmod +x game.sh</code> (git bash on windows)
 </em>

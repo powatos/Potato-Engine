@@ -11,6 +11,7 @@ This is the landing page for the API Reference. Explore the documentation to fin
 - A simple game tutorial using the engine can be found [here](tutorial.html)
 
 @htmlonly
+<!-- PAGE FOOTER -->
 <br><br><br>
 <hr style="border: 0; border-top: 1px solid #ccc; margin-bottom: 20px;">
 <footer style="display: flex; justify-content: space-between; align-items: center; color: #666; font-size: 0.85em; font-family: sans-serif;">

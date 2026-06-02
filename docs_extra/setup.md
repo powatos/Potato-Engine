@@ -82,6 +82,7 @@ Gets the game instance and sets the FPS and repeat threshold values
 </em>
 
 ## Level Setup
+@remark This is currently under developoment. It is not required to start gameplay 
 Load the persistent level. Fetch dynamic actors (TODO) and load static actors into world using @ref PersistentLevel::LoadStaticActors "LoadStaticActors()".  
 The save file passed in must be reoccuring (eg. `save1.json` and `save2.json` may be used interchangably for unique save states)
 
@@ -171,6 +172,8 @@ int main() {
 <em>
 After resolving engine, a goodbye message is displayed and the program returns
 </em>
+
+<br>
 
 # Example
 This is a full example of a prototype game main function
