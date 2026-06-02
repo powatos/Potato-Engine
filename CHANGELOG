@@ -3,6 +3,7 @@ Version v1.5-alpha
 CHANGELOG:  
 - Debug now truncates old log file
 - `BeginPlay()` dispatch consolidated
+- Camera follows player now settable in `PlayerController`
 
 - Updated documentation
 
@@ -12,7 +13,6 @@ PATCHLOG:
 TODO:  
 - update docs: LoadSubclasses, directories, etc
 - make timers w variadic arg template
-optional cammera follow
 move engine wide MEMBER definitons to constructor, keep ONLY engine functions in Init/beginplay
 
 \# Include the src directory for header files

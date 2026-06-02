@@ -29,12 +29,13 @@ void PlayerController::Initialize() {
     TargetMovementVelocity = 1000.f;
     JumpForce = 20.f;
 
+    CameraFollowsPlayer = false;
 }
 
 void PlayerController::Tick([[maybe_unused]] float dt) {
     Tickable::Tick(dt);
     
-    { /// Camera follow logic
+    if (CameraFollowsPlayer) { /// Camera follow logic
         if (ActivePlayer == nullptr) { return; }
         Vector2 newCamPos = ActivePlayer->GetPosition();
         

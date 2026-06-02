@@ -67,6 +67,8 @@ protected:
     float TargetMovementVelocity;
     float JumpForce;
 
+    bool CameraFollowsPlayer;
+
 private:
     Player* ActivePlayer;
     Camera* ActiveCamera;

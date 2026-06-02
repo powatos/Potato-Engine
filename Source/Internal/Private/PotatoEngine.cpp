@@ -46,8 +46,6 @@ void PotatoEngine::LoadSubclasses() {
 void PotatoEngine::BeginPlay()
 {
     Engine* engine = Engine::Get();
-    GameInstance* instance = GameInstance::Get();
-    World* world = instance->GetWorld();
 
     // Bind exit key (intentional lambda to surpress unregisters)
     InputController->RegisterInputBinding(InputBinding(
@@ -56,7 +54,6 @@ void PotatoEngine::BeginPlay()
         "ExitGame", 
         []() { GameInstance::Get()->RequestShutdown(); }
     ));
-    
 
     // Dispatch on subsystems
     for (IEngineSubsystem* sys : SubsystemStack) {
