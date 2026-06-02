@@ -44,7 +44,7 @@ int main()
     /// PLAYER SETUP
     PlayerController* playerController = instance->GetPlayerController();
     Player* player = playerController->GetPlayer();
-    player->SetPosition(Vector2(3, 3));
+    player->SetPosition(Vector2(1, 1));
 
     player->AddImpulse(Vector2(0, 10));
 
@@ -60,6 +60,10 @@ int main()
         static_cast<UIElement*>(debugInfoWidget), 
         &DebugInfo::ToggleVisibility
     ));
+
+    Block* t = world->SpawnActor<Block>(Vector2(4, 5));
+    t->SetSize(Vector2(5, 1));
+    t->SetCollisionType(CollisionType::Overlap);
 
     /// PLAY
     engine.BeginPlay();

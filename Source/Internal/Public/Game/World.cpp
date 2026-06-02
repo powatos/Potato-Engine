@@ -129,38 +129,42 @@ void World::ResolveCollision(Actor* a, Actor* b, const Vector2& aPos, const Vect
     hitResult.hitOverlap = Vector2(right - left, top - bot);
     hitResult.hitPosition = Vector2(left, top);
 
-    // calculate correction details
-    const float seperationAmount = std::max(penetration - Settings.clipAllowed, 0.f) * Settings.clipDampeningFactor;
-    const Vector2 correctionVector = hitResult.hitNormal * seperationAmount;
+    // only apply collision correction if both actors are blocking
+    if (a->GetCollisionType() == CollisionType::Block && b->GetCollisionType() == CollisionType::Block) {
+        // calculate correction details
+        const float seperationAmount = std::max(penetration - Settings.clipAllowed, 0.f) * Settings.clipDampeningFactor;
+        const Vector2 correctionVector = hitResult.hitNormal * seperationAmount;
 
-    // weighted correction based on mass
-    const float aInvMass = a->GetMovability() == ActorMovability::Static ? 0.f : (1.f / a->GetMass());
-    const float bInvMass = b->GetMovability() == ActorMovability::Static ? 0.f : (1.f / b->GetMass());
-    const float totalInvMass = aInvMass + bInvMass;
+        // weighted correction based on mass
+        const float aInvMass = a->GetMovability() == ActorMovability::Static ? 0.f : (1.f / a->GetMass());
+        const float bInvMass = b->GetMovability() == ActorMovability::Static ? 0.f : (1.f / b->GetMass());
+        const float totalInvMass = aInvMass + bInvMass;
 
-    // correct positions
-    if (totalInvMass > 0.f) {
-        a->AddLocalOffset( correctionVector * (aInvMass / totalInvMass) );
-        b->AddLocalOffset( -correctionVector * (bInvMass / totalInvMass) );
-    }
+        // correct positions
+        if (totalInvMass > 0.f) {
+            a->AddLocalOffset( correctionVector * (aInvMass / totalInvMass) );
+            b->AddLocalOffset( -correctionVector * (bInvMass / totalInvMass) );
+        }
 
-    // apply impulse based on newtons law of restitution
-    const Vector2 relativeVel = a->GetVelocity() - b->GetVelocity() ;
-    const float normalVel = relativeVel.Dot(hitResult.hitNormal);
+        // apply impulse based on newtons law of restitution
+        const Vector2 relativeVel = a->GetVelocity() - b->GetVelocity() ;
+        const float normalVel = relativeVel.Dot(hitResult.hitNormal);
 
-    if (normalVel < 0.f && totalInvMass > 0.f) {
-        float restitution = a->GetBounce() * b->GetBounce(); // amount of bounce
+        if (normalVel < 0.f && totalInvMass > 0.f) {
+            float restitution = a->GetBounce() * b->GetBounce(); // amount of bounce
 
-        if (std::abs(normalVel) < Settings.bounceThreshold) { restitution = 0.f; } // low restitutions dont bounce
+            if (std::abs(normalVel) < Settings.bounceThreshold) { restitution = 0.f; } // low restitutions dont bounce
 
-        const float impulseMag = -(1.f + restitution) * normalVel / totalInvMass;
-        const Vector2 impulse = hitResult.hitNormal * impulseMag;
+            const float impulseMag = -(1.f + restitution) * normalVel / totalInvMass;
+            const Vector2 impulse = hitResult.hitNormal * impulseMag;
 
-        // conservation of energy
-        a->AddImpulse(impulse * aInvMass);
-        b->AddImpulse(-impulse * bInvMass);
-    }
+            // conservation of energy
+            a->AddImpulse(impulse * aInvMass);
+            b->AddImpulse(-impulse * bInvMass);
+        }
+    }   
 
+    // always dispatch hit events even if not blocking
     HitResult HitResultA = hitResult;
     HitResultA.otherActor = b;
     a->OnHit(HitResultA);

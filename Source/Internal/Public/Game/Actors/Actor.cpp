@@ -25,6 +25,7 @@ Actor::Actor() {
     Mass = 10.f;
     SimulatePhysics = true;
     Movability = ActorMovability::Movable;
+    CollisionResponse = CollisionType::Block;
     
 }
 
@@ -136,6 +137,13 @@ ActorMovability Actor::GetMovability() const {
 }
 void Actor::SetMovability(ActorMovability movability) {
     Movability = movability;
+}
+
+CollisionType Actor::GetCollisionType() const {
+    return CollisionResponse;
+}
+void Actor::SetCollisionType(CollisionType collisionType) {
+    CollisionResponse = collisionType;
 }
 
 float Actor::GetBounce() const {

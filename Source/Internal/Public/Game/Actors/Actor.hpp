@@ -7,10 +7,22 @@
 
 #include "Util/Vector2.hpp"
 
+/**
+ * @brief Enum representing movability of an actor
+ */
 enum class ActorMovability
 {
-    Movable,
-    Static
+    Movable, ///< @brief Actor is collision corrected 
+    Static ///< @brief Actor is physics-immovable
+};
+
+/**
+ * @brief Enum representing collision response of an actor
+ */
+enum class CollisionType
+{
+    Overlap, ///< @brief Actor generates hit events without collision correction
+    Block ///< @brief Actor generates hit events with collision correction
 };
 
 /**
@@ -65,6 +77,9 @@ public:
     ActorMovability GetMovability() const; /**< @brief Gets movability @returns Movability */
     void SetMovability(ActorMovability movability); /**< @brief Sets movability @param movability Movability to set */
 
+    CollisionType GetCollisionType() const; /**< @brief Gets collision type @returns Collision type */
+    void SetCollisionType(CollisionType collisionType); /**< @brief Sets collision type @param CollisionType Collision type to set */
+
     float GetBounce() const; /**< @brief Gets bounce @returns Bounce */
     void SetBounce(float bounce); /**< @brief Sets bounce @param bounce Bounce to set */
 
@@ -76,6 +91,13 @@ public:
     /**
      * @brief Called internally when actor collides with another actor
      * @warning This function is meant for internal calls only. Do not call this function manually.
+     * @note Override to implement hit functionality and always call base method:
+     * @code
+     * void ActorClass::OnHit(const HitResult& hitResult) {
+     *    BaseActor::OnHit(hitResult);
+     *    // ...
+     * }
+     * @endcode
      * @param hitResult Information about the hit
      */
     virtual void OnHit(const HitResult& hitResult);
@@ -110,6 +132,7 @@ private:
     Vector2 Size;
     
     ActorMovability Movability;
+    CollisionType CollisionResponse;
 
     float Bounciness;
     float Mass;

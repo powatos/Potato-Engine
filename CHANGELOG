@@ -1,12 +1,14 @@
 Version v1.3-pre
 
 CHANGELOG:  
+- actor collision types implemented
+- consolidated engine debug functionality
 
 PATCHLOG:
 
 TODO:  
 - update docs: LoadSubclasses, directories, etc
-
+- make timers w variadic arg template
 ---
 Update changelog for every change made to engine  
 Use this to create release notes on every release  

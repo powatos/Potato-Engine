@@ -24,6 +24,5 @@ protected:
     virtual void Tick([[maybe_unused]] float dt) override;
 
 private:
-    // PlayerController* OwningController;
 
 };
