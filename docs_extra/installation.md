@@ -102,15 +102,19 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(PotatoEngine)
 
-# Ensure all source code is captured under SOURCES
-# This template assumes project is structured with all source code under root/src/
+# Ensure all game code is captured under SOURCES (assumes root/src/...)
 file(GLOB_RECURSE SOURCES 
     "src/*.h"
     "src/*.hpp"
     "src/*.cpp"
 )
 
+# Ensure the executable name matches the other references
 add_executable(myGameExec ${SOURCES})
+
+# Include the source directory for header files (assumes root/src/...)
+target_include_directories(myGameExec PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
 
 # Link libraries to the game
 target_link_libraries(myGameExec PRIVATE PotatoEngine::PotatoEngine)
@@ -157,7 +161,7 @@ int main()
 }
 ```
 
-For more detailed information, continue to the next step: [Setting Up Your Game](setup.html)
+For more detailed information, continue to the next section: [Setting Up Your Game](setup.html)
 
 ## Extra
 
