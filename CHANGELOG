@@ -7,11 +7,11 @@ CHANGELOG:
 - Updated documentation
 
 PATCHLOG:
+- Fixed an issue where setting `world.settings.doGravity` didn't affect gravity
 
 TODO:  
 - update docs: LoadSubclasses, directories, etc
 - make timers w variadic arg template
-fix dograviy check
 optional cammera follow
 move engine wide MEMBER definitons to constructor, keep ONLY engine functions in Init/beginplay
 

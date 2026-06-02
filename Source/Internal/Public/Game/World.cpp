@@ -77,11 +77,13 @@ void World::UpdateActorPhysics(Actor* actor, float dt) {
     
     // Sum all acting forces
     Vector2 forces = actor->GetForces();
-    if (Settings.doGravity && actor->GetVelocity().Dot(Vector2::Up()) > 0.f) {
-        forces += Vector2(0, -Settings.upGravity); 
-    } else {
-        // down gravity used if actor isnt asymettric
-        forces += Vector2(0, -Settings.downGravity);
+    if (Settings.doGravity) {
+        if (actor->IsUsingAsymmetricGravity() && actor->GetVelocity().Dot(Vector2::Up()) > 0.f) {
+            forces += Vector2(0, -Settings.upGravity); 
+        } else {
+            // down gravity used if actor isnt asymettric
+            forces += Vector2(0, -Settings.downGravity);
+        }
     }
 
     const Vector2 acceleration = forces / actor->GetMass();
