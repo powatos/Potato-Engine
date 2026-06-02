@@ -17,7 +17,7 @@ Engine::Engine() {
 
 }
 
-void Engine::_BeginPlay() {
+void Engine::BeginPlay() {
     IOController* Controller = IOController::Get();
     GameInstance* Instance = GameInstance::Get();
 

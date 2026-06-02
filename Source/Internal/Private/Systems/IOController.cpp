@@ -64,7 +64,7 @@ IOController::IOController() : FRAMES_PER_SECOND(30.f) {
 
 }
 
-void IOController::_BeginPlay() {
+void IOController::BeginPlay() {
 
     WINDOW* boxWindow = static_cast<WINDOW*>(BoxWindow);
     

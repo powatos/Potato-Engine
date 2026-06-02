@@ -10,8 +10,8 @@
 Logger LOG_DEFAULT;
 
 void Logger::init(const char* path){    
-    LogFile.open(path, std::ios::app);
-    LogFile << "\n\n\n"; // delimit on every binding
+    LogFile.open(path, std::ios::trunc);
+    LogFile.clear();
 }
 
 std::string Logger::getTimestampUTC() {

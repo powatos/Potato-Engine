@@ -20,6 +20,7 @@ static struct __##type##_Register { \
 
 /**
  * @brief Abstract factory class inherited by all classes that should be archived
+ * @remark Persistence is currently still under development
  * @details This class is an abstract wrapper to streamline saving and loading objects. \n <b> Objects to be saved
  * must use @ref ARCHIVE_STATIC() "ARCHIVE_STATIC" </b>
  * @note This class *must* be inherited from for object classes that should archive objects.

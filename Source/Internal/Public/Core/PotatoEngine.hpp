@@ -3,11 +3,11 @@
 #include <memory>
 #include <vector>
 
-#include "EngineSubsystem.hpp"
+#include "Core/Input/InputController.hpp"
+#include "Core/Event/EventController.hpp"
+#include "UI/HUDController.hpp"
 
-class IInputController;
-class EventController;
-class IHUDController;
+#include "EngineSubsystem.hpp"
 
 /**
  * @brief Global engine singleton class

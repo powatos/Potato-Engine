@@ -43,6 +43,7 @@ public:
     virtual void Resolve() noexcept override;
 
     void LoadSubclasses();
+    virtual void BeginPlay() override;
 
     /** @brief Gets @ref World "world" object @returns @ref World "World" object */
     World* GetWorld() const;

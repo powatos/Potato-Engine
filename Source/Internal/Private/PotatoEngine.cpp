@@ -13,9 +13,10 @@
 #include "Core/PotatoEngine.hpp"
 
 PotatoEngine::PotatoEngine() {
+    Debug::BindDebugLogs();
+
     LOG_DEFAULT(LogType::VITAL, "PotatoEngine constructed");
 
-    Debug::BindDebugLogs();
 
     SubsystemStack.push_back( Engine::Get() );
     SubsystemStack.push_back( IOController::Get() );
@@ -59,14 +60,8 @@ void PotatoEngine::BeginPlay()
 
     // Dispatch on subsystems
     for (IEngineSubsystem* sys : SubsystemStack) {
-        sys->_BeginPlay();
+        sys->BeginPlay();
     }
-
-    // Dispatch on world (dispatches actors)
-    world->BeginPlay();
-
-    // Dispatch on gamemode
-    instance->GetGamemode()->BeginPlay();
 
     // Begin game loop
     engine->main();

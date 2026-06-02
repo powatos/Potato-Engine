@@ -19,7 +19,7 @@ class IOController : public Singleton<IOController>, public IEngineSubsystem, pu
     friend class Singleton<IOController>;
 public:
     virtual void Resolve() noexcept override;
-    virtual void _BeginPlay() override;
+    virtual void BeginPlay() override;
 
     void HandleInput();
     void Draw();

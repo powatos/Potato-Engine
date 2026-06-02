@@ -10,5 +10,5 @@ class IEngineSubsystem
 public:
     virtual ~IEngineSubsystem() = default;
     virtual void Resolve() noexcept = 0;
-    virtual void _BeginPlay() {};
+    virtual void BeginPlay() {};
 };

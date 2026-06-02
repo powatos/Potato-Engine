@@ -20,6 +20,17 @@ GameInstance::GameInstance() {
     InstantiateSubclasses();
 }
 
+void GameInstance::BeginPlay() {
+    IEngineSubsystem::BeginPlay();
+
+    // call BeginPlay on world (dispatches actors)
+    world->BeginPlay();
+
+    // call BeginPlay on subclasses
+    // ActivePlayerController->BeginPlay();
+    ActiveGamemode->BeginPlay();
+}
+
 void GameInstance::InstantiateSubclasses() {
 
     // User-defined Instantiaters

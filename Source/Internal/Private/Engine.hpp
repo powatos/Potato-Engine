@@ -10,7 +10,7 @@ class Engine : public Singleton<Engine>, public IEngineSubsystem
     friend class Singleton<Engine>;
 public:
     virtual void Resolve() noexcept override;
-    virtual void _BeginPlay() override;
+    virtual void BeginPlay() override;
 
     int main();
 
