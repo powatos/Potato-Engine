@@ -4,7 +4,7 @@
 
 This page covers setup of the engine prior to making the game.
 
-**Note: code examples omit header includes for visibility. See [Header Includes](#header-includes) for more information**
+**Note: code examples omit header includes for visibility. See @ref header-includes "Header Includes" for more information**
 
 @remark The engine is still under development and this page is subject to change.
 
@@ -43,6 +43,7 @@ int main() {
 A welcome message function, as well as game constants are defined prior to initializing the engine
 </em>
 
+@anchor header-includes
 ## Header Includes
 Potato Engine uses modular class linking. All engine classes must be included to the active code file:
 ```cpp

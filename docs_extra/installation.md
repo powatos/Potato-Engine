@@ -18,10 +18,11 @@ if command not found or version is less than 3.24, continue with the next steps
 
 <br>
 
-* [Linux](#linux)
-* [Windows](#windows)
-* [MacOS](#macos)
+* @ref cmake-setup-linux "Linux"
+* @ref cmake-setup-windows "Windows"
+* @ref cmake-setup-macos "MacOS"
 
+@anchor cmake-setup-linux
 ### Linux
 ```bash
 sudo apt update
@@ -55,6 +56,7 @@ cmake --version
 if cmake is still not updated to a version after 3.24, get help at <a href="https://cmake.org">cmake.org</a>
 </em>
 
+@anchor cmake-setup-windows
 ### Windows
 ```powershell
 # install cmake
@@ -65,6 +67,7 @@ cmake --version
 if cmake is still not updated to a version after 3.24, get help at <a href="https://cmake.org">cmake.org</a>
 </em>
 
+@anchor cmake-setup-macos
 ### MacOS
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

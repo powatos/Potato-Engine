@@ -1,15 +1,8 @@
-Version v1.5-alpha
+Version v1.5.1
 
 CHANGELOG:  
-- Debug now truncates old log file
-- `BeginPlay()` dispatch consolidated
-- Camera follows player now settable in `PlayerController`
-
-- Updated documentation
 
 PATCHLOG:
-- Fixed an issue where setting `world.settings.doGravity` didn't affect gravity
-- Fixed an issue where Entity health wasn't initialized correctly
 
 TODO:  
 - make timers w variadic arg template
