@@ -3,6 +3,7 @@ Version v1.5.1
 CHANGELOG:  
 
 PATCHLOG:
+- fixed an issue where UI wouldnt add to screen when called before global beginplay
 
 TODO:  
 - make timers w variadic arg template

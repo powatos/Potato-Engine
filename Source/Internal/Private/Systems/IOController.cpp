@@ -39,9 +39,7 @@ IOController::IOController() : FRAMES_PER_SECOND(30.f) {
     FRAMES_PER_SECOND = instance->FRAMES_PER_SECOND;
     MS_REPEAT_THRESHOLD = instance->MS_REPEAT_THRESHOLD;
 
-}
-
-void IOController::BeginPlay() {
+    /// Initialize Screen
 
     // disables escape delay (shorten if arrow/func keys not working)
 #if defined(_WIN32) || defined(_WIN64)
@@ -74,6 +72,11 @@ void IOController::BeginPlay() {
     // window border
     box(boxWindow, 0, 0);
     wrefresh(boxWindow);
+
+}
+
+void IOController::BeginPlay() {
+
 
     SetTicking(true);
 }
