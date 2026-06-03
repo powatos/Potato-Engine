@@ -1,9 +1,8 @@
-Version v1.5.1
+Version v1.5.2
 
 CHANGELOG:  
 
 PATCHLOG:
-- fixed an issue where UI wouldnt add to screen when called before global beginplay
 
 TODO:  
 - make timers w variadic arg template
@@ -13,4 +12,4 @@ Update changelog for every change made to engine
 Use this to create release notes on every release  
 Update version AFTER that release is made  
 Reset changelog AFTER every release    
-Todo is temporary  
+Todo is temporary  https://powatos.github.io/Potato-Engine/Input_8hpp_source.html

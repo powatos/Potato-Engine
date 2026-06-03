@@ -2,7 +2,13 @@
 
 # Installing Potato Engine
 
-This page convers installation of the Potato Engine
+This page convers installation of the Potato Engine.
+
+Installation consists of the following parts. Some parts may be skipped if already setup properly.
+1. Setup CMake and ensure it is updated
+2. Configure CMake for the project and link against engine
+3. Make required directories
+4. Build program and run
 
 @remark Potato Engine is currently under development and this page is subject to change
 
@@ -125,6 +131,7 @@ target_link_libraries(myGameExec PRIVATE PotatoEngine::PotatoEngine)
 
 ## Engine externals
 After configuring CMake, setup the external directories.
+
 @remark This section is under development
 
 #### Log folder
@@ -134,6 +141,12 @@ Create the default log file: `logs/debug.log`
 #### Data folder
 Create a directory in the project root: `Data/`  
 Create the textures folder: `Data/Textures/` (texture files can be placed here)
+
+*...or copy and paste the following command into the terminal:* 
+```bash
+# Ensure this command is ran from the root directory
+mkdir -p logs Data/Textures && touch logs/debug.log
+```
 
 
 ## Build configuration
