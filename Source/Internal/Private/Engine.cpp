@@ -4,7 +4,7 @@
 #include <thread>
 
 #include "Core/Control/GameInstance.hpp"
-#include "Game/World.hpp"
+#include "Game/World/World.hpp"
 #include "Systems/IOController.hpp"
 
 #include "Debug/Debug.hpp"

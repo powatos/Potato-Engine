@@ -12,7 +12,7 @@
 
 #include "Debug/Debug.hpp"
 #include "Util/Vector2.hpp"
-#include "Game/World.hpp"
+#include "Game/World/World.hpp"
 #include "Util/GameplayHelper.hpp"
 #include "Core/Control/GameInstance.hpp"
 #include "Game/Control/PlayerController.hpp"

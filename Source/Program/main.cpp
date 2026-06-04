@@ -6,7 +6,7 @@
 #include <Core/PotatoEngine.hpp>
 #include <Game/Actors/Block.hpp>
 #include <Game/Actors/Player.hpp>
-#include <Game/World.hpp>
+#include <Game/World/World.hpp>
 #include <UI/HUDController.hpp>
 #include <UI/Widgets/Objects/DebugInfo.hpp>
 

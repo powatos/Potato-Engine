@@ -2,7 +2,7 @@
 
 #include "Game/Actors/Block.hpp"
 #include "Game/Actors/Player.hpp"
-#include "Game/HitResult.hpp"
+#include "Game/World/HitResult.hpp"
 
 #include "Debug/Debug.hpp"
 #include "Util/GameplayHelper.hpp"

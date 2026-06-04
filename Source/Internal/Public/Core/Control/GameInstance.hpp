@@ -4,7 +4,7 @@
 #include <functional>
 #include <type_traits>
 
-#include "Game/World.hpp"
+#include "Game/World/World.hpp"
 #include "Game/Actors/Player.hpp"
 #include "Gamemode.hpp"
 

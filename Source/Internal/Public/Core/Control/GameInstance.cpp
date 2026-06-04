@@ -2,7 +2,7 @@
 
 #include "Core/Control/Gamemode.hpp"
 #include "Game/Actors/Player.hpp"
-#include "Game/World.hpp"
+#include "Game/World/World.hpp"
 
 #include "Debug/Debug.hpp"
 

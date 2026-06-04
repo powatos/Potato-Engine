@@ -1,24 +1,26 @@
 /** @file PotatoEngine.cpp */
 
 #include <stdio.h>
+#include <cstdlib>
 
 #include "Core/Control/GameInstance.hpp"
 #include "Core/Control/Gamemode.hpp"
 #include "Core/Event/EventController.hpp"
 #include "Engine.hpp"
-#include "Game/World.hpp"
+#include "Game/World/World.hpp"
 #include "Systems/IOController.hpp"
 #include "Systems/UIController.hpp"
+#include "Core/Textures/TextureManager.hpp"
 #include "UI/HUDController.hpp"
 
 #include "Debug/Debug.hpp"
 
 #include "Core/PotatoEngine.hpp"
 
-void startupMessage();
+void clearConsole();
 
 PotatoEngine::PotatoEngine() {
-    startupMessage();
+    startup();
 
     Debug::BindDebugLogs();
 
@@ -28,6 +30,7 @@ PotatoEngine::PotatoEngine() {
     SubsystemStack.push_back( IOController::Get() );
     SubsystemStack.push_back( UIController::Get() );
     SubsystemStack.push_back( GameInstance::Get() );
+    SubsystemStack.push_back( TextureManager::Get() );
     SubsystemStack.push_back( EventController::Get() );
 
 }
@@ -36,6 +39,14 @@ PotatoEngine& PotatoEngine::Get()
 {
     static PotatoEngine engine;
     return engine;
+}
+
+void PotatoEngine::startup() {
+    clearConsole();
+
+    printf("> POTATO ENGINE\n");
+    printf("> @powatos\n");
+    printf("\n> Loading...\n");
 }
 
 void PotatoEngine::LoadSubclasses() {
@@ -89,6 +100,7 @@ void PotatoEngine::Resolve() noexcept {
         SubsystemStack.erase(it);
     }
 
+    clearConsole();
     LOG_DEFAULT(LogType::VITAL, "Subsystem stack resolved");
 }
 
@@ -98,8 +110,10 @@ PotatoEngine::~PotatoEngine() {
 }
 
 
-void startupMessage() {
-    printf("> POTATO ENGINE\n");
-    printf("> @powatos\n");
-    printf("\n> Loading...\n");
+void clearConsole() {
+#if defined(_WIN32) || defined(_WIN64)
+    std::system("cls");
+#else
+    std::system("clear");
+#endif
 }

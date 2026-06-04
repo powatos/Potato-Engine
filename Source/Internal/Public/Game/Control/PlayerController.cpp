@@ -8,7 +8,7 @@
 #include "Core/PotatoEngine.hpp"
 #include "Game/Actors/Camera.hpp"
 #include "Game/Actors/Player.hpp"
-#include "Game/World.hpp"
+#include "Game/World/World.hpp"
 
 #include "Debug/Debug.hpp"
 #include "Util/GameplayHelper.hpp"

@@ -1,6 +1,8 @@
 Version v1.5.2
 
 CHANGELOG:  
+- Changed `World.hpp` directory: `Game/World.hpp` -> `Game/World/World.hpp`
+- Changed `HitResult.hpp` directory: `Game/HitResult.hpp` -> `Game/World/HitResult.hpp`
 
 PATCHLOG:
 

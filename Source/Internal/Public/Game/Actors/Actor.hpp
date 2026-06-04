@@ -3,7 +3,7 @@
 
 #include "Core/Data/Archivable.hpp"
 #include "Core/Event/Tickable.hpp"
-#include "Game/HitResult.hpp"
+#include "Game/World/HitResult.hpp"
 
 #include "Util/Vector2.hpp"
 

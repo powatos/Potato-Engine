@@ -59,4 +59,7 @@ protected:
     IInputController* InputController;
     IHUDController* HUDController;
     EventController* NativeEventController;
+
+private:
+    void startup();
 };

@@ -3,7 +3,7 @@
 #include "Core/Control/GameInstance.hpp"
 #include "Game/Actors/Actor.hpp"
 #include "Game/Actors/Camera.hpp"
-#include "Game/World.hpp"
+#include "Game/World/World.hpp"
 
 #include "Util/Vector2.hpp"
 

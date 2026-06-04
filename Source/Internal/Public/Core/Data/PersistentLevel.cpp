@@ -2,7 +2,7 @@
 
 #include "Archivable.hpp"
 #include "Core/Control/GameInstance.hpp"
-#include "Game/World.hpp"
+#include "Game/World/World.hpp"
 #include "nlohmann/json.hpp"
 
 #include "Debug/Debug.hpp"

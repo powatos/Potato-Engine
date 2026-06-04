@@ -5,7 +5,7 @@
 #include "Core/Control/GameInstance.hpp"
 #include "Core/Event/EventController.hpp"
 #include "Core/PotatoEngine.hpp"
-#include "Game/World.hpp"
+#include "Game/World/World.hpp"
 
 #include "Debug/Debug.hpp"
 #include "Util/Vector2.hpp"
