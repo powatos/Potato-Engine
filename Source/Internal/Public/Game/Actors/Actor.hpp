@@ -50,6 +50,7 @@ public:
 
     Vector2 GetSize() const; /**< @brief Gets size @returns Size */
     void SetSize(const Vector2& size); /**< @brief Sets size @param size Size to set */
+    void ResizeToTexture(); /**< @brief Resizes the actor to match the texture bounding box */
 
     float GetRotation() const; /**< @brief Gets rotation @returns rotation */
     void SetRotation(float rotation); /**< @brief Sets rotation @param rotation Rotation to set (degrees) */

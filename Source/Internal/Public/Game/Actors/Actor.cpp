@@ -77,6 +77,13 @@ Vector2 Actor::GetSize() const {
 void Actor::SetSize(const Vector2 &size) { 
     Size = size;
 }
+void Actor::ResizeToTexture() {
+
+    Size = Vector2{
+        
+    };
+
+}
 
 float Actor::GetRotation() const { 
     return Rotation; 

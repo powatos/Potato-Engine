@@ -14,13 +14,12 @@ struct Texture
      * @param textureFile Name of texture file in the Textures directory
      */
     Texture(const std::string& textureFile);
-
     Texture() = default;
+    Texture(const Texture& other); 
 
-    /** @brief returns the raw texture vector */
-    const std::vector<std::wstring>& raw_vec() const;
-    /** @brief returns the raw texture string */
-    const std::wstring raw() const;
+    
+    const std::vector<std::wstring>& raw_vec() const; ///< @brief returns the raw texture vector
+    const std::wstring& raw() const; ///< @brief returns the raw texture string
 
     /**
      * @brief bool overload that checks if Texture is valid
@@ -32,5 +31,7 @@ struct Texture
 
 private:
     std::vector<std::wstring> data;
+
+    std::wstring cachedStr;
 
 };

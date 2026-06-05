@@ -10,9 +10,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CURSES_NEED_WIDE TRUE)
 find_Package(Curses REQUIRED)
 
-message(STATUS "Curses Lib: ${CURSES_LIBRARY}")
-message(STATUS "Curses Include: ${CURSES_INCLUDE_PATH}")
-
 if (Curses_FOUND AND NOT TARGET Curses::Curses)
     add_library(Curses::Curses INTERFACE IMPORTED)
     set_target_properties(Curses::Curses PROPERTIES
@@ -42,7 +39,7 @@ if (MSVC)
     )
 else()
     target_compile_options(PotatoEngine PRIVATE 
-        -Wall -Wpedantic -Wno-unknown-pragmas
+        -Wall -Wpedantic -Wno-unknown-pragmas -finput-charset=UTF-8 -fexec-charset=UTF-8
         $<$<CONFIG:DEBUG>:-g -O0>
         $<$<CONFIG:RELEASE>:-O3>
     )
@@ -73,7 +70,7 @@ if (GAME_SOURCES)
         )
     else()
         target_compile_options(Program PRIVATE 
-            -Wall -Wpedantic -Wno-unknown-pragmas
+            -Wall -Wpedantic -Wno-unknown-pragmas -finput-charset=UTF-8 -fexec-charset=UTF-8
             $<$<CONFIG:DEBUG>:-g -O0>
             $<$<CONFIG:RELEASE>:-O3>
         )

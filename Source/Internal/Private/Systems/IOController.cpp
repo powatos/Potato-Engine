@@ -180,6 +180,9 @@ void IOController::DrawLevel() {
         const Vector2 camOffsetActorPos = Vector2(actorPos.x - camera->GetPosition().x, actorPos.y);
         const Vector2 screenVector = GameplayHelper::VecToScreenVec(camOffsetActorPos);
         
+        const int scrVecX = static_cast<int>(screenVector.x);
+        const int scrVecY = static_cast<int>(screenVector.y);
+
         const Vector2 actorSize = actor->GetSize();
 
         if (actor->IsUsingCTex()) {
@@ -193,23 +196,22 @@ void IOController::DrawLevel() {
                 }
 
                 mvwaddstr(displayWindow, 
-                    static_cast<int>(screenVector.x + r), 
-                    static_cast<int>(screenVector.y), 
+                    scrVecX + r, 
+                    scrVecY, 
                     textureRowStr.c_str()
                 );
             }
         } else {
-            const wchar_t* tex = actor->GetTexture().raw().c_str();
-            
-            mvwaddwstr(displayWindow,
-                static_cast<int>(screenVector.x),
-                static_cast<int>(screenVector.y),
-                tex
-            );
+            const std::vector<std::wstring>& texVec = actor->GetTexture().raw_vec();
+
+            int row = scrVecX;
+
+            for (const std::wstring& wline : texVec) {
+                mvwaddwstr(displayWindow, row, scrVecY, wline.c_str());
+                ++row;
+            }
 
         }
-
-        
 
     }
 

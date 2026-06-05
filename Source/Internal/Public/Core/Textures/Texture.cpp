@@ -19,29 +19,32 @@ Texture::Texture(const std::string& textureFile) {
         return;
     }
 
-    std::wifstream file(filePath);
+    std::ifstream file(filePath);
     if (!file.is_open()) {
         LOG_DEFAULT(LogType::ERROR, "Could not open texture file at {}", filePath.string());
         return;
     }
 
-    file.imbue(std::locale(file.getloc(), new std::codecvt_utf8<wchar_t>));
+    std::string line;
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 
-    std::wstring line;
     while (std::getline(file, line)) {
-        data.push_back(line);
+        std::wstring wline = converter.from_bytes(line); 
+        data.push_back(wline);
     }
+
+    for (const std::wstring& line : data) {
+        cachedStr += line;
+        cachedStr += '\n';
+    }
+}
+Texture::Texture(const Texture& other) {
+    data = other.data;
 }
 
 const std::vector<std::wstring>& Texture::raw_vec() const {
     return data;
 }
-const std::wstring Texture::raw() const {
-    std::wstring str{};
-    for (const std::wstring& line : data) {
-        str += line;
-        str += '\n';
-    }
-
-    return str;
+const std::wstring& Texture::raw() const {
+    return cachedStr;
 }
