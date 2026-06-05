@@ -4,6 +4,7 @@
 #include "Core/Data/Archivable.hpp"
 #include "Core/Event/Tickable.hpp"
 #include "Game/World/HitResult.hpp"
+#include "Core/Textures/Texture.hpp"
 
 #include "Util/Vector2.hpp"
 
@@ -83,6 +84,12 @@ public:
     float GetBounce() const; /**< @brief Gets bounce @returns Bounce */
     void SetBounce(float bounce); /**< @brief Sets bounce @param bounce Bounce to set */
 
+    const Texture& GetTexture() const;
+    void SetTexture(Texture tex);
+
+    bool IsUsingCTex() const;
+    void SetUsingCTex(bool enabled);
+
     /**
      * @brief Internal function used to queue BeginPlay() on actor
      */
@@ -103,10 +110,11 @@ public:
     virtual void OnHit(const HitResult& hitResult);
 
     /**
-     * @brief Single-char texture for actor
+     * @brief Single-char texture for actor 
      * @details The actor is displayed as a grid (based on its @ref GetSize() "size") of this character
+     * @note This is intended to render simple objects or debug actors easily. For detailed textures, TODO
      */
-    char Texture;
+    char ctex;
 protected:
 
     /**
@@ -142,5 +150,8 @@ private:
     float Rotation;
 
     bool isInPlay;
+
+    Texture ActorTexture;
+    bool bUseCTex;
    
 };

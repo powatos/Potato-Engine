@@ -9,6 +9,7 @@
 #include <Game/World/World.hpp>
 #include <UI/HUDController.hpp>
 #include <UI/Widgets/Objects/DebugInfo.hpp>
+#include <Core/Textures/TextureManager.hpp>
 
 #include <Debug/Debug.hpp>
 #include <Util/Vector2.hpp>

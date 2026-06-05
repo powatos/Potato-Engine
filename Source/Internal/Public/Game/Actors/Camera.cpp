@@ -8,7 +8,8 @@ Camera::Camera() {
     SetSimulatingPhysics(false);
     SetSize(Vector2(80.f, 24.f));
 
-    Texture = 'C';
+    SetUsingCTex(true);
+    ctex = 'C';
 }
 
 Camera::~Camera() {

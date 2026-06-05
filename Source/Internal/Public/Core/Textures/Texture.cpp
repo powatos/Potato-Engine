@@ -1,5 +1,7 @@
 /** @file Texture.cpp */
 
+#include <codecvt>
+#include <locale>
 #include <fstream>
 
 #include "Core/Data/DataManager.hpp"
@@ -17,18 +19,29 @@ Texture::Texture(const std::string& textureFile) {
         return;
     }
 
-    std::ifstream file(filePath);
+    std::wifstream file(filePath);
     if (!file.is_open()) {
         LOG_DEFAULT(LogType::ERROR, "Could not open texture file at {}", filePath.string());
         return;
     }
 
-    std::string line;
+    file.imbue(std::locale(file.getloc(), new std::codecvt_utf8<wchar_t>));
+
+    std::wstring line;
     while (std::getline(file, line)) {
         data.push_back(line);
     }
 }
 
-const std::vector<std::string>& Texture::raw() const {
+const std::vector<std::wstring>& Texture::raw_vec() const {
     return data;
+}
+const std::wstring Texture::raw() const {
+    std::wstring str{};
+    for (const std::wstring& line : data) {
+        str += line;
+        str += '\n';
+    }
+
+    return str;
 }

@@ -10,12 +10,12 @@
 #include "Player.hpp"
 
 Player::Player() {
-    Texture = 'P';
     SetSize(Vector2(2,2));
     SetBounce(0.6f);
     SetUseAsymmetricGravity(true);
     SetSimulatingPhysics(true);
 
+    SetTexture(Texture("Player_default.txt"));
 }
 
 void Player::BeginPlay() {

@@ -27,6 +27,8 @@ Actor::Actor() {
     Movability = ActorMovability::Movable;
     CollisionResponse = CollisionType::Block;
     
+    bUseCTex = false;
+
 }
 
 void Actor::DispatchBeginPlay() {
@@ -38,6 +40,11 @@ void Actor::DispatchBeginPlay() {
 
 void Actor::BeginPlay() {
     
+    if (!bUseCTex && !ActorTexture) {
+        // if using Texture but it's invalid
+        LOG_DEFAULT(LogType::WARNING, "Actor texture invalid");
+    }
+
 }
 
 void Actor::Tick([[maybe_unused]] float dt) {
@@ -151,6 +158,20 @@ float Actor::GetBounce() const {
 }
 void Actor::SetBounce(float bounce) {
     Bounciness = bounce;
+}
+
+const Texture& Actor::GetTexture() const {
+    return ActorTexture;
+}
+void Actor::SetTexture(Texture tex) {
+    ActorTexture = tex;
+}
+
+bool Actor::IsUsingCTex() const {
+    return bUseCTex;
+}
+void Actor::SetUsingCTex(bool enabled) {
+    bUseCTex = enabled;
 }
 
 #pragma endregion

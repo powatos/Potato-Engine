@@ -15,10 +15,22 @@ struct Texture
      */
     Texture(const std::string& textureFile);
 
+    Texture() = default;
+
     /** @brief returns the raw texture vector */
-    const std::vector<std::string>& raw() const;
+    const std::vector<std::wstring>& raw_vec() const;
+    /** @brief returns the raw texture string */
+    const std::wstring raw() const;
+
+    /**
+     * @brief bool overload that checks if Texture is valid
+     * @returns true if the texture is valid
+     */
+    explicit operator bool() {
+        return raw().empty();
+    }
 
 private:
-    std::vector<std::string> data;
+    std::vector<std::wstring> data;
 
 };

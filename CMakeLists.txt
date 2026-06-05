@@ -7,7 +7,11 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+set(CURSES_NEED_WIDE TRUE)
 find_Package(Curses REQUIRED)
+
+message(STATUS "Curses Lib: ${CURSES_LIBRARY}")
+message(STATUS "Curses Include: ${CURSES_INCLUDE_PATH}")
 
 if (Curses_FOUND AND NOT TARGET Curses::Curses)
     add_library(Curses::Curses INTERFACE IMPORTED)

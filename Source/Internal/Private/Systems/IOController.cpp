@@ -6,6 +6,7 @@
     #include <ncurses.h>
 #endif
 
+#include <clocale>
 #include <signal.h>
 #include <string>
 #include <chrono>
@@ -47,6 +48,8 @@ IOController::IOController() : FRAMES_PER_SECOND(30.f) {
 #else
     setenv("ESCDELAY", "25", 1);
 #endif
+
+    std::setlocale(LC_ALL, "");
 
     initscr(); // init ncurses
     cbreak(); // disable line buffering
@@ -179,20 +182,31 @@ void IOController::DrawLevel() {
         
         const Vector2 actorSize = actor->GetSize();
 
+        if (actor->IsUsingCTex()) {
+                
+            for (int r = 0; r < actorSize.y; ++r) {
+                std::string textureRowStr = "";
+                textureRowStr.reserve(static_cast<const unsigned int>(actorSize.x));
 
-        for (int r = 0; r < actorSize.y; ++r) {
-            std::string textureRowStr = "";
-            textureRowStr.reserve(static_cast<const unsigned int>(actorSize.x));
+                for (int c = 0; c < actorSize.x; ++c) {
+                    textureRowStr += actor->ctex;
+                }
 
-            for (int c = 0; c < actorSize.x; ++c) {
-                textureRowStr += actor->Texture;
+                mvwaddstr(displayWindow, 
+                    static_cast<int>(screenVector.x + r), 
+                    static_cast<int>(screenVector.y), 
+                    textureRowStr.c_str()
+                );
             }
-
-            mvwaddstr(displayWindow, 
-                static_cast<int>(screenVector.x + r), 
-                static_cast<int>(screenVector.y), 
-                textureRowStr.c_str()
+        } else {
+            const wchar_t* tex = actor->GetTexture().raw().c_str();
+            
+            mvwaddwstr(displayWindow,
+                static_cast<int>(screenVector.x),
+                static_cast<int>(screenVector.y),
+                tex
             );
+
         }
 
         

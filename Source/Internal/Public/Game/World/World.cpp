@@ -20,19 +20,19 @@ void World::BeginPlay() {
 
     Block* wallB = SpawnActor<Block>(Vector2(0, -1));
     wallB->SetSize(Vector2(Settings.Size.x, wallWidth));
-    wallB->Texture = 'W';
+    wallB->ctex = 'W';
 
     Block* wallL = SpawnActor<Block>(Vector2(-wallWidth, 23));
     wallL->SetSize(Vector2(wallWidth, 24));
-    wallL->Texture = 'W';
+    wallL->ctex = 'W';
 
     Block* wallR = SpawnActor<Block>(Vector2(Settings.Size.x, 23));
     wallR->SetSize(Vector2(wallWidth, 24));
-    wallR->Texture = 'W';
+    wallR->ctex = 'W';
 
     Block* wallU = SpawnActor<Block>(Vector2(0, 23+wallWidth));
     wallU->SetSize(Vector2(Settings.Size.x, wallWidth));
-    wallU->Texture = 'W';
+    wallU->ctex = 'W';
 
     SetTickingPostPhysics(true);
 
