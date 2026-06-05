@@ -28,9 +28,7 @@ struct Texture
      * @brief bool overload that checks if Texture is valid
      * @returns true if the texture is valid
      */
-    explicit operator bool() {
-        return raw().empty();
-    }
+    explicit operator bool() const;
 
 private:
     std::vector<std::wstring> data;

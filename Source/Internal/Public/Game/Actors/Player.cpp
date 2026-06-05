@@ -15,7 +15,7 @@ Player::Player() {
     SetUseAsymmetricGravity(true);
     SetSimulatingPhysics(true);
 
-    SetTexture(Texture("Player_default.txt"));
+    SetTexture("Player_default");
     ResizeToTexture();
 }
 

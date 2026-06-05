@@ -58,3 +58,7 @@ const std::wstring& Texture::raw() const {
 const Vector2& Texture::GetBoundingBox() const {
     return BoundingBox;
 }
+
+Texture::operator bool() const {
+    return !raw().empty();
+}

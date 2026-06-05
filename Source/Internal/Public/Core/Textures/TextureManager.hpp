@@ -28,7 +28,7 @@ public:
      * @param name Name of texture
      * @param texture Texture object to register
      */
-    void RegisterTexture(const std::string& textureFile);
+    void RegisterTexture(const std::string& textureFileName);
     /**
      * @brief Gets a registered texture by name
      * @param name Name of texture to get

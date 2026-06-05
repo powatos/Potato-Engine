@@ -29,8 +29,8 @@ PotatoEngine::PotatoEngine() {
     SubsystemStack.push_back( Engine::Get() );
     SubsystemStack.push_back( IOController::Get() );
     SubsystemStack.push_back( UIController::Get() );
-    SubsystemStack.push_back( GameInstance::Get() );
     SubsystemStack.push_back( TextureManager::Get() );
+    SubsystemStack.push_back( GameInstance::Get() );
     SubsystemStack.push_back( EventController::Get() );
 
 }

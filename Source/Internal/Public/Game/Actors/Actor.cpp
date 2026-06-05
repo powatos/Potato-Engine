@@ -6,6 +6,7 @@
 #include "Core/Event/EventController.hpp"
 #include "Core/PotatoEngine.hpp"
 #include "Game/World/World.hpp"
+#include "Core/Textures/TextureManager.hpp"
 
 #include "Debug/Debug.hpp"
 #include "Util/Vector2.hpp"
@@ -39,7 +40,7 @@ void Actor::DispatchBeginPlay() {
 }
 
 void Actor::BeginPlay() {
-    
+    bool a = static_cast<bool>(ActorTexture);
     if (!bUseCTex && !ActorTexture) {
         // if using Texture but it's invalid
         LOG_DEFAULT(LogType::WARNING, "Actor texture invalid");
@@ -166,8 +167,12 @@ void Actor::SetBounce(float bounce) {
 const Texture& Actor::GetTexture() const {
     return ActorTexture;
 }
-void Actor::SetTexture(Texture tex) {
-    ActorTexture = tex;
+void Actor::SetTexture(const std::string& textureName) {
+    TextureManager* texManager = TextureManager::Get();
+
+    if (texManager->HasTexture(textureName)) {
+        ActorTexture = texManager->GetTexture(textureName); 
+    }
 }
 
 bool Actor::IsUsingCTex() const {

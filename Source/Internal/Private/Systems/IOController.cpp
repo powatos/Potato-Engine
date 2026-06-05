@@ -35,11 +35,6 @@ IOController::IOController() : FRAMES_PER_SECOND(30.f) {
     ActiveKey = Keycode::UNKNOWN;
     ImpulseKey = Keycode::UNKNOWN;
 
-    GameInstance* instance = GameInstance::Get();
-
-    FRAMES_PER_SECOND = instance->FRAMES_PER_SECOND;
-    MS_REPEAT_THRESHOLD = instance->MS_REPEAT_THRESHOLD;
-
     /// Initialize Screen
 
     // disables escape delay (shorten if arrow/func keys not working)
@@ -80,6 +75,10 @@ IOController::IOController() : FRAMES_PER_SECOND(30.f) {
 
 void IOController::BeginPlay() {
 
+    GameInstance* instance = GameInstance::Get();
+
+    FRAMES_PER_SECOND = instance->FRAMES_PER_SECOND;
+    MS_REPEAT_THRESHOLD = instance->MS_REPEAT_THRESHOLD;
 
     SetTicking(true);
 }
@@ -203,7 +202,7 @@ void IOController::DrawLevel() {
             }
         } else {
             const std::vector<std::wstring>& texVec = actor->GetTexture().raw_vec();
-
+            // todo: cut off string at the end of the screen
             int row = scrVecX;
 
             for (const std::wstring& wline : texVec) {
