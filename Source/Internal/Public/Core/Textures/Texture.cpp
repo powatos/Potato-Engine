@@ -28,10 +28,16 @@ Texture::Texture(const std::string& textureFile) {
     std::string line;
     std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 
+    int y{0};
+    int maxX{-1};
     while (std::getline(file, line)) {
         std::wstring wline = converter.from_bytes(line); 
         data.push_back(wline);
+        ++y;
+        if (static_cast<int>(wline.size()) > maxX) { maxX = wline.length(); }
     }
+
+    BoundingBox = Vector2(maxX, y);
 
     for (const std::wstring& line : data) {
         cachedStr += line;
@@ -47,4 +53,8 @@ const std::vector<std::wstring>& Texture::raw_vec() const {
 }
 const std::wstring& Texture::raw() const {
     return cachedStr;
+}
+
+const Vector2& Texture::GetBoundingBox() const {
+    return BoundingBox;
 }

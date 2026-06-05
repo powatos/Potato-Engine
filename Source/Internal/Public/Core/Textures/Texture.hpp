@@ -1,6 +1,8 @@
 /** @file Texture.hpp */
 #pragma once
 
+#include "Util/Vector2.hpp"
+
 #include <string>
 #include <vector>
 
@@ -16,10 +18,11 @@ struct Texture
     Texture(const std::string& textureFile);
     Texture() = default;
     Texture(const Texture& other); 
-
     
     const std::vector<std::wstring>& raw_vec() const; ///< @brief returns the raw texture vector
     const std::wstring& raw() const; ///< @brief returns the raw texture string
+
+    const Vector2& GetBoundingBox() const;
 
     /**
      * @brief bool overload that checks if Texture is valid
@@ -32,6 +35,8 @@ struct Texture
 private:
     std::vector<std::wstring> data;
 
+    Vector2 BoundingBox;
     std::wstring cachedStr;
+
 
 };

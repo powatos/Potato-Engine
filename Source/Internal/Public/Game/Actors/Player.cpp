@@ -16,6 +16,7 @@ Player::Player() {
     SetSimulatingPhysics(true);
 
     SetTexture(Texture("Player_default.txt"));
+    ResizeToTexture();
 }
 
 void Player::BeginPlay() {

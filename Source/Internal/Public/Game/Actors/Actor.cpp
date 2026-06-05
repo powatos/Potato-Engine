@@ -78,11 +78,7 @@ void Actor::SetSize(const Vector2 &size) {
     Size = size;
 }
 void Actor::ResizeToTexture() {
-
-    Size = Vector2{
-        
-    };
-
+    Size = ActorTexture.GetBoundingBox();
 }
 
 float Actor::GetRotation() const { 
