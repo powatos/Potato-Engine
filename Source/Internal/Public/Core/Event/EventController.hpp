@@ -57,10 +57,6 @@ public:
 private:
     EventController();
     ~EventController() = default;
-    EventController(const EventController&) = delete;
-    EventController& operator = (const EventController&) = delete;
-    EventController(EventController&&) = delete;
-    EventController& operator = (EventController&&) = delete;
     
     std::unordered_map< std::string, std::vector<std::any> > Bindings;
 
