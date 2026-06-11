@@ -5,6 +5,8 @@ CHANGELOG:
 - Changed `HitResult.hpp` directory: `Game/HitResult.hpp` -> `Game/World/HitResult.hpp`
 - Added Unicode texture rendering via `Texture` and `TextureManager`
 - Extracted physics logic to `PhysicsController`
+- Added random generators to `GameplayHelpers`
+- Consolidated engine subsystem class hierarchies and added friending via macro
 
 PATCHLOG:
 - Fixed a constructor overload redeclaration issue in some singletons
