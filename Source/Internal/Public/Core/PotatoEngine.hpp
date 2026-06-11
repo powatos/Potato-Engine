@@ -4,7 +4,6 @@
 #include <memory>
 #include <vector>
 
-
 class IInputController;
 class IHUDController;
 class EventController;
@@ -65,12 +64,3 @@ protected:
 private:
     void startup();
 };
-
-namespace __SubsystemRegistry {
-    using SubsystemInstantiatorList = std::vector< IEngineSubsystem*(*)() >;
-
-    inline SubsystemInstantiatorList& _GetList() {
-        static SubsystemInstantiatorList list;
-        return list;
-    }
-}

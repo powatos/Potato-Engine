@@ -25,9 +25,5 @@ class EngineSubsystem : public IEngineSubsystem, public Singleton<T>
 {};
 
 #define ENGINE_SUBSYSTEM(type) \
-friend class Singleton<type>; \
-inline static struct __##type##_RegisterSubsystem { \
-    __##type##_RegisterSubsystem() { \
-        __SubsystemRegistry::_GetList().push_back( reinterpret_cast< IEngineSubsystem*(*)() >(&type::Get) ); \
-    } \
-} __##type##_registerSubsystem;
+friend class Singleton<type>;
+

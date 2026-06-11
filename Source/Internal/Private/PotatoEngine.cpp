@@ -11,6 +11,7 @@
 #include "Systems/IOController.hpp"
 #include "Systems/UIController.hpp"
 #include "Core/Textures/TextureManager.hpp"
+#include "Core/Control/GameInstance.hpp"
 #include "UI/HUDController.hpp"
 #include "Systems/PhysicsController.hpp"
 #include "Core/Input/InputController.hpp"
@@ -28,17 +29,13 @@ PotatoEngine::PotatoEngine() {
 
     LOG_DEFAULT(LogType::VITAL, "PotatoEngine constructed");
 
-    // SubsystemStack.push_back( Engine::Get() );
-    // SubsystemStack.push_back( IOController::Get() );
-    // SubsystemStack.push_back( UIController::Get() );
-    // SubsystemStack.push_back( TextureManager::Get() );
-    // SubsystemStack.push_back( GameInstance::Get() );
-    // SubsystemStack.push_back( EventController::Get() );
-    // SubsystemStack.push_back( PhysicsController::Get() );
-
-    for ( auto instantiator : __SubsystemRegistry::_GetList() ) {
-        SubsystemStack.push_back( instantiator() );
-    }
+    SubsystemStack.push_back( Engine::Get() );
+    SubsystemStack.push_back( IOController::Get() );
+    SubsystemStack.push_back( UIController::Get() );
+    SubsystemStack.push_back( TextureManager::Get() );
+    SubsystemStack.push_back( GameInstance::Get() );
+    SubsystemStack.push_back( EventController::Get() );
+    SubsystemStack.push_back( PhysicsController::Get() );
 
 }
 
