@@ -1,5 +1,7 @@
 /** @file GameplayHelper.cpp */
 
+#include <random>
+
 #include "Core/Control/GameInstance.hpp"
 #include "Game/Actors/Actor.hpp"
 #include "Game/Actors/Camera.hpp"
@@ -8,6 +10,14 @@
 #include "Util/Vector2.hpp"
 
 #include "GameplayHelper.hpp"
+
+namespace {
+    static std::mt19937& randGen() {
+        static std::random_device rd;
+        static std::mt19937 gen(rd());
+        return gen;
+    }
+}
 
 Vector2 GameplayHelper::VecToScreenVec(const Vector2& worldPos) {
     Vector2 vec = Vector2(worldPos.x, worldPos.y).Swizzled();
@@ -47,4 +57,18 @@ bool GameplayHelper::IsActorOverlapping(const Actor* actor1, const Actor* actor2
         a1Pos.y < a2Pos.y + a2Siz.y && // top side check
         a1Pos.y + a1Siz.y > a2Pos.y // bottom side check
     ;
+}
+
+int GameplayHelper::RandomInt(int min, int max) {
+    std::uniform_int_distribution<int> dist(min, max);
+    return dist(randGen());
+}
+
+int GameplayHelper::RandomFloat(float min, float max) {
+    std::uniform_real_distribution<float> dist(min, max);
+    return dist(randGen());
+}
+
+int GameplayHelper::RandomBool() {
+    return std::bernoulli_distribution(0.5)(randGen());
 }

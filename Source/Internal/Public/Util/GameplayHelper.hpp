@@ -42,5 +42,22 @@ public:
      */
     static bool IsActorOverlapping(const Actor* actor1, const Actor* actor2);
 
+    /**
+     * @brief Generates and returns a random integer within a range
+     * @param min minimum value (inclusive)
+     * @param max maximum value (inclusive)
+     */
+    static int RandomInt(int min, int max);
 
+    /**
+     * @brief Generates and returns a random float within a range
+     * @param min minimum value (inclusive)
+     * @param max maximum value (exclusive)
+     */
+    static int RandomFloat(float min, float max);
+
+    /**
+     * @brief Generates and returns a random boolean
+     */
+    static int RandomBool();
 };
