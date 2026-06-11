@@ -40,7 +40,6 @@ void Actor::DispatchBeginPlay() {
 }
 
 void Actor::BeginPlay() {
-    bool a = static_cast<bool>(ActorTexture);
     if (!bUseCTex && !ActorTexture) {
         // if using Texture but it's invalid
         LOG_DEFAULT(LogType::WARNING, "Actor texture invalid");

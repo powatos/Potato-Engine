@@ -12,6 +12,7 @@
 #include "Systems/UIController.hpp"
 #include "Core/Textures/TextureManager.hpp"
 #include "UI/HUDController.hpp"
+#include "Systems/PhysicsController.hpp"
 
 #include "Debug/Debug.hpp"
 
@@ -32,6 +33,7 @@ PotatoEngine::PotatoEngine() {
     SubsystemStack.push_back( TextureManager::Get() );
     SubsystemStack.push_back( GameInstance::Get() );
     SubsystemStack.push_back( EventController::Get() );
+    SubsystemStack.push_back( PhysicsController::Get() );
 
 }
 

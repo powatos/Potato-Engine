@@ -60,6 +60,7 @@ protected:
     IHUDController* HUDController;
     EventController* NativeEventController;
 
+
 private:
     void startup();
 };
