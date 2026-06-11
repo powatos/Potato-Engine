@@ -27,9 +27,10 @@
 
 class Widget;
 
-class UIController : public Singleton<UIController>, public IEngineSubsystem, public IHUDController
+class UIController : public EngineSubsystem<UIController>, public IHUDController
 {
-    friend class Singleton<UIController>;
+    ENGINE_SUBSYSTEM(UIController)
+    
 public:
     virtual void Resolve() noexcept override;
 

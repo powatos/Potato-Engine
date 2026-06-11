@@ -14,9 +14,10 @@ using BindingMap = std::unordered_map<Keycode, std::vector<InputBinding>, __Keyc
 struct WidgetMapper;
 class Widget;
 
-class IOController : public Singleton<IOController>, public IEngineSubsystem, public IInputController, public Tickable
+class IOController : public EngineSubsystem<IOController>, public IInputController, public Tickable
 {
-    friend class Singleton<IOController>;
+    ENGINE_SUBSYSTEM(IOController)
+
 public:
     virtual void Resolve() noexcept override;
     virtual void BeginPlay() override;

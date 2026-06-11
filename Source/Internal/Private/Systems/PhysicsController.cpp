@@ -150,7 +150,3 @@ void PhysicsController::ResolveCollision(Actor* a, Actor* b, const Vector2& aPos
     HitResultB.otherActor = a;
     b->OnHit(HitResultB);
 }
-
-void PhysicsController::Resolve() noexcept {
-    
-}

@@ -5,9 +5,10 @@
 #include "Core/Event/EventDelegate.hpp"
 #include "Core/Singleton.hpp"
 
-class Engine : public Singleton<Engine>, public IEngineSubsystem
+class Engine : public EngineSubsystem<Engine>
 {
-    friend class Singleton<Engine>;
+    ENGINE_SUBSYSTEM(Engine)
+    
 public:
     virtual void Resolve() noexcept override;
     virtual void BeginPlay() override;

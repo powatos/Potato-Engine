@@ -38,7 +38,3 @@ Texture& TextureManager::GetTexture(const std::string& name) {
 bool TextureManager::HasTexture(const std::string& name) const {
     return textures.find(name) != textures.end();
 }
-
-void TextureManager::Resolve() noexcept {
-
-}

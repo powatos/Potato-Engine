@@ -13,9 +13,10 @@
 /**
  * @brief Class for event managing
  */
-class EventController : public Singleton<EventController>, public IEngineSubsystem
+class EventController : public EngineSubsystem<EventController>
 {
-    friend class Singleton<EventController>;
+    ENGINE_SUBSYSTEM(EventController)
+
 public:
     virtual void Resolve() noexcept override;
 

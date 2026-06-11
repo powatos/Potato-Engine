@@ -36,9 +36,10 @@ static struct __##set##_DEFAULT_SUBCLASS_REGISTER { \
  * @details Set global constants and get objects using the @ref get() "instance". \n Subclasses must be registered 
  * using @ref SET_DEFAULT_SUBCLASS(def, set) "SET_DEFAULT_SUBCLASS".
  */
-class GameInstance : public Singleton<GameInstance>, public IEngineSubsystem
+class GameInstance : public EngineSubsystem<GameInstance>
 {
-    friend class Singleton<GameInstance>;
+    ENGINE_SUBSYSTEM(GameInstance)
+    
 public:
     virtual void Resolve() noexcept override;
 

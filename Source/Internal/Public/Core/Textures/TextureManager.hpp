@@ -11,12 +11,11 @@
 /**
  * @brief Manager class for handling actor textures
  */
-class TextureManager : public Singleton<TextureManager>, public IEngineSubsystem
+class TextureManager : public EngineSubsystem<TextureManager>
 {
-    friend class Singleton<TextureManager>;
+    ENGINE_SUBSYSTEM(TextureManager)
 
 public:
-    virtual void Resolve() noexcept override;
     virtual void BeginPlay() override;
 
     TextureManager();

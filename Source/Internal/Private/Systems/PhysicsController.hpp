@@ -9,13 +9,12 @@
 
 class Actor;
 
-class PhysicsController : public Singleton<PhysicsController>, public IEngineSubsystem, public Tickable
+class PhysicsController : public EngineSubsystem<PhysicsController>, public Tickable
 {
-    friend class Singleton<PhysicsController>;
+    ENGINE_SUBSYSTEM(PhysicsController)
 
 public:
     virtual void BeginPlay() override;
-    virtual void Resolve() noexcept override;
 
 protected:
     virtual void TickPostPhysics(float dt) override;

@@ -1,13 +1,14 @@
 /** @file PotatoEngine.hpp */
+#pragma once
 
 #include <memory>
 #include <vector>
 
-#include "Core/Input/InputController.hpp"
-#include "Core/Event/EventController.hpp"
-#include "UI/HUDController.hpp"
 
-#include "EngineSubsystem.hpp"
+class IInputController;
+class IHUDController;
+class EventController;
+class IEngineSubsystem;
 
 /**
  * @brief Global engine singleton class
@@ -53,7 +54,7 @@ public:
     /** @brief Gets @ref EventController "Native event controller" @returns @ref EventController "Native event controller" */
     EventController* GetNativeEventController() const;
 
-protected:    
+protected:
     std::vector<IEngineSubsystem*> SubsystemStack;
 
     IInputController* InputController;
@@ -64,3 +65,12 @@ protected:
 private:
     void startup();
 };
+
+namespace __SubsystemRegistry {
+    using SubsystemInstantiatorList = std::vector< IEngineSubsystem*(*)() >;
+
+    inline SubsystemInstantiatorList& _GetList() {
+        static SubsystemInstantiatorList list;
+        return list;
+    }
+}

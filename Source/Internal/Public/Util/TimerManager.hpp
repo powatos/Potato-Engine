@@ -3,16 +3,18 @@
 
 #include <vector>
 
+#include "Core/EngineSubsystem.hpp"
 #include "Core/Event/Tickable.hpp"
-#include "Core/Singleton.hpp"
+
 #include "Timer.hpp"
 
 /**
  * @brief Class that interfaces and handles all timers
  */
-class TimerManager : public Singleton<TimerManager>, public Tickable
+class TimerManager : public EngineSubsystem<TimerManager>, public Tickable
 {
-    friend class Singleton<TimerManager>;
+    ENGINE_SUBSYSTEM(TimerManager)
+
 public:
     /**
      * @brief Gets singleton instance
