@@ -35,6 +35,8 @@ IOController::IOController() : FRAMES_PER_SECOND(30.f) {
     ActiveKey = Keycode::UNKNOWN;
     ImpulseKey = Keycode::UNKNOWN;
 
+    bTickingUpdate = true;
+
     /// Initialize Screen
 
     // disables escape delay (shorten if arrow/func keys not working)
@@ -80,7 +82,6 @@ void IOController::BeginPlay() {
     FRAMES_PER_SECOND = instance->FRAMES_PER_SECOND;
     MS_REPEAT_THRESHOLD = instance->MS_REPEAT_THRESHOLD;
 
-    SetTicking(true);
 }
 
 void IOController::HandleInput() {

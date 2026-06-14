@@ -47,7 +47,7 @@ void Actor::BeginPlay() {
 
 }
 
-void Actor::Tick([[maybe_unused]] float dt) {
+void Actor::Tick(float dt) {
     Tickable::Tick(dt);
 }
 

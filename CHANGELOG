@@ -7,6 +7,7 @@ CHANGELOG:
 - Extracted physics logic to `PhysicsController`
 - Added random generators to `GameplayHelpers`
 - Consolidated engine subsystem class hierarchies and added friending via macro
+- Refactored tick system with multiple tick groups and better tick checks
 
 PATCHLOG:
 - Fixed a constructor overload redeclaration issue in some singletons

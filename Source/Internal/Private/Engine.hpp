@@ -18,7 +18,6 @@ public:
 private:
     Engine();
     ~Engine();
-    
 
     void FireTick(const float dt) const;
     void FireTickPostPhysics(const float dt) const;

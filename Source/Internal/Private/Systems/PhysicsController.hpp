@@ -3,7 +3,7 @@
 
 #include "Core/Singleton.hpp"
 #include "Core/EngineSubsystem.hpp"
-#include "Core/Event/Tickable.hpp"
+#include "Core/Tick/Tickable.hpp"
 
 #include "Util/Vector2.hpp"
 
@@ -13,10 +13,9 @@ class PhysicsController : public EngineSubsystem<PhysicsController>, public Tick
 {
     ENGINE_SUBSYSTEM(PhysicsController)
 
-public:
-    virtual void BeginPlay() override;
-
 protected:
+    PhysicsController();
+
     virtual void TickPostPhysics(float dt) override;
 
 private:

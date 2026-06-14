@@ -7,7 +7,7 @@
 TimerManager::TimerManager() {
     LOG_DEFAULT(LogType::VITAL, "TimerManager constructed");
 
-    SetTicking(true);
+    bTickingUpdate = true;
 }
 
 void TimerManager::Tick([[maybe_unused]] float dt) {

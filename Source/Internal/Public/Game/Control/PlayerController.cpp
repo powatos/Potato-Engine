@@ -20,6 +20,7 @@ PlayerController::PlayerController() {
     JumpForce = 20.f;
 
     CameraFollowsPlayer = false;
+    bTickingUpdate = true;
 }
 
 void PlayerController::Initialize() {
@@ -29,7 +30,6 @@ void PlayerController::Initialize() {
     // Create camera
     ActiveCamera = world->SpawnActor<Camera>();
 
-    SetTicking(true);
 }
 
 void PlayerController::Tick([[maybe_unused]] float dt) {

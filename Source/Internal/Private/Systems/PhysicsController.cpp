@@ -8,8 +8,8 @@
 
 #include "PhysicsController.hpp"
 
-void PhysicsController::BeginPlay() {
-    SetTickingPostPhysics(true);
+PhysicsController::PhysicsController() {
+    bTickingPostPhysics = true;
 }
 
 void PhysicsController::TickPostPhysics(float dt) {

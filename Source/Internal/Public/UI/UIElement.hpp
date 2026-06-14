@@ -3,12 +3,14 @@
 
 #include "Util/Vector2.hpp"
 
+#include "Core/Tick/Tickable.hpp"
+
 /**
  * @brief Wrapper for elements that can be rendered on screen
  * @details Used for scaling size, position, offsets, and visibility parameters across different
  * types of UI targets
  */
-class UIElement
+class UIElement : public Tickable
 {
 public:
     virtual ~UIElement() = default;

@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "Core/EngineSubsystem.hpp"
-#include "Core/Event/Tickable.hpp"
+#include "Core/Tick/Tickable.hpp"
 #include "Core/Input/InputController.hpp"
 #include "Core/Singleton.hpp"
 

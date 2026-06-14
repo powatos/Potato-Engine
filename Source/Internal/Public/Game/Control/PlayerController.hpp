@@ -1,7 +1,7 @@
 /** @file PlayerController.hpp */
 #pragma once
 
-#include "Core/Event/Tickable.hpp"
+#include "Core/Tick/Tickable.hpp"
 #include "Game/Actors/Camera.hpp"
 #include "Game/Actors/Player.hpp"
 

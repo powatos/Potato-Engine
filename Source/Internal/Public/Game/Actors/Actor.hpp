@@ -2,7 +2,7 @@
 #pragma once
 
 #include "Core/Data/Archivable.hpp"
-#include "Core/Event/Tickable.hpp"
+#include "Core/Tick/Tickable.hpp"
 #include "Game/World/HitResult.hpp"
 #include "Core/Textures/Texture.hpp"
 
@@ -131,7 +131,7 @@ protected:
      */
     virtual void BeginPlay();
     
-    virtual void Tick([[maybe_unused]] float dt) override;
+    virtual void Tick(float dt) override;
 
 private:
 

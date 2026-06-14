@@ -4,7 +4,6 @@
 #include <unordered_map>
 #include <vector>
 
-#include "Core/Event/Tickable.hpp"
 #include "UI/UIElement.hpp"
 
 struct WidgetElement;
@@ -12,7 +11,7 @@ struct WidgetElement;
 /**
  * @brief UI element that can be displayed on screen
  */
-class Widget : public Tickable, public UIElement
+class Widget : public UIElement
 {
 public:
     /**

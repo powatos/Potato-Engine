@@ -17,12 +17,13 @@ Player::Player() {
 
     SetTexture("Player_default");
     ResizeToTexture();
+
+    bTickingUpdate = true;
 }
 
 void Player::BeginPlay() {
     Actor::BeginPlay();
 
-    SetTicking(true);
 }
 
 void Player::Tick([[maybe_unused]] float dt) {
