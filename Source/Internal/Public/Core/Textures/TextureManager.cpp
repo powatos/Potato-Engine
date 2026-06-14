@@ -7,6 +7,7 @@
 #include "TextureManager.hpp"
 
 TextureManager::TextureManager() {
+    LOG_DEFAULT(LogType::VITAL, "TextureManager constructed");
 
     path texturesDir = DataManager::GetDataDir() / "Textures";
     if (!std::filesystem::exists(texturesDir)) {
@@ -37,4 +38,12 @@ Texture& TextureManager::GetTexture(const std::string& name) {
 }
 bool TextureManager::HasTexture(const std::string& name) const {
     return textures.find(name) != textures.end();
+}
+
+void TextureManager::Resolve() noexcept {
+    LOG_DEFAULT(LogType::VITAL, "Resolving TextureManager");
+}
+
+TextureManager::~TextureManager() {
+    LOG_DEFAULT(LogType::VITAL, "TextureManager destroying");
 }

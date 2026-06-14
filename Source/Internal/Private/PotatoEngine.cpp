@@ -31,13 +31,19 @@ PotatoEngine::PotatoEngine() {
     LOG_DEFAULT(LogType::VITAL, "PotatoEngine constructed");
 
     SubsystemStack.push_back( Engine::Get() );
-    SubsystemStack.push_back( IOController::Get() );
-    SubsystemStack.push_back( UIController::Get() );
-    SubsystemStack.push_back( TextureManager::Get() );
-    SubsystemStack.push_back( GameInstance::Get() );
-    SubsystemStack.push_back( EventController::Get() );
+
     SubsystemStack.push_back( TickController::Get() );
+
+    SubsystemStack.push_back( IOController::Get() );
+    SubsystemStack.push_back( GameInstance::Get() );
+
+    SubsystemStack.push_back( TextureManager::Get() );
+
+    SubsystemStack.push_back( EventController::Get() );
+        
     SubsystemStack.push_back( PhysicsController::Get() );
+
+    SubsystemStack.push_back( UIController::Get() );
 
 }
 

@@ -5,10 +5,12 @@
 #include "Game/World/HitResult.hpp"
 
 #include "Util/GameplayHelper.hpp"
+#include "Debug/Debug.hpp"
 
 #include "PhysicsController.hpp"
 
 PhysicsController::PhysicsController() {
+    LOG_DEFAULT(LogType::VITAL, "PhysicsController constructed");
     bTickingPostPhysics = true;
 }
 
@@ -149,4 +151,12 @@ void PhysicsController::ResolveCollision(Actor* a, Actor* b, const Vector2& aPos
     HitResult HitResultB = hitResult;
     HitResultB.otherActor = a;
     b->OnHit(HitResultB);
+}
+
+void PhysicsController::Resolve() noexcept {
+    LOG_DEFAULT(LogType::VITAL, "Resolving PhysicsController");
+}
+
+PhysicsController::~PhysicsController() {
+    LOG_DEFAULT(LogType::VITAL, "PhysicsController destroying");
 }

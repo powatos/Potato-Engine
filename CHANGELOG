@@ -11,6 +11,7 @@ CHANGELOG:
 
 PATCHLOG:
 - Fixed a constructor overload redeclaration issue in some singletons
+- Fixed an issue with engine subsystem singleton construction ordering 
 
 TODO:  
 - make timers w variadic arg template

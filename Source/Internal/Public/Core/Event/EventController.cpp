@@ -11,3 +11,7 @@ void EventController::Resolve() noexcept {
     LOG_DEFAULT(LogType::VITAL, "Resolving EventController");
 
 }
+
+EventController::~EventController() {
+    LOG_DEFAULT(LogType::VITAL, "EventController destroying");
+}

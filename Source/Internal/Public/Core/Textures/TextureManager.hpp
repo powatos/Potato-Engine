@@ -17,8 +17,7 @@ class TextureManager : public EngineSubsystem<TextureManager>
 
 public:
     virtual void BeginPlay() override;
-
-    TextureManager();
+    virtual void Resolve() noexcept override;
 
     /**
      * @brief Registers a texture that can be used by the engine
@@ -40,6 +39,10 @@ public:
      * @returns true if texture is registered
      */
     bool HasTexture(const std::string& name) const;
+
+protected:
+    TextureManager();
+    ~TextureManager();
 
 private:
     std::unordered_map<std::string, Texture> textures;

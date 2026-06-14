@@ -19,6 +19,7 @@ class TickController : public EngineSubsystem<TickController>
     ENGINE_SUBSYSTEM(TickController)
 
 public:
+    virtual void Resolve() noexcept override;
 
     /**
      * @brief Fires to all delegates in a group
@@ -32,6 +33,10 @@ public:
      * @param tickable the tickable object to register
      */
     void Register(Tickable* tickable);    
+
+protected:
+    TickController();
+    ~TickController();
 
 private:
     std::vector<Tickable*> tickables;
