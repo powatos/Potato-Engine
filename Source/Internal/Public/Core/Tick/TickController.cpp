@@ -16,7 +16,7 @@ constexpr void TickController::checkObjByGroup(float dt, TickGroup group, Tickab
             if (obj->bTickingPreInput) { obj->TickPreInput(dt); } 
             break;
         case TickGroup::Update:
-            if (obj->bTickingPreInput) { obj->Tick(dt); }
+            if (obj->bTickingUpdate) { obj->Tick(dt); }
             break;
         case TickGroup::PostPhysics:
             if (obj->bTickingPostPhysics) { obj->TickPostPhysics(dt); }

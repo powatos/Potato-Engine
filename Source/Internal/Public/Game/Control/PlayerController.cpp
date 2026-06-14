@@ -81,7 +81,7 @@ void PlayerController::SetupInputBindings() {
 void PlayerController::sMvL() { playerMoveVec.x = -1; }
 void PlayerController::sMvR() { playerMoveVec.x =  1; }
 
-void PlayerController::jump() { ActivePlayer->AddImpulse(Vector2(0, JumpForce)); }
+void PlayerController::jump() { ActivePlayer->AddImpulse(Vector2(0, JumpForce)); LOG_DEFAULT(LogType::DEBUG, "jumped!"); }
 
 void PlayerController::eMvL() { playerMoveVec.x = 0; }
 void PlayerController::eMvR() { playerMoveVec.x = 0; }
