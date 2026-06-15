@@ -2,6 +2,10 @@
 
 #include "TickController.hpp"
 
+TickController::TickController() {
+    LOG_DEFAULT(LogType::VITAL, "TickController constructed");
+}
+
 void TickController::Fire(float dt, TickGroup group) {
 
     for (Tickable* obj : tickables) {
@@ -29,4 +33,12 @@ constexpr void TickController::checkObjByGroup(float dt, TickGroup group, Tickab
 
 void TickController::Register(Tickable* tickable) {
     tickables.push_back(tickable);
+}
+
+void TickController::Resolve() noexcept {
+    LOG_DEFAULT(LogType::VITAL, "Resolving TickController");
+}
+
+TickController::~TickController() {
+    LOG_DEFAULT(LogType::VITAL, "TickController destroying");
 }

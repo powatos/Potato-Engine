@@ -57,7 +57,7 @@ public:
 
 private:
     EventController();
-    ~EventController() = default;
+    ~EventController();
     
     std::unordered_map< std::string, std::vector<std::any> > Bindings;
 

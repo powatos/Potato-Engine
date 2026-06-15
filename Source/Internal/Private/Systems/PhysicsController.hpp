@@ -13,8 +13,12 @@ class PhysicsController : public EngineSubsystem<PhysicsController>, public Tick
 {
     ENGINE_SUBSYSTEM(PhysicsController)
 
+public:
+    virtual void Resolve() noexcept override;
+
 protected:
     PhysicsController();
+    ~PhysicsController();
 
     virtual void TickPostPhysics(float dt) override;
 
