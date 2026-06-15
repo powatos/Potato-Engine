@@ -11,8 +11,9 @@
 #include "Texture.hpp"
 
 Texture::Texture(const std::string& textureFile) {
+    Rotation = 0.f;
+
     // pull file
-    // populate data vector
     path filePath = DataManager::GetDataDir() / "Textures" / textureFile;
     if (!std::filesystem::exists(filePath)) {
         LOG_DEFAULT(LogType::ERROR, "Texture file not found at {}", filePath.string());
@@ -57,6 +58,19 @@ const std::wstring& Texture::raw() const {
 
 const Vector2& Texture::GetBoundingBox() const {
     return BoundingBox;
+}
+
+float Texture::GetRotation() const { 
+    return Rotation; 
+}
+void Texture::SetRotation(float rotation) {
+    // Normalize rotation to [0, 360)
+    rotation = fmodf(rotation, 360.0f);
+    if (rotation < 0.0f) { rotation += 360.0f; }
+    Rotation = rotation;
+}
+void Texture::AddLocalRotation(float rotation) {
+    SetRotation(GetRotation() + rotation);
 }
 
 Texture::operator bool() const {

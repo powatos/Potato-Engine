@@ -52,10 +52,6 @@ public:
     void SetSize(const Vector2& size); /**< @brief Sets size @param size Size to set */
     void ResizeToTexture(); /**< @brief Resizes the actor to match the texture bounding box */
 
-    float GetRotation() const; /**< @brief Gets rotation @returns rotation */
-    void SetRotation(float rotation); /**< @brief Sets rotation @param rotation Rotation to set (degrees) */
-    void AddLocalRotation(float rotation); /**< @brief Adds to rotation value @param rotation Rotation to add */
-
     bool isVisible() const; /**< @brief Checks if actor visible @returns true if visible */
     void SetVisibility(bool visibility); /**< @brief Sets visibility of actor @param visibility Visibility to set */
 
@@ -148,7 +144,6 @@ private:
     bool Visible;
     bool SimulatePhysics;
     bool UseAsymmetricGravity;
-    float Rotation;
 
     bool isInPlay;
 

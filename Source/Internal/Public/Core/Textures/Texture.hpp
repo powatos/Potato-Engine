@@ -24,6 +24,10 @@ struct Texture
 
     const Vector2& GetBoundingBox() const;
 
+    float GetRotation() const; /**< @brief Gets rotation @returns rotation */
+    void SetRotation(float rotation); /**< @brief Sets rotation @param rotation Rotation to set (degrees) */
+    void AddLocalRotation(float rotation); /**< @brief Adds to rotation value @param rotation Rotation to add */
+
     /**
      * @brief bool overload that checks if Texture is valid
      * @returns true if the texture is valid
@@ -36,5 +40,6 @@ private:
     Vector2 BoundingBox;
     std::wstring cachedStr;
 
-
+    float Rotation;
+    
 };

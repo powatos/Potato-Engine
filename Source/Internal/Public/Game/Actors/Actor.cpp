@@ -19,7 +19,6 @@ Actor::Actor() {
 
     Position = Vector2();
     Size = Vector2();
-    Rotation = 0.f;
     Visible = true;
 
     Bounciness = 0.f;
@@ -79,19 +78,6 @@ void Actor::SetSize(const Vector2 &size) {
 }
 void Actor::ResizeToTexture() {
     Size = ActorTexture.GetBoundingBox();
-}
-
-float Actor::GetRotation() const { 
-    return Rotation; 
-}
-void Actor::SetRotation(float rotation) {
-    // Normalize rotation to [0, 360)
-    rotation = fmodf(rotation, 360.0f);
-    if (rotation < 0.0f) { rotation += 360.0f; }
-    Rotation = rotation;
-}
-void Actor::AddLocalRotation(float rotation) {
-    SetRotation(GetRotation() + rotation);
 }
 
 bool Actor::isVisible() const {
