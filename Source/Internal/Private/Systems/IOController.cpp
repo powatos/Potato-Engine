@@ -161,7 +161,11 @@ void IOController::DrawLevel() {
     werase(displayWindow);
     
     const GameInstance* Instance = GameInstance::Get();
-    const ActorPool& renderActors = Instance->GetWorld()->GetAllActors();
+    const World* world = Instance->GetWorld();
+    const ActorPool& renderActors = world->GetAllActors();
+
+    int maxRow = world->Settings.Size.y;
+    int maxCol = world->Settings.Size.x;
 
     Camera* camera = Instance->GetPlayerController()->GetCamera();
 
@@ -187,28 +191,39 @@ void IOController::DrawLevel() {
 
         if (actor->IsUsingCTex()) {
                 
-            for (int r = 0; r < actorSize.y; ++r) {
-                std::string textureRowStr = "";
-                textureRowStr.reserve(static_cast<const unsigned int>(actorSize.x));
-
-                for (int c = 0; c < actorSize.x; ++c) {
-                    textureRowStr += actor->ctex;
+            for (int r = 0; r < actorSize.y && r < maxRow; ++r) {
+                for (int c = 0; c < actorSize.x && c < maxCol; ++c) {
+                    mvwaddch(displayWindow,
+                        scrVecX + r,
+                        scrVecY + c,
+                        actor->ctex
+                    );
                 }
-
-                mvwaddstr(displayWindow, 
-                    scrVecX + r, 
-                    scrVecY, 
-                    textureRowStr.c_str()
-                );
             }
+
         } else {
             const std::vector<std::wstring>& texVec = actor->GetTexture().raw_vec();
-            // todo: cut off string at the end of the screen
-            int row = scrVecX;
+            int r = scrVecX;
 
             for (const std::wstring& wline : texVec) {
-                mvwaddwstr(displayWindow, row, scrVecY, wline.c_str());
-                ++row;
+                if (r > maxRow) { continue; }
+                int c = scrVecY;
+
+                for (const wchar_t& ch : wline) {
+                    if (c > maxCol) { continue; }
+
+                    wchar_t wch = ch;
+                    cchar_t cc;
+                    setcchar(&cc, &wch, A_NORMAL, 0, NULL);
+                    
+                    mvwadd_wch(displayWindow,
+                        r,
+                        c,
+                        &cc
+                    );
+                    ++c;
+                }
+                ++r;
             }
 
         }
@@ -244,6 +259,7 @@ void IOController::DrawHUD() {
                 mvwprintw(hudWindow,
                     static_cast<int>(pos.y),
                     static_cast<int>(pos.x),
+                    "%s",
                     e->field.c_str()
                 );
             }

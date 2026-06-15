@@ -19,7 +19,7 @@ PlayerController::PlayerController() {
     TargetMovementVelocity = 1000.f;
     JumpForce = 20.f;
 
-    CameraFollowsPlayer = false;
+    CameraFollowsPlayer = true;
     bTickingUpdate = true;
 }
 
@@ -32,7 +32,7 @@ void PlayerController::Initialize() {
 
 }
 
-void PlayerController::Tick([[maybe_unused]] float dt) {
+void PlayerController::Tick(float dt) {
     Tickable::Tick(dt);
     
     if (CameraFollowsPlayer) { /// Camera follow logic
