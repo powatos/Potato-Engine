@@ -149,14 +149,14 @@ void Actor::SetBounce(float bounce) {
     Bounciness = bounce;
 }
 
-const Texture& Actor::GetTexture() const {
+Texture& Actor::GetTexture() {
     return ActorTexture;
 }
 void Actor::SetTexture(const std::string& textureName) {
     TextureManager* texManager = TextureManager::Get();
 
     if (texManager->HasTexture(textureName)) {
-        ActorTexture = texManager->GetTexture(textureName); 
+        ActorTexture = Texture(texManager->GetTexture(textureName)); 
     }
 }
 

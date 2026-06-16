@@ -46,7 +46,12 @@ Texture::Texture(const std::string& textureFile) {
     }
 }
 Texture::Texture(const Texture& other) {
+    // copy all members
     data = other.data;
+    cachedStr = other.cachedStr;
+    
+    BoundingBox = other.BoundingBox;
+    Rotation = other.Rotation;
 }
 
 const std::vector<std::wstring>& Texture::raw_vec() const {

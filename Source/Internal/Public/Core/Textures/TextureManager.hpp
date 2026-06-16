@@ -32,7 +32,7 @@ public:
      * @param name Name of texture to get
      * @returns Texture object reference
      */
-    Texture& GetTexture(const std::string& name);
+    const Texture& GetTexture(const std::string& name);
     /**
      * @brief Checks if a texture is registered
      * @param name Name of texture to check

@@ -81,7 +81,7 @@ public:
     float GetBounce() const; /**< @brief Gets bounce @returns Bounce */
     void SetBounce(float bounce); /**< @brief Sets bounce @param bounce Bounce to set */
 
-    const Texture& GetTexture() const;
+    Texture& GetTexture();
     void SetTexture(const std::string& textureName);
 
     bool IsUsingCTex() const;

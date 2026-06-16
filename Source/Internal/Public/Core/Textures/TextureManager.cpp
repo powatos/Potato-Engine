@@ -33,7 +33,7 @@ void TextureManager::BeginPlay() {
 void TextureManager::RegisterTexture(const std::string& textureFileName) {
     textures.emplace(textureFileName, textureFileName + ".txt");
 }
-Texture& TextureManager::GetTexture(const std::string& name) {
+const Texture& TextureManager::GetTexture(const std::string& name) {
     return textures.at(name);
 }
 bool TextureManager::HasTexture(const std::string& name) const {
