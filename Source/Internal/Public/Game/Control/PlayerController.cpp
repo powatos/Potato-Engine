@@ -73,6 +73,8 @@ void PlayerController::SetupInputBindings() {
         
         InputBinding(Keycode::A, InputType::Completed, "CompleteMoveLeft", this, &PlayerController::eMvL),
         InputBinding(Keycode::D, InputType::Completed, "CompleteMoveRight", this, &PlayerController::eMvR),
+
+        InputBinding(Keycode::G, InputType::Impulse, "_rotate", this, &PlayerController::_rot)
     });
 }
 
@@ -81,10 +83,12 @@ void PlayerController::SetupInputBindings() {
 void PlayerController::sMvL() { playerMoveVec.x = -1; }
 void PlayerController::sMvR() { playerMoveVec.x =  1; }
 
-void PlayerController::jump() { ActivePlayer->AddImpulse(Vector2(0, JumpForce)); LOG_DEFAULT(LogType::DEBUG, "jumped!"); }
+void PlayerController::jump() { ActivePlayer->AddImpulse(Vector2(0, JumpForce)); }
 
 void PlayerController::eMvL() { playerMoveVec.x = 0; }
 void PlayerController::eMvR() { playerMoveVec.x = 0; }
+
+void PlayerController::_rot() { ActivePlayer->GetTexture().AddLocalRotation(15   ); }
 
 #pragma endregion
 

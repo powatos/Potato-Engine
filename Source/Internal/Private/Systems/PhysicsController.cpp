@@ -38,8 +38,8 @@ void PhysicsController::TickPostPhysics(float dt) {
             const Vector2 aPos = a->GetPosition();
             const Vector2 bPos = b->GetPosition();
 
-            // broadphase check against actors farther than 100.f units
-            if (aPos.SquaredDistance(bPos) >= 10'000.f) { continue; }
+            // broadphase check against actors farther than 10'000.f units
+            if (aPos.SquaredDistance(bPos) >= 1'000'000'000.f) { continue; }
 
             ResolveCollision(a, b, aPos, bPos);
         }

@@ -37,6 +37,10 @@ int main()
     PlayerController* playerController = instance->GetPlayerController();
     Player* player = playerController->GetPlayer();
     player->SetPosition(Vector2(1, 1));
+    player->GetTexture().SetRotation(0.f);
+    player->SetUsingCTex(true);
+    player->SetSize(Vector2(5,1));
+    player->ctex = 'P';
 
     /// UI SETUP
     [[maybe_unused]] IHUDController* HUDController = engine.GetHUDController();

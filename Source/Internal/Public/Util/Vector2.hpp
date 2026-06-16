@@ -4,6 +4,8 @@
 #include <cmath>
 #include <string>
 
+inline double PI = 3.14159; 
+
 /**
  * @brief Standard 2-dimensional vector
  */
@@ -91,6 +93,16 @@ struct Vector2
         const float dy = y-other.y;
 
         return  dx * dx + dy * dy;
+    }
+    /** @returns a rotated vector @param rotation rotation in degrees */
+    inline Vector2 Rotate(float rotation) const {
+        const float sine = std::sin(rotation * PI/180);
+        const float cosine = std::cos(rotation * PI/180);  
+        
+        return Vector2(
+            x * cosine - y * sine,
+            x * sine + y * cosine
+        );
     }
 
     /** @returns string representation of vector */

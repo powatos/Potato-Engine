@@ -28,7 +28,7 @@ void World::BeginPlay() {
     wallR->SetSize(Vector2(wallWidth, 24));
     wallR->ctex = 'W';
 
-    Block* wallU = SpawnActor<Block>(Vector2(0, 23+wallWidth));
+    Block* wallU = SpawnActor<Block>(Vector2(0, 24+wallWidth));
     wallU->SetSize(Vector2(Settings.Size.x, wallWidth));
     wallU->ctex = 'W';
     

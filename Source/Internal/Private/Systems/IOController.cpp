@@ -9,6 +9,7 @@
 #include <clocale>
 #include <signal.h>
 #include <string>
+#include <cmath>
 #include <chrono>
 
 #include "Debug/Debug.hpp"
@@ -178,6 +179,7 @@ void IOController::DrawLevel() {
         if (!actor->isVisible()) { continue; }
 
         const Vector2 actorPos = actor->GetPosition();
+        const float rot = actor->GetTexture().GetRotation();
 
         if (!GameplayHelper::IsPositionInCameraFrame(actorPos, camera)) { continue; }
 
@@ -187,21 +189,25 @@ void IOController::DrawLevel() {
         const int scrVecX = static_cast<int>(screenVector.x);
         const int scrVecY = static_cast<int>(screenVector.y);
 
-        const Vector2 actorSize = actor->GetSize();
-
         if (actor->IsUsingCTex()) {
-                
+            const Vector2 actorSize = actor->GetSize();
+
             for (int r = 0; r < actorSize.y && r < maxRow; ++r) {
                 for (int c = 0; c < actorSize.x && c < maxCol; ++c) {
+                    const Vector2 rotVec = Vector2(r, c).Rotate(rot); // 0,4 -> -4,0
+                    const int rotRowC = static_cast<int>(scrVecX + rotVec.x + 0.5f);
+                    const int rotColC = static_cast<int>(scrVecY + rotVec.y + 0.5f);
+
                     mvwaddch(displayWindow,
-                        scrVecX + r,
-                        scrVecY + c,
+                        rotRowC,
+                        rotColC,
                         actor->ctex
                     );
                 }
             }
 
         } else {
+            const Vector2 textureSize = actor->GetTexture().GetBoundingBox();   
             const std::vector<std::wstring>& texVec = actor->GetTexture().raw_vec();
             int r = scrVecX;
 

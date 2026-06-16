@@ -77,5 +77,6 @@ private:
     void sMvL(); void eMvL();
     void sMvR(); void eMvR();
     void jump();
+    void _rot();
 
 };
