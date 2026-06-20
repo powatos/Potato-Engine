@@ -3,16 +3,18 @@ Version v1.5.2
 CHANGELOG:  
 - Changed `World.hpp` directory: `Game/World.hpp` -> `Game/World/World.hpp`
 - Changed `HitResult.hpp` directory: `Game/HitResult.hpp` -> `Game/World/HitResult.hpp`
+- Moved actor rotation to texture; actor collision is unaffected by rotation
 - Added Unicode texture rendering via `Texture` and `TextureManager`
+    - Rotation renders correctly with texture and char texture
 - Extracted physics logic to `PhysicsController`
 - Added random generators to `GameplayHelpers`
 - Consolidated engine subsystem class hierarchies and added friending via macro
 - Refactored tick system with multiple tick groups and better tick checks
-- Moved actor rotation to texture; actor collision is unaffected by rotation
 
 PATCHLOG:
 - Fixed a constructor overload redeclaration issue in some singletons
 - Fixed an issue with engine subsystem singleton construction ordering 
+- Increased collision broadphase check distance from `100` to `10,000`
 
 TODO:  
 - make timers w variadic arg template

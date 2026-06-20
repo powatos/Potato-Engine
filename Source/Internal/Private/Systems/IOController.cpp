@@ -189,14 +189,27 @@ void IOController::DrawLevel() {
         const int scrVecX = static_cast<int>(screenVector.x);
         const int scrVecY = static_cast<int>(screenVector.y);
 
+        const float sine = std::sin(rot * PI/180.0);
+        const float cosine = std::cos(rot * PI/180.0);
+
+        auto getRotationCoords = [&scrVecX, &scrVecY, &sine, &cosine](int r, int c, int& rotRow, int& rotCol) -> void {
+            const Vector2 rotVec{
+                r * cosine - c * sine,
+                r * sine + c * cosine
+            };
+            rotRow = static_cast<int>(scrVecX + rotVec.x + 0.5f);
+            rotCol = static_cast<int>(scrVecY + rotVec.y + 0.5f);
+        };
+
         if (actor->IsUsingCTex()) {
+            // single-char texture
             const Vector2 actorSize = actor->GetSize();
 
             for (int r = 0; r < actorSize.y && r < maxRow; ++r) {
                 for (int c = 0; c < actorSize.x && c < maxCol; ++c) {
-                    const Vector2 rotVec = Vector2(r, c).Rotate(rot); // 0,4 -> -4,0
-                    const int rotRowC = static_cast<int>(scrVecX + rotVec.x + 0.5f);
-                    const int rotColC = static_cast<int>(scrVecY + rotVec.y + 0.5f);
+                    int rotRowC;
+                    int rotColC;
+                    getRotationCoords(r, c, rotRowC, rotColC);
 
                     mvwaddch(displayWindow,
                         rotRowC,
@@ -207,24 +220,29 @@ void IOController::DrawLevel() {
             }
 
         } else {
+            // regular texture
             const Vector2 textureSize = actor->GetTexture().GetBoundingBox();   
             const std::vector<std::wstring>& texVec = actor->GetTexture().raw_vec();
-            int r = scrVecX;
+            int r = 0;
 
             for (const std::wstring& wline : texVec) {
-                if (r > maxRow) { continue; }
-                int c = scrVecY;
+                int c = 0;
 
                 for (const wchar_t& ch : wline) {
-                    if (c > maxCol) { continue; }
+                    int rotRowC;
+                    int rotColC;
+                    getRotationCoords(r, c, rotRowC, rotColC);
 
                     wchar_t wch = ch;
                     cchar_t cc;
                     setcchar(&cc, &wch, A_NORMAL, 0, NULL);
+
+
+                    if (rotRowC > maxRow || rotColC > maxCol) { continue; }
                     
                     mvwadd_wch(displayWindow,
-                        r,
-                        c,
+                        rotRowC,
+                        rotColC,
                         &cc
                     );
                     ++c;

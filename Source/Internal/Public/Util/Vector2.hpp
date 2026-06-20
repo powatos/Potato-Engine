@@ -4,7 +4,7 @@
 #include <cmath>
 #include <string>
 
-inline double PI = 3.14159; 
+static constexpr double PI = 3.14159; 
 
 /**
  * @brief Standard 2-dimensional vector
