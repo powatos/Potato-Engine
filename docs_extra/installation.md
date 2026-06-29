@@ -93,7 +93,7 @@ Once CMake is installed, setup the project by creating a `CMakeLists.txt` file i
 
 Add configurations
 ```CMake
-project(myGame CXX)
+project(myGame CXX) # Replace with the name of your game
 
 # This can be any version above the engine version (3.24)
 cmake_minimum_required(VERSION 3.24)
@@ -111,22 +111,25 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(PotatoEngine)
 
-# Ensure all game code is captured under SOURCES (assumes root/src/...)
+# Ensure all game code is captured under SOURCES
 file(GLOB_RECURSE SOURCES 
     "src/*.h"
     "src/*.hpp"
     "src/*.cpp"
 )
 
-# Ensure the executable name matches the other references
+# Ensure the executable name matches is consistent
 add_executable(myGameExec ${SOURCES})
 
-# Include the source directory for header files (assumes root/src/...)
-target_include_directories(myGameExec PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+# Include the source directory for header files
+target_include_directories(myGameExec PRIVATE src/)
 
 
 # Link libraries to the game
 target_link_libraries(myGameExec PRIVATE PotatoEngine::PotatoEngine)
+
+# Copy default engine folders to the root (optional but reccomended)
+PotatoEngineDefaults(myGameExec)
 ```
 
 ## Engine externals
@@ -137,17 +140,6 @@ After configuring CMake, setup the external directories.
 #### Log folder
 Create a directory in the project root: `logs/`  
 Create the default log file: `logs/debug.log`
-
-#### Data folder
-Create a directory in the project root: `Data/`  
-Create the textures folder: `Data/Textures/` (texture files can be placed here)
-
-*...or copy and paste the following command into the terminal:* 
-```bash
-# Ensure this command is ran from the root directory
-mkdir -p logs Data/Textures && touch logs/debug.log
-```
-
 
 ## Build configuration
 After setting up your project, build the setup files.

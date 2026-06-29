@@ -47,7 +47,6 @@
 # Local Data
 *.env
 build*/
-*.cmake
 
 # Log Files
 *.log

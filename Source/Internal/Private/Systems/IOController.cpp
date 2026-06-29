@@ -1,10 +1,6 @@
 /** @file IOController.cpp */
 
-#if defined(_WIN32) || defined(_WIN64)
-    #include <curses.h>
-#else
-    #include <ncurses.h>
-#endif
+#include <curses.h>
 
 #include <clocale>
 #include <signal.h>
@@ -91,8 +87,8 @@ void IOController::HandleInput() {
     WINDOW* displayWindow = static_cast<WINDOW*>(this->DisplayWindow);
 
     // Flush input buffer to ignore old frame inputs
-    int _ch;
-    int _lch;
+    int _ch = 0;
+    int _lch = 0;
     while ((_ch = wgetch(displayWindow)) != ERR) {
         _lch = _ch;
     }

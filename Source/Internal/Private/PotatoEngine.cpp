@@ -106,10 +106,9 @@ EventController* PotatoEngine::GetNativeEventController() const {
 void PotatoEngine::Resolve() noexcept {
     LOG_DEFAULT(LogType::VITAL, "Resolving PotatoEngine (Subsystem stack resolve)");
 
-    for (auto it = SubsystemStack.end(); it != SubsystemStack.begin(); ) {
-        --it;
-        (*it)->Resolve();
-        SubsystemStack.erase(it);
+    while (!SubsystemStack.empty()) {
+        SubsystemStack.back()->Resolve();
+        SubsystemStack.pop_back();
     }
 
     clearConsole();

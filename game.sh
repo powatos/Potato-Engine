@@ -12,7 +12,7 @@ case "$1" in
     "conf")
         rm -rf $OBJDIR
         cmake -B $OBJDIR -DCMAKE_BUILD_TYPE=$CBTYPE
-        echo "Rebuild complete"
+        echo "Reconfiguration complete"
         ;;
     "build"|"b")
         cmake --build $OBJDIR
