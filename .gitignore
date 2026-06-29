@@ -53,3 +53,5 @@ build*/
 
 # docs
 docs/
+
+!Source/ThirdParty/**

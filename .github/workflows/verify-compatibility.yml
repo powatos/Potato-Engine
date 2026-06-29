@@ -18,32 +18,17 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install ncurses (linux)
-      if: matrix.os == 'ubuntu-latest'
-      run: sudo apt-get update && sudo apt-get install -y libncurses5-dev libncursesw5-dev
+      # Verify
+    - name: Configure and Build (Windows)
+      if: runner.os == 'Windows'
+      shell: cmd
+      run: |
+        call game.bat conf
+        call game.bat build
 
-    - name: Install ncurses (macOS)
-      if: matrix.os == 'macos-latest'
-      run: brew install ncurses
-
-    - name: Install PDCurses (Windows)
-      if: matrix.os == 'windows-latest'
-      run: vcpkg install pdcurses:x64-windows
-
-    # cmake
-    - name: Configure CMake
+    - name: Configure and Build (Linux/Mac)
+      if: runner.os == 'Linux' || runner.os == 'macOS'
       shell: bash
       run: |
-        if [ "${{ matrix.os }}" = "windows-latest" ]; then
-          cmake -B build -DCMAKE_BUILD_TYPE=Debug \
-            -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" \
-            -DCMAKE_PREFIX_PATH="C:/vcpkg/installed/x64-windows" \
-            -DCURSES_NEED_NCURSES=TRUE \
-            -DCURSES_LIBRARY="C:/vcpkg/installed/x64-windows/lib/pdcurses.lib" \
-            -DCURSES_INCLUDE_PATH="C:/vcpkg/installed/x64-windows/include"
-        else
-          cmake -B build -DCMAKE_BUILD_TYPE=Debug
-        fi
-  
-    - name: Build Engine
-      run: cmake --build build
+        ./game.sh conf
+        ./game.sh build

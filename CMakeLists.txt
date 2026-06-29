@@ -16,6 +16,7 @@ if (WIN32)
 elseif(APPLE)
     set(CURSES_LIBRARY "${CURSES_LIBS_DIR}/mac/libncursesw.a")
     set(CURSES_INCLUDE_DIR "${CURSES_INCLUDE_BASEDIR}/mac")
+    list(APPEND CURSES_LIBRARY "-ltermcap")
 else()
     set(CURSES_LIBRARY 
         "${CURSES_LIBS_DIR}/linux/libncursesw.a"
@@ -67,6 +68,10 @@ target_compile_definitions(PotatoEngine PUBLIC
     PDC_WIDE
     _CRT_SECURE_NO_WARNINGS
 )
+
+if (APPLE)
+    target_compile_definitions(PotatoEngine PUBLIC _XOPEN_SOURCE_EXTENDED)
+endif()
 
 target_link_libraries(PotatoEngine PRIVATE "${CURSES_LIBRARY}")
 add_library(PotatoEngine::PotatoEngine ALIAS PotatoEngine)
