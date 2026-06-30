@@ -11,7 +11,7 @@ if "%CBTYPE%"=="" set CBTYPE=Debug
 
 if "%CMD%"=="conf" (
     if exist %OBJDIR% rmdir /s /q %OBJDIR%
-    cmake -B %OBJDIR%
+    cmake -B %OBJDIR% -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
     echo Reconfiguration complete
     goto :eof
 )

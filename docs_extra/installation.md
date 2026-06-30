@@ -4,32 +4,68 @@
 
 This page convers installation of the Potato Engine.
 
-Installation consists of the following parts. Some parts may be skipped if already setup properly.
-1. Setup CMake and ensure it is updated
-2. Configure CMake for the project and link against engine
-3. Make required directories
-4. Build program and run
-
 @remark Potato Engine is currently under development and this page is subject to change
 
-## CMake Setup
+Installation consists of the following parts:
+1. Setup CMake with the correct version
+2. Configure CMake for the project and link against Potato Engine
+3. Build program and run
 
+# Windows
+
+This section covers installation on Windows operating systems.
+
+All commands are run in a Powershell CLI, but equivalent commands can be run from cmd.
+
+## CMake Setup
 Ensure CMake is installed and updated to the latest version
-```bash
+```pwsh
 cmake --version
 ```
 <em>
 if command not found or version is less than 3.24, continue with the next steps
 </em>
 
-<br>
+</br>
 
-* @ref cmake-setup-linux "Linux"
-* @ref cmake-setup-windows "Windows"
-* @ref cmake-setup-macos "MacOS"
+```pwsh
+# install cmake
+winget install kitware.cmake
+cmake --version
+```
+<em>
+if cmake is still not updated to a version after 3.24, get help at <a href="https://cmake.org">cmake.org</a>
+</em>
 
-@anchor cmake-setup-linux
-### Linux
+## Windows Project Setup
+Follow instructions under the @ref project-setup "Project Setup section"
+
+## Build configuration
+After setting up your project, build the setup files.
+
+Configure the build files every time a change is made to the CMakeLists.txt file or the project directory structure is changed (file additions, removals, moves)
+
+```pwsh
+.\game.bat conf
+```
+
+Build the game files every time a change is made to your code
+```pwsh
+.\game.bat build
+```
+
+*Hint: Add the script as an alias using `function game { .\game.bat $args }` to run the script easier: `game conf`, `game build`*
+
+
+# Linux
+
+This section covers installation on Linux operating systems.
+
+All commands are in run in a bash CLI.
+
+## CMake Setup
+Ensure CMake is installed and updated to the latest version
+
 ```bash
 sudo apt update
 sudo apt install -y cmake
@@ -62,43 +98,35 @@ cmake --version
 if cmake is still not updated to a version after 3.24, get help at <a href="https://cmake.org">cmake.org</a>
 </em>
 
-@anchor cmake-setup-windows
-### Windows
-```powershell
-# install cmake
-winget install kitware.cmake
-cmake --version
-```
-<em>
-if cmake is still not updated to a version after 3.24, get help at <a href="https://cmake.org">cmake.org</a>
-</em>
+## Linux Project Setup
+Follow instructions under the @ref project-setup "Project Setup section"
 
-@anchor cmake-setup-macos
-### MacOS
+## Build configuration
+After setting up your project, build the setup files.
+
+Configure the build files every time a change is made to the CMakeLists.txt file or the project directory structure is changed (file additions, removals, moves)
+
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-# if this command outputs any version, cmake is installed
-cmake --version 
-
-# if cmake is already installed:
-brew upgrade cmake
-
-# if cmake is not installed:
-brew install cmake
+./game.sh conf
 ```
 
-## Project Setup
-Once CMake is installed, setup the project by creating a `CMakeLists.txt` file in the root directory. Ensure the case matches exactly.
+Build the game files every time a change is made to your code
+```bash
+./game.sh build
+```
+
+*Hint: Add the script as an alias using `alias game='./game.sh'` to run the script easier: `game conf`, `game build`*
+
+@anchor project-setup
+# Project Setup
+After installing CMake, setup the project by creating a `CMakeLists.txt` file in the root directory. Ensure the case matches exactly.
 
 Add configurations
 ```CMake
 project(myGame CXX) # Replace with the name of your game
 
-# This can be any version above the engine version (3.24)
 cmake_minimum_required(VERSION 3.24)
 
-# This can be any version above the engine version (C++17)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -111,49 +139,28 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(PotatoEngine)
 
-# Ensure all game code is captured under SOURCES
+# Ensure all source code is captured under SOURCES
 file(GLOB_RECURSE SOURCES 
     "src/*.h"
     "src/*.hpp"
     "src/*.cpp"
 )
 
-# Ensure the executable name matches is consistent
+# Ensure the executable name is consistent
 add_executable(myGameExec ${SOURCES})
 
 # Include the source directory for header files
 target_include_directories(myGameExec PRIVATE src/)
 
 
-# Link libraries to the game
+# Link engine libraries to the game
 target_link_libraries(myGameExec PRIVATE PotatoEngine::PotatoEngine)
 
 # Copy default engine folders to the root (optional but reccomended)
 PotatoEngineDefaults(myGameExec)
 ```
 
-## Engine externals
-After configuring CMake, setup the external directories.
-
-@remark This section is under development
-
-#### Log folder
-Create a directory in the project root: `logs/`  
-Create the default log file: `logs/debug.log`
-
-## Build configuration
-After setting up your project, build the setup files.
-
-Configure the build files every time a change is made to the CMakeLists.txt file or the project directory structure is changed (file additions, removals, moves)
-```bash
-cmake -B build -S .
-```
-Build the game files every time a change is made to your code
-```bash
-cmake --build build
-```
-
-## Engine coupling
+# Engine coupling
 Include game files
 ```cpp
 #include <Core/PotatoEngine.hpp>
@@ -168,56 +175,5 @@ int main()
     return 0;
 }
 ```
-
 For more detailed information, continue to the next section: [Setting Up Your Game](setup.html)
 
-## Extra
-
-Build scripts are reccommended to enhance development:
-```bash
-#!/bin/bash
-
-GAME_TARGET=myGameExec # replace with your target executable 
-
-OBJDIR=build/
-LOGFILE=logs/debug.log
-
-SCRIPT=$(basename "$0")
-CBTYPE=${2:-Debug}
-
-case "$1" in
-    "conf") # ./game.sh conf Debug|Release, generate build files
-        cmake -B $OBJDIR -DCMAKE_BUILD_TYPE=$CBTYPE
-        echo "Rebuild complete"
-        ;;
-    "build"|"b") # ./game.sh build|b, build project
-        cmake --build $OBJDIR
-        echo "Build complete"
-        ;;
-    "run"|"r") # ./game.sh run|r, run game
-        if  [[ -f $OBJDIR/$GAME_TARGET ]]; then
-            ./$OBJDIR/$GAME_TARGET
-        else
-            echo "Invalid game target"
-            exit 1
-        fi
-        ;;
-    "clean"|"-c") # ./game.sh clean|-c, reset build
-        rm -rf $OBJDIR
-        echo "Cleaned up binaries"
-        ;;
-    "flush"|"-f") # ./game.sh flush|-f, flush log file
-        > $LOGFILE
-	    echo "Flushed $LOGFILE"
-        ;;
-    *)
-        echo "Invalid argument"
-        exit 1
-        ;;
-
-esac
-```
-<em>
-Build script in <code>./game.sh</code> used for automating building procedures.  
-Ensure the script is runnable before using: <code>chmod +x game.sh</code> (git bash on windows)
-</em>
