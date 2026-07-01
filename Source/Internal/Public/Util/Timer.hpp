@@ -53,13 +53,13 @@ public:
     /**
      * @brief Updates timer for current tick
      * @warning This method is for internal managing use only. Do not manage timers manually. @sa TimerManager
-     * @param elsapsed Time since last update
+     * @param elapsed_s Time since last update
      */
-    inline void UpdateTick(const float elapsed) {
+    inline void UpdateTick(const float elapsed_s) {
         if (hasFinished) { return; }
 
-        this->elapsed += elapsed;
-        if (this->elapsed >= duration) {
+        elapsed += elapsed_s;
+        if (elapsed >= duration) {
             Complete();
         }
     }
