@@ -94,7 +94,7 @@ template<typename ActorClass>
 ActorClass* World::SpawnActor() {
     static_assert(std::is_base_of_v<Actor, ActorClass>, "Illegal class spawn to world");
 
-    Actor* actor = new ActorClass();
+    ActorClass* actor = new ActorClass();
     AddtoPool(actor);
 
     // post-spawn functionality here

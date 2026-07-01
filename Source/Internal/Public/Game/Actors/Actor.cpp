@@ -28,7 +28,8 @@ Actor::Actor() {
     CollisionResponse = CollisionType::Block;
     
     bUseCTex = false;
-
+    isInPlay = false;
+    
 }
 
 void Actor::DispatchBeginPlay() {
