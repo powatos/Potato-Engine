@@ -33,10 +33,15 @@ int main()
     PersistentLevel level("save1.json");
     level.LoadStaticActors();
 
+    Block* Obstacle1 = world->SpawnActor<Block>(Vector2(10,2));
+    Obstacle1->SetSize(Vector2(5, 3));
+    Obstacle1->ctex = 'O';
+    Obstacle1->SetCollisionType(CollisionType::Overlap);
+
     /// PLAYER SETUP
     PlayerController* playerController = instance->GetPlayerController();
     Player* player = playerController->GetPlayer();
-    player->SetPosition(Vector2(1, 1));
+    player->SetPosition(Vector2(0, 5));
     player->GetTexture().SetRotation(0.f);
     player->SetUsingCTex(true);
     player->SetSize(Vector2(5,2));

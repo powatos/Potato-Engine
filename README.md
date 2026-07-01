@@ -2,7 +2,7 @@
 
 **Potato Engine is currently in development**
 
-Potato Engine is a lightweight terminal based game engine designed for C++ development. This was inspired by Unreal Engine and initiated for the [2026 Horizons Hackathon](https://horizons.hackclub.com).
+Potato Engine is a lightweight terminal based game engine designed for C++ development. This was inspired by Unreal Engine and initiated for [Horizons by Hack Club](https://horizons.hackclub.com).
 
 View insallation instructions [here](https://powatos.github.io/Potato-Engine/installation.html).
 
