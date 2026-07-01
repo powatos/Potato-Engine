@@ -27,13 +27,11 @@ void PhysicsController::TickPostPhysics(float dt) {
 
     // update collision physics for each actor
     for (Actor* a : actorPool) {
-        if (!a->isSimulatingPhysics()) { continue; }
+        if (a->GetCollisionType() == CollisionType::None) { continue; }
 
         for (Actor* b : actorPool) {
             if (a >= b) { continue; } // pointer trick to avoid checking pairs twice and against self
-            if (!b->isSimulatingPhysics()) { continue; }
-            if (a->GetMovability() == ActorMovability::Static
-                && b->GetMovability() == ActorMovability::Static ) { continue; }
+            if (b->GetCollisionType() == CollisionType::None) { continue; }
 
             const Vector2 aPos = a->GetPosition();
             const Vector2 bPos = b->GetPosition();

@@ -18,19 +18,19 @@ void World::BeginPlay() {
 
     Block* wallB = SpawnActor<Block>(Vector2(0, -1));
     wallB->SetSize(Vector2(Settings.Size.x, wallWidth));
-    wallB->ctex = 'W';
+    wallB->ctex = 'B';
 
     Block* wallL = SpawnActor<Block>(Vector2(-wallWidth, 23));
     wallL->SetSize(Vector2(wallWidth, 24));
-    wallL->ctex = 'W';
+    wallL->ctex = 'L';
 
     Block* wallR = SpawnActor<Block>(Vector2(Settings.Size.x, 23));
     wallR->SetSize(Vector2(wallWidth, 24));
-    wallR->ctex = 'W';
+    wallR->ctex = 'R';
 
     Block* wallU = SpawnActor<Block>(Vector2(0, 24+wallWidth));
     wallU->SetSize(Vector2(Settings.Size.x, wallWidth));
-    wallU->ctex = 'W';
+    wallU->ctex = 'U';
     
     for (Actor* actor : actorPool) {
         actor->DispatchBeginPlay();

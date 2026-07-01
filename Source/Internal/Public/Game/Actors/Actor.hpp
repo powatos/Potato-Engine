@@ -23,7 +23,8 @@ enum class ActorMovability
 enum class CollisionType
 {
     Overlap, ///< @brief Actor generates hit events without collision correction
-    Block ///< @brief Actor generates hit events with collision correction
+    Block, ///< @brief Actor generates hit events with collision correction
+    None ///< @brief Actor doesn't collide nor generate hit events
 };
 
 /**
