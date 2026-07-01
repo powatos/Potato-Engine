@@ -87,6 +87,7 @@ void PhysicsController::ResolveCollision(Actor* a, Actor* b, const Vector2& aPos
 
     // calculate hit details
     HitResult hitResult;
+    hitResult.distance = 0.f;
 
     float penetration{};
     if (overlapX < overlapY) {
@@ -143,11 +144,11 @@ void PhysicsController::ResolveCollision(Actor* a, Actor* b, const Vector2& aPos
 
     // always dispatch hit events even if not blocking
     HitResult HitResultA = hitResult;
-    HitResultA.otherActor = b;
+    HitResultA.hitActor = b;
     a->OnHit(HitResultA);
 
     HitResult HitResultB = hitResult;
-    HitResultB.otherActor = a;
+    HitResultB.hitActor = a;
     b->OnHit(HitResultB);
 }
 
