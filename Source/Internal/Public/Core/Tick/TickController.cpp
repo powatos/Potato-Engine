@@ -8,10 +8,18 @@ TickController::TickController() {
 
 void TickController::Fire(float dt, TickGroup group) {
 
+    // add from queue
+    tickables.reserve(tickables.size() + tickablesQueue.size());
+    tickables.insert(
+        tickables.end(),
+        std::make_move_iterator(tickablesQueue.begin()),
+        std::make_move_iterator(tickablesQueue.end())
+    );
+    tickablesQueue.clear();
+
     for (Tickable* obj : tickables) {
         checkObjByGroup(dt, group, obj);
     }
-
 }
 
 constexpr void TickController::checkObjByGroup(float dt, TickGroup group, Tickable* obj) {
@@ -32,7 +40,7 @@ constexpr void TickController::checkObjByGroup(float dt, TickGroup group, Tickab
 }
 
 void TickController::Register(Tickable* tickable) {
-    tickables.push_back(tickable);
+    tickablesQueue.push_back(tickable);
 }
 
 void TickController::Resolve() noexcept {

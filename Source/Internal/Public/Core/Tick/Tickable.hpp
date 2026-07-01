@@ -12,6 +12,10 @@ class Tickable
 {
     friend class TickController;
 
+public:
+    Tickable(Tickable&&) noexcept = default;
+    Tickable& operator =(Tickable&&) noexcept = default;
+
 protected:
     Tickable(); // protected constructor lets ONLY derived classes call it
     virtual ~Tickable() = 0; // protected destructor stops compiler from allocating new, pure virtual makes abstract

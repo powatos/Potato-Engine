@@ -40,6 +40,7 @@ protected:
 
 private:
     std::vector<Tickable*> tickables;
+    std::vector<Tickable*> tickablesQueue;
 
     constexpr void checkObjByGroup(float dt, TickGroup group, Tickable* obj);
 };

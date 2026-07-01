@@ -10,6 +10,11 @@ Tickable::Tickable() {
     TickController* controller = TickController::Get();
 
     controller->Register(this);
+    
+    bTickingPreInput = false;
+    bTickingUpdate = false;
+    bTickingPostPhysics = false;
+    bTickingPostRender = false;
 }
 
 Tickable::~Tickable() {
