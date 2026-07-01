@@ -27,6 +27,7 @@ Actor::Actor() {
     Movability = ActorMovability::Movable;
     CollisionResponse = CollisionType::Block;
     
+    ActorTexture = Texture();
     bUseCTex = false;
     isInPlay = false;
     

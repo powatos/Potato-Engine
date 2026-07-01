@@ -16,7 +16,7 @@ struct Texture
      * @param textureFile Name of texture file in the Textures directory
      */
     Texture(const std::string& textureFile);
-    Texture() = default;
+    Texture();
     Texture(const Texture& other); 
     
     const std::vector<std::wstring>& raw_vec() const; ///< @brief returns the raw texture vector

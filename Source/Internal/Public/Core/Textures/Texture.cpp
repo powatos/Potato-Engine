@@ -10,9 +10,11 @@
 
 #include "Texture.hpp"
 
-Texture::Texture(const std::string& textureFile) {
-    Rotation = 0.f;
+Texture::Texture() : Rotation(0.f) {
 
+}
+
+Texture::Texture(const std::string& textureFile) : Texture() { 
     // pull file
     path filePath = DataManager::GetDataDir() / "Textures" / textureFile;
     if (!std::filesystem::exists(filePath)) {
@@ -45,7 +47,7 @@ Texture::Texture(const std::string& textureFile) {
         cachedStr += '\n';
     }
 }
-Texture::Texture(const Texture& other) {
+Texture::Texture(const Texture& other) : Texture() {
     // copy all members
     data = other.data;
     cachedStr = other.cachedStr;

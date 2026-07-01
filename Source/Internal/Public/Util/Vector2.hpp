@@ -4,7 +4,7 @@
 #include <cmath>
 #include <string>
 
-static constexpr double PI = 3.14159; 
+static constexpr double PI = 3.14159265358979323846;
 
 /**
  * @brief Standard 2-dimensional vector
@@ -104,9 +104,9 @@ struct Vector2
             x * sine + y * cosine
         );
     }
-    /** @returns the angle of the vector from standard position */
+    /** @returns the angle of the vector from standard position in degrees */
     inline float Angle() const {
-        return std::atan2(y, x);
+        return 180/PI * std::atan2(y, x);
     }
 
     /** @returns string representation of vector */
