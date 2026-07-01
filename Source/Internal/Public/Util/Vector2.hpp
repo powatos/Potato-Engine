@@ -104,6 +104,10 @@ struct Vector2
             x * sine + y * cosine
         );
     }
+    /** @returns the angle of the vector from standard position */
+    inline float Angle() const {
+        return std::atan2(y, x);
+    }
 
     /** @returns string representation of vector */
     inline std::string ToString() const {
