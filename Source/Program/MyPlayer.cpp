@@ -7,8 +7,11 @@
 
 SET_DEFAULT_SUBCLASS(Player, MyPlayer)
 
+MyPlayer::MyPlayer() : downraycast(Raycast()) {
+    
+}
+
 void MyPlayer::BeginPlay() {
-    downraycast = Raycast();
     downraycast.SetRay(Vector2(5,-5));
     downraycast.Settings.OverrideActorsList.insert(this);
     downraycast.Settings.OverrideActorsType = RaycastOverrideType::Exclude;

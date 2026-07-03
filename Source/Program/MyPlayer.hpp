@@ -5,6 +5,8 @@
 
 class MyPlayer : public Player
 {
+public:
+    MyPlayer();
 
 protected:
     virtual void BeginPlay() override;

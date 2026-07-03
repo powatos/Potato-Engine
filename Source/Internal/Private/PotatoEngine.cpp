@@ -36,9 +36,10 @@ PotatoEngine::PotatoEngine() {
     SubsystemStack.push_back( TickController::Get() );
 
     SubsystemStack.push_back( IOController::Get() );
-    SubsystemStack.push_back( GameInstance::Get() );
 
     SubsystemStack.push_back( TextureManager::Get() );
+
+    SubsystemStack.push_back( GameInstance::Get() );
 
     SubsystemStack.push_back( EventController::Get() );
         
