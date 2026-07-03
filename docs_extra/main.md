@@ -21,7 +21,7 @@ This is the landing page for the API Reference. Explore the documentation to fin
     </div>
     <div style="text-align: right;">
         <br>
-        <span>Last Updated: <time datetime="2026-05-16">May 16, 2026</time></span>
+        <span>Last Updated: <time datetime="2026-05-16">July 3, 2026</time></span>
     </div>
 </footer>
 @endhtmlonly

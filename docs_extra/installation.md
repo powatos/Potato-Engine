@@ -8,6 +8,8 @@ Start by navigating to the project [releases page](https://github.com/powatos/Po
 
 @remark Potato Engine is currently under development and this page is subject to change
 
+@remark Full mac support is still in development 
+
 # Windows
 
 This section covers installation on Windows operating systems.
@@ -158,6 +160,8 @@ target_link_libraries(myGameExec PRIVATE PotatoEngine::PotatoEngine)
 # Copy default engine folders to the root (optional but reccomended)
 PotatoEngineDefaults(myGameExec)
 ```
+
+**Note: If using build scripts, ensure the `GAME_TARGET` property matches the executable name in the CMake configuration file.**
 
 # Engine coupling
 Include game files
