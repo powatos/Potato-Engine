@@ -59,9 +59,7 @@ PotatoEngine& PotatoEngine::Get()
 void PotatoEngine::startup() {
     clearConsole();
 
-    printf("> POTATO ENGINE\n");
-    printf("> @powatos\n");
-    printf("\n> Loading...\n");
+    printf("> POTATO ENGINE by @powatos\n");
 }
 
 void PotatoEngine::LoadSubclasses() {
