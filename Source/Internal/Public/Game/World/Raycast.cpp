@@ -4,8 +4,10 @@
 #include <utility>
 #include <cfloat>
 
+#include "Util/TimerManager.hpp"
 #include "Core/Control/GameInstance.hpp"
 #include "Game/Actors/Block.hpp"
+#include "Core/Tick/TickController.hpp"
 
 #include "Debug/Debug.hpp"
 
@@ -66,6 +68,10 @@ Block* Raycast::Cast(HitResult& outHit) {
         trail->GetTexture().SetRotation(ray.Angle());
         trail->ctex = 'r';
         trail->SetVisibility(true);
+
+        TimerManager::Get()->AddTimer("raycast_trail_delete_delay", debugDuration, world, &World::DestroyActor, trail);
+        TickController::Get()->Unregister(trail); // avoid uneccesary tick checks
+
     }
 
     return trail;

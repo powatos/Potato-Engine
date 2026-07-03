@@ -9,9 +9,11 @@ SET_DEFAULT_SUBCLASS(Player, MyPlayer)
 
 void MyPlayer::BeginPlay() {
     downraycast = Raycast();
-    downraycast.SetRay(Vector2(12,0));
+    downraycast.SetRay(Vector2(5,-5));
     downraycast.Settings.OverrideActorsList.insert(this);
     downraycast.Settings.OverrideActorsType = RaycastOverrideType::Exclude;
+    downraycast.showDebug = true;
+    downraycast.debugDuration = 1.0;
 }
 
 void MyPlayer::Tick(float dt) {

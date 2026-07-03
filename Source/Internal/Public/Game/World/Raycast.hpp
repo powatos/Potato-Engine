@@ -35,7 +35,7 @@ struct RaycastSettings
 struct Raycast
 {
     bool showDebug; ///< @brief Displays a ray trail on screen when the ray is cast
-    float debugDuration; ///< @brief Duration of the trail if showDebug is set true
+    double debugDuration; ///< @brief Duration of the trail if showDebug is set true
     Vector2 origin;
     RaycastSettings Settings;
 
