@@ -18,6 +18,10 @@ Tickable::Tickable() {
 }
 
 Tickable::~Tickable() {
+    TickController* controller = TickController::Get();
+
+    controller->Unregister(this);
+
     bTickingPreInput = false;
     bTickingUpdate = false;
     bTickingPostPhysics = false;

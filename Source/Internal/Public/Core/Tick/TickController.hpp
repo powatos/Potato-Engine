@@ -32,7 +32,12 @@ public:
      * @brief Registers a Tickable object to be able to tick
      * @param tickable the tickable object to register
      */
-    void Register(Tickable* tickable);    
+    void Register(Tickable* tickable);
+    /**
+     * @brief Unregisters a Tickable object to be able to tick
+     * @param tickable the tickable object to unregister
+     */
+    void Unregister(Tickable* tickable);    
 
 protected:
     TickController();

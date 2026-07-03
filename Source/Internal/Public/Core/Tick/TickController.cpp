@@ -17,9 +17,16 @@ void TickController::Fire(float dt, TickGroup group) {
     );
     tickablesQueue.clear();
 
-    for (Tickable* obj : tickables) {
-        checkObjByGroup(dt, group, obj);
+    // for (Tickable* obj : tickables) {
+    //     if (obj == nullptr) { continue; }
+    //     checkObjByGroup(dt, group, obj);
+    // }
+    for (auto it = tickables.begin(); it != tickables.end();) {
+        if (*it == nullptr) { it = tickables.erase(it); continue; }
+        checkObjByGroup(dt, group, *it);
+        ++it;   
     }
+
 }
 
 constexpr void TickController::checkObjByGroup(float dt, TickGroup group, Tickable* obj) {
@@ -41,6 +48,11 @@ constexpr void TickController::checkObjByGroup(float dt, TickGroup group, Tickab
 
 void TickController::Register(Tickable* tickable) {
     tickablesQueue.push_back(tickable);
+}
+void TickController::Unregister(Tickable* tickable) {
+    if (auto it = std::find(tickables.begin(), tickables.end(), tickable); it != tickables.end()) {
+        *it = nullptr;
+    }
 }
 
 void TickController::Resolve() noexcept {
