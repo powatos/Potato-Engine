@@ -27,18 +27,30 @@ jobs:
           cp -r Data staging/PotatoEngine
           cp -r logs staging/PotatoEngine
 
-          cp game.sh staging/PotatoEngine
-          cp game.bat staging/PotatoEngine
-      
+      - name: Stage scripts
+        run: |
+          mkdir -p staging/scripts
+
+          cp game.sh staging/scripts
+          cp game.bat staging/scripts
+
       - name: Compress into archive
         run: |
           cd staging
           zip -r ../PotatoEngine.zip PotatoEngine/
         
-      - name: Upload to release
+      - name: Upload archive to release
         uses: softprops/action-gh-release@v2
         if: github.event_name == 'release' 
         with:
           files: PotatoEngine.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+      - name: Upload scripts to release
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'release' 
+        with:
+          files: staging/scripts/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
