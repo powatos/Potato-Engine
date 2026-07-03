@@ -7,8 +7,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(CURSES_LIBS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Source/ThirdParty/Curses/lib")
-set(CURSES_INCLUDE_BASEDIR "${CMAKE_CURRENT_SOURCE_DIR}/Source/ThirdParty/Curses/include")
+set(CURSES_LIBS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Source/ThirdParty/Platform/curses/lib")
+set(CURSES_INCLUDE_BASEDIR "${CMAKE_CURRENT_SOURCE_DIR}/Source/ThirdParty/Platform/curses/include")
 
 if (WIN32)
     set(CURSES_LIBRARY "${CURSES_LIBS_DIR}/win/pdcurses.lib")
@@ -32,20 +32,18 @@ file(GLOB_RECURSE ENGINE_SOURCES
 file (GLOB_RECURSE THIRDPARTY_SOURCES
     "Source/ThirdParty/*.cpp"
     "Source/ThirdParty/*.cc"
-    "Source/ThirdParty/*.hpp"
-    "Source/ThirdParty/*.h"
 )
 
 add_library(PotatoEngine STATIC ${ENGINE_SOURCES} ${THIRDPARTY_SOURCES})
 
 target_include_directories(PotatoEngine PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Source/Internal/Public>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Source/ThirdParty>
-    
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Source/ThirdParty/Public>
     $<INSTALL_INTERFACE:include> 
 )
 target_include_directories(PotatoEngine PRIVATE
-    Source/Internal/Private
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Source/Internal/Private>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Source/ThirdParty/Private>
     ${CURSES_INCLUDE_DIR}
 )
 
@@ -69,7 +67,7 @@ target_compile_definitions(PotatoEngine PUBLIC
     _CRT_SECURE_NO_WARNINGS
 )
 
-if (APPLE)
+if (NOT WIN32)
     target_compile_definitions(PotatoEngine PUBLIC _XOPEN_SOURCE_EXTENDED)
 endif()
 
@@ -123,8 +121,8 @@ if (PROJECT_IS_TOP_LEVEL)
         endif()
 
         target_include_directories(Program PRIVATE
-            Source/Internal/Public
-            Source/ThirdParty
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Source/Internal/Public>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Source/ThirdParty/Public>
         )
 
         target_link_libraries(Program PRIVATE
