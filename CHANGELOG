@@ -13,6 +13,7 @@ CHANGELOG:
 - Engine links against curses statically, so developers no longer need to link it themselves
 - Ensured hit events generate even without physics simulation (added `CollisionType::None` to disable hit events)
 - Added Raycasting via `Raycast`
+- Consolidated and added new `TickGroup`s
 
 PATCHLOG:
 - Fixed a constructor overload redeclaration issue in some singletons

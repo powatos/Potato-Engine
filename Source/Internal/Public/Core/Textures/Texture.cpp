@@ -8,6 +8,8 @@
 
 #include "Debug/Debug.hpp"
 
+#include "utfcpp/utf8/unchecked.h"
+
 #include "Texture.hpp"
 
 Texture::Texture() : Rotation(0.f) {
@@ -29,21 +31,21 @@ Texture::Texture(const std::string& textureFile) : Texture() {
     }
 
     std::string line;
-    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
 
     int y{0};
     int maxX{-1};
     while (std::getline(file, line)) {
-        std::wstring wline = converter.from_bytes(line); 
+        std::wstring wline;
+        utf8::unchecked::utf8to16(line.begin(), line.end(), std::back_inserter(wline));
         data.push_back(wline);
         ++y;
-        if (static_cast<int>(wline.size()) > maxX) { maxX = wline.length(); }
+        if (static_cast<int>(wline.size()) > maxX) { maxX = static_cast<int>(wline.length()); }
     }
 
     BoundingBox = Vector2(maxX, y);
 
-    for (const std::wstring& line : data) {
-        cachedStr += line;
+    for (const std::wstring& wline : data) {
+        cachedStr += wline;
         cachedStr += '\n';
     }
 }
