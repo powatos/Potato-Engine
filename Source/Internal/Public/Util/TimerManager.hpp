@@ -2,6 +2,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include "Core/EngineSubsystem.hpp"
 #include "Core/Tick/Tickable.hpp"
@@ -16,21 +17,19 @@ class TimerManager : public EngineSubsystem<TimerManager>, public Tickable
     ENGINE_SUBSYSTEM(TimerManager)
 
 public:
-    /**
-     * @brief Gets singleton instance
-     * @returns instance
-     */
-    static TimerManager* get();
 
     /**
      * @brief Creates a new timer
      * @warning The timer returned will go out of scope at the end of the tick it was 
      * added
      * @param duration Duration of the timer
+     * @param obj Owning class of callback
+     * @param callback Callback function to call at the termination of timer
+     * @param args Arguments to pass into the callback
      * @returns An unsafe reference to created timer
      */
-    template<typename T>
-    Timer& AddTimer(std::string name, double duration, T* obj, void(T::*callback)());
+    template<typename T, typename... CallbackArgs, typename... Args>
+    const TimerHandle& AddTimer(std::string name, double duration, T* obj, void(T::*callback)(CallbackArgs...), Args&&... args);
 
     /**
      * @brief Halts an ongoing timer
@@ -65,7 +64,7 @@ public:
      * behaviour
      * @warning Ensure timer exists before calling this method. @sa IsTimerActive
      */
-    Timer& GetTimer(const std::string& name);
+    const TimerHandle& GetTimer(const std::string& name);
 
 protected:
     virtual void Tick([[maybe_unused]] float dt) override;
@@ -74,17 +73,19 @@ private:
     TimerManager();
     ~TimerManager(); 
 
-    std::vector<Timer> ActiveTimers;
-    std::vector<Timer> PendingTimers;
+    std::vector<std::unique_ptr<TimerHandle>> ActiveTimers;
+    std::vector<std::unique_ptr<TimerHandle>> PendingTimers;
 };
 
-template<typename T>
-inline Timer& TimerManager::AddTimer(std::string name, double duration, T* obj, void(T::*callback)()) {
-    return PendingTimers.emplace_back(
+template<typename T, typename... CallbackArgs, typename... Args>
+inline const TimerHandle& TimerManager::AddTimer(std::string name, double duration, T* obj, void(T::*callback)(CallbackArgs...), Args&&... args) {
+    std::unique_ptr<TimerHandle>& timer = PendingTimers.emplace_back( std::make_unique<Timer<CallbackArgs...>>(
         name,
         duration,
         obj,
-        callback
+        callback,
+        static_cast<CallbackArgs>(std::forward<Args>(args))...
+    ));
 
-    );
+    return *timer;
 }

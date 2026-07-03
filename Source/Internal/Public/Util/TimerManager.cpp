@@ -17,21 +17,21 @@ void TimerManager::Tick([[maybe_unused]] float dt) {
         PendingTimers.clear();
     }
 
-    std::vector<Timer> haltedTimers;
+    std::vector<std::unique_ptr<TimerHandle>> haltedTimers;
 
     for (auto it = ActiveTimers.begin(); it != ActiveTimers.end();) {
-        Timer& timer = *it;
+        auto& timer = *it;
 
-        if (timer.IsFinished()) {
+        if (timer->IsFinished()) {
             it = ActiveTimers.erase(it);
             continue; 
         }
 
-        if (timer.IsUpdating()) {
-            timer.UpdateTick(dt);
+        if (timer->IsUpdating()) {
+            timer->UpdateTick(dt);
         }
 
-        if (timer.IsFinished()) {
+        if (timer->IsFinished()) {
             it = ActiveTimers.erase(it);
         } else {
             ++it;
@@ -40,37 +40,37 @@ void TimerManager::Tick([[maybe_unused]] float dt) {
 }
 
 void TimerManager::HaltTimer(const std::string &name) {
-    for (Timer& timer : ActiveTimers) {
-        if (timer.GetName() == name) {
-            timer.Halt();
+    for (auto& timer : ActiveTimers) {
+        if (timer->GetName() == name) {
+            timer->Halt();
         }
     }
-    for (Timer& timer : PendingTimers) {
-        if (timer.GetName() == name) {
-            timer.Halt();
+    for (auto& timer : PendingTimers) {
+        if (timer->GetName() == name) {
+            timer->Halt();
         }
     }
 }
 
 void TimerManager::PauseTimer(const std::string &name) {
-    for (Timer& timer : ActiveTimers) {
-        if (timer.GetName() == name) {
-            timer.SetUpdating(false);
+    for (auto& timer : ActiveTimers) {
+        if (timer->GetName() == name) {
+            timer->SetUpdating(false);
         }
     }
 }
 
 void TimerManager::ResumeTimer(const std::string &name) {
-    for (Timer& timer : ActiveTimers) {
-        if (timer.GetName() == name) {
-            timer.SetUpdating(true);
+    for (auto& timer : ActiveTimers) {
+        if (timer->GetName() == name) {
+            timer->SetUpdating(true);
         }
     }
 }
 
 bool TimerManager::IsTimerActive(const std::string &name) const {
-    for (const Timer& timer : ActiveTimers) {
-        if (timer.GetName() == name) {
+    for (const auto& timer : ActiveTimers) {
+        if (timer->GetName() == name) {
             return true;
         }
     }
@@ -78,10 +78,10 @@ bool TimerManager::IsTimerActive(const std::string &name) const {
     return false;
 }
 
-Timer& TimerManager::GetTimer(const std::string &name) {
-    for (Timer& timer : ActiveTimers) {
-        if (timer.GetName() == name) {
-            return timer;
+const TimerHandle& TimerManager::GetTimer(const std::string &name) {
+    for (auto& timer : ActiveTimers) {
+        if (timer->GetName() == name) {
+            return *timer;
         }
     }
 
