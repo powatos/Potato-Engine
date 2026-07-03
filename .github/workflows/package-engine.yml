@@ -1,0 +1,44 @@
+name: Package Engine
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build-archive:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Stage archive
+        run: |
+          mkdir -p staging/PotatoEngine/Source
+          cp -r Source/Internal staging/PotatoEngine/Source
+          cp -r Source/ThirdParty staging/PotatoEngine/Source
+
+          cp CMakeLists.txt staging/PotatoEngine
+          cp CreateMissingDefaults.cmake staging/PotatoEngine
+
+          cp -r Data staging/PotatoEngine
+          cp -r logs staging/PotatoEngine
+
+          cp game.sh staging/PotatoEngine
+          cp game.bat staging/PotatoEngine
+      
+      - name: Compress into archive
+        run: |
+          cd staging
+          zip -r ../PotatoEngine.zip PotatoEngine/
+        
+      - name: Upload to release
+        uses: softprops/action-gh-release@v2
+        if: github.event_name == 'release' 
+        witH:
+          files: PotatoEngine.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,33 +1,16 @@
-Version v1.5.2
+Version v2.0.1
 
 CHANGELOG:  
-- Changed `World.hpp` directory: `Game/World.hpp` -> `Game/World/World.hpp`
-- Changed `HitResult.hpp` directory: `Game/HitResult.hpp` -> `Game/World/HitResult.hpp`
-- Moved actor rotation to texture; actor collision is unaffected by rotation
-- Added Unicode texture rendering via `Texture` and `TextureManager`
-    - Rotation renders correctly with texture and char texture
-- Extracted physics logic to `PhysicsController`
-- Added random generators to `GameplayHelpers`
-- Consolidated engine subsystem class hierarchies and added friending via macro
-- Refactored tick system with multiple tick groups and better tick checks
-- Engine links against curses statically, so developers no longer need to link it themselves
-- Ensured hit events generate even without physics simulation (added `CollisionType::None` to disable hit events)
-- Added Raycasting via `Raycast`
-- Consolidated and added new `TickGroup`s
+- Changed engine linking procedure
 
 PATCHLOG:
-- Fixed a constructor overload redeclaration issue in some singletons
-- Fixed an issue with engine subsystem singleton construction ordering 
-- Increased collision broadphase check distance from `100` to `10,000`
-- Fixed an issue where registering a tickable object broke the existing tick loop
-- Fixed an issue where destroyed actors would crash tick update check
+
 
 TODO:  
-- make timers w variadic arg template
 
 ---
 Update changelog for every change made to engine  
 Use this to create release notes on every release  
 Update version AFTER that release is made  
 Reset changelog AFTER every release    
-Todo is temporary  https://powatos.github.io/Potato-Engine/Input_8hpp_source.html
+Todo is temporary

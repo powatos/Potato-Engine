@@ -215,7 +215,6 @@ void IOController::DrawLevel() {
 
         } else {
             // regular texture
-            const Vector2 textureSize = actor->GetTexture().GetBoundingBox();   
             const std::vector<std::wstring>& texVec = actor->GetTexture().raw_vec();
             int r = 0;
 

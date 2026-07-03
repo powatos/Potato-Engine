@@ -4,12 +4,9 @@
 
 This page convers installation of the Potato Engine.
 
-@remark Potato Engine is currently under development and this page is subject to change
+Start by navigating to the project [releases page](https://github.com/powatos/Potato-Engine/releases) to find the latest (or preferred) release
 
-Installation consists of the following parts:
-1. Setup CMake with the correct version
-2. Configure CMake for the project and link against Potato Engine
-3. Build program and run
+@remark Potato Engine is currently under development and this page is subject to change
 
 # Windows
 
@@ -41,7 +38,7 @@ if cmake is still not updated to a version after 3.24, get help at <a href="http
 Follow instructions under the @ref project-setup "Project Setup section"
 
 ## Build configuration
-After setting up your project, build the setup files.
+After setting up your project, build the setup files. Scripts can be accessed via the release page.
 
 Configure the build files every time a change is made to the CMakeLists.txt file or the project directory structure is changed (file additions, removals, moves)
 
@@ -102,7 +99,7 @@ if cmake is still not updated to a version after 3.24, get help at <a href="http
 Follow instructions under the @ref project-setup "Project Setup section"
 
 ## Build configuration
-After setting up your project, build the setup files.
+After setting up your project, build the setup files. Scripts can be accessed via the release page.
 
 Configure the build files every time a change is made to the CMakeLists.txt file or the project directory structure is changed (file additions, removals, moves)
 
@@ -119,7 +116,7 @@ Build the game files every time a change is made to your code
 
 @anchor project-setup
 # Project Setup
-After installing CMake, setup the project by creating a `CMakeLists.txt` file in the root directory. Ensure the case matches exactly.
+After installing CMake, set up the project by creating a `CMakeLists.txt` file in the root directory. Ensure the case matches exactly.
 
 Add configurations
 ```CMake
@@ -130,12 +127,14 @@ cmake_minimum_required(VERSION 3.24)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Specify the engine version (via github tag)
+set(POTATO_ENGINE_VERSION "v2.0.0-beta") 
+
 # include the engine module
 include(FetchContent)
 FetchContent_Declare(
     PotatoEngine
-    GIT_REPOSITORY https://github.com/powatos/Potato-Engine.git
-    GIT_TAG vX.Y.Z # change to your engine version
+    URL "https://github.com/powatos/Potato-Engine/releases/tag/${POTATO_ENGINE_VERSION}/download/PotatoEngine.zip"
 )
 FetchContent_MakeAvailable(PotatoEngine)
 

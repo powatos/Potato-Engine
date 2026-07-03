@@ -33,8 +33,6 @@ enum class LogType { logtypes };
  */
 class Logger
 {
-    const char* LogFilePath;
-
     std::ofstream LogFile;
 
 public:

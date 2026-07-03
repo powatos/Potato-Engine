@@ -87,13 +87,13 @@ function(PotatoEngineDefaults TARGET_NAME)
 
     add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -DSRC_DIR="${DATA_SRC}" -DDST_DIR="${DATA_DST}" 
-                -P "${CMAKE_CURRENT_SOURCE_DIR}/CreateMissingDefaults.cmake"
+                -P "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/CreateMissingDefaults.cmake"
 
         COMMAND ${CMAKE_COMMAND} -DSRC_DIR="${LOGS_SRC}" -DDST_DIR="${LOGS_DST}" 
-                -P "${CMAKE_CURRENT_SOURCE_DIR}/CreateMissingDefaults.cmake"
+                -P "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/CreateMissingDefaults.cmake"
 
         COMMAND ${CMAKE_COMMAND} -DCLEAR_LOGS=TRUE -DDST_DIR="${LOGS_DST}" 
-                -P "${CMAKE_CURRENT_SOURCE_DIR}/CreateMissingDefaults.cmake"
+                -P "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/CreateMissingDefaults.cmake"
 
         COMMENT "PotatoEngine: creating engine defaults..."
     )
