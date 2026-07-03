@@ -7,7 +7,6 @@
 TimerManager::TimerManager() {
     LOG_DEFAULT(LogType::VITAL, "TimerManager constructed");
 
-    bTickingUpdate = true;
 }
 
 void TimerManager::Tick([[maybe_unused]] float dt) {
@@ -22,20 +21,18 @@ void TimerManager::Tick([[maybe_unused]] float dt) {
     for (auto it = ActiveTimers.begin(); it != ActiveTimers.end();) {
         auto& timer = *it;
 
-        if (timer->IsFinished()) {
-            it = ActiveTimers.erase(it);
-            continue; 
-        }
-
         if (timer->IsUpdating()) {
             timer->UpdateTick(dt);
         }
 
         if (timer->IsFinished()) {
+            timer.reset();
             it = ActiveTimers.erase(it);
         } else {
             ++it;
         }
+
+        
     }
 }
 

@@ -55,10 +55,14 @@ private:
  * @brief Represents a group for tick ordering 
  */
 enum class TickGroup {
-    PreInput,
-    Update,
-    PostPhysics,
-    PostRender
+    PreInput, //< Stage before input is handled
+    _Input, //< Stage where input is handled @warning For internal use only
+    Update, //< Main game update stage
+    PostUpdate, //< Stage after main game updates are proccessed
+    _Physics, //< Stage where physics is handled @warning For internal use only
+    PostPhysics, //< Stage after physics is proccessed
+    _Render, //< Render stage
+    PostRender //< Stage after rendering is complete
 };
 struct __TickGroupHash {
     size_t operator ()(const TickGroup& g) const noexcept{

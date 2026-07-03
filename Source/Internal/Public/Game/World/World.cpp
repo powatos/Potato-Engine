@@ -38,12 +38,23 @@ void World::BeginPlay() {
 }
 
 void World::DestroyActor(Actor* actor) {
-    auto it = std::find(actorPool.begin(), actorPool.end(), actor);
+    destroyQueue.push_back(actor);
+}
+
+void World::TickPostUpdate(float dt) {
+
+    for (auto it0 = destroyQueue.begin(); it0 != destroyQueue.end();) {
+        auto it1 = std::find(actorPool.begin(), actorPool.end(), *it0);
     
-    if (it != actorPool.end()) {
-        delete *it; // free memory
-        actorPool.erase(it); // erase nullptr
+        if (it1 != actorPool.end()) {
+            delete *it1; // free memory
+            actorPool.erase(it1); // erase nullptr
+        }
+
+        it0 = destroyQueue.erase(it0);
+
     }
+
 }
 
 const ActorPool& World::GetAllActors() const

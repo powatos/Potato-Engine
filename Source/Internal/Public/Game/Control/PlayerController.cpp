@@ -20,7 +20,6 @@ PlayerController::PlayerController() {
     JumpForce = 20.f;
 
     CameraFollowsPlayer = true;
-    bTickingUpdate = true;
 }
 
 void PlayerController::Initialize() {

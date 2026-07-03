@@ -16,6 +16,7 @@
 #include "Core/Tick/TickController.hpp"
 #include "Systems/PhysicsController.hpp"
 #include "Core/Input/InputController.hpp"
+#include "Util/TimerManager.hpp"
 
 #include "Debug/Debug.hpp"
 
@@ -44,6 +45,7 @@ PotatoEngine::PotatoEngine() {
     SubsystemStack.push_back( PhysicsController::Get() );
 
     SubsystemStack.push_back( UIController::Get() );
+    SubsystemStack.push_back( TimerManager::Get() );
 
 }
 

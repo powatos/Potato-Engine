@@ -22,9 +22,6 @@ public:
     virtual void Resolve() noexcept override;
     virtual void BeginPlay() override;
 
-    void HandleInput();
-    void Draw();
-
     void RegisterWidget(Widget* widget);
     void RemoveWidget(std::string UID);
 
@@ -48,7 +45,11 @@ private:
     void DrawHUD();
     
 protected:
-    virtual void Tick([[maybe_unused]] float dt) override;
+    void HandleInput();
+    void Draw();
+
+    virtual void _TickInput(float dt) override;
+    virtual void _TickRender(float dt) override;
 
     void* BoxWindow;
     void* DisplayWindow;

@@ -17,10 +17,6 @@ void TickController::Fire(float dt, TickGroup group) {
     );
     tickablesQueue.clear();
 
-    // for (Tickable* obj : tickables) {
-    //     if (obj == nullptr) { continue; }
-    //     checkObjByGroup(dt, group, obj);
-    // }
     for (auto it = tickables.begin(); it != tickables.end();) {
         if (*it == nullptr) { it = tickables.erase(it); continue; }
         checkObjByGroup(dt, group, *it);
@@ -32,16 +28,28 @@ void TickController::Fire(float dt, TickGroup group) {
 constexpr void TickController::checkObjByGroup(float dt, TickGroup group, Tickable* obj) {
     switch (group) {
         case TickGroup::PreInput:
-            if (obj->bTickingPreInput) { obj->TickPreInput(dt); } 
+            obj->TickPreInput(dt);
+            break;
+        case TickGroup::_Input:
+            obj->_TickInput(dt);
             break;
         case TickGroup::Update:
-            if (obj->bTickingUpdate) { obj->Tick(dt); }
+            obj->Tick(dt);
+            break;
+        case TickGroup::PostUpdate:
+            obj->TickPostUpdate(dt);
+            break;
+        case TickGroup::_Physics:
+            obj->_TickPhysics(dt);
             break;
         case TickGroup::PostPhysics:
-            if (obj->bTickingPostPhysics) { obj->TickPostPhysics(dt); }
+            obj->TickPostPhysics(dt);
+            break;
+        case TickGroup::_Render:
+            obj->_TickRender(dt);
             break;
         case TickGroup::PostRender:
-            if (obj->bTickingPostRender) { obj->TickPostRender(dt); }
+            obj->TickPostRender(dt);
             break;
     }
 }

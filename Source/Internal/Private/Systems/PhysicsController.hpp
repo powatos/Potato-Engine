@@ -20,7 +20,7 @@ protected:
     PhysicsController();
     ~PhysicsController();
 
-    virtual void TickPostPhysics(float dt) override;
+    virtual void _TickPhysics(float dt) override;
 
 private:
     void UpdateActorPropertiesTick(Actor* actor, float dt);

@@ -11,10 +11,9 @@
 
 PhysicsController::PhysicsController() {
     LOG_DEFAULT(LogType::VITAL, "PhysicsController constructed");
-    bTickingPostPhysics = true;
 }
 
-void PhysicsController::TickPostPhysics(float dt) {
+void PhysicsController::_TickPhysics(float dt) {
     const ActorPool& actorPool = GameInstance::Get()->GetWorld()->GetAllActors();
 
     // update movement physics for each actor

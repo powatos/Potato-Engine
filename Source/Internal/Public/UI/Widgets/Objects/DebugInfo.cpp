@@ -22,7 +22,6 @@ DebugInfo::DebugInfo(std::string UID) : Widget(std::move(UID)) {
     SetScreenSize(Vector2(40.0, 5.0));
     SetScreenPosition(Vector2(0.0, 0.0));
 
-    bTickingUpdate = true;
     SetVisibility(true);
 }
 

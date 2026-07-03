@@ -32,8 +32,6 @@ IOController::IOController() : FRAMES_PER_SECOND(30.f) {
     ActiveKey = Keycode::UNKNOWN;
     ImpulseKey = Keycode::UNKNOWN;
 
-    bTickingUpdate = true;
-
     /// Initialize Screen
 
     // disables escape delay (shorten if arrow/func keys not working)
@@ -291,14 +289,18 @@ void IOController::DrawHUD() {
 
 }
 
-void IOController::Tick([[maybe_unused]] float dt) {
-    Tickable::Tick(dt);
+void IOController::_TickInput(float dt) {
+    HandleInput();
 
     FireBinding(InputBindingsOngoing, ActiveKey);
     FireBinding(InputBindingsImpulse, ImpulseKey);
     ImpulseKey = Keycode::UNKNOWN;
-
+    
 }
+void IOController::_TickRender(float dt) {
+    Draw();
+}
+
 #pragma region Binding management
 
 void IOController::FireBinding(BindingMap& map, Keycode key) {

@@ -16,7 +16,7 @@ class Player;
 /**
  * @brief Local level managing gameplay interactions
  */
-class World
+class World : public Tickable
 {
 public:
 
@@ -85,8 +85,10 @@ public:
     const ActorPool& GetAllActors() const;
 
 private:
+    virtual void TickPostUpdate(float dt) override;
 
     ActorPool actorPool;
+    ActorPool destroyQueue;
 
 };
 

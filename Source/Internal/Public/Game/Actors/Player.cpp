@@ -18,7 +18,6 @@ Player::Player() {
     SetTexture("Player_default");
     ResizeToTexture();
 
-    bTickingUpdate = true;
 }
 
 void Player::BeginPlay() {

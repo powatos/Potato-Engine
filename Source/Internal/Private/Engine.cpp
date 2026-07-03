@@ -28,8 +28,8 @@ int Engine::main() {
 
     LOG_DEFAULT(LogType::VITAL, "Engine main loop started");
     
-    IOController* Controller = IOController::Get();
-    GameInstance* Instance = GameInstance::Get();
+    const IOController* Controller = IOController::Get();
+    const GameInstance* Instance = GameInstance::Get();
     TickController* tickController = TickController::Get();
 
     const ms idealDelay(static_cast<int>(1000.f / Controller->FRAMES_PER_SECOND));
@@ -48,12 +48,16 @@ int Engine::main() {
         {
             tickController->Fire(dt, TickGroup::PreInput);
 
-            Controller->HandleInput();
+            tickController->Fire(dt, TickGroup::_Input);
 
             tickController->Fire(dt, TickGroup::Update);
+            tickController->Fire(dt, TickGroup::PostUpdate);
+
+            tickController->Fire(dt, TickGroup::_Physics);
+
             tickController->Fire(dt, TickGroup::PostPhysics);
 
-            Controller->Draw();
+            tickController->Fire(dt, TickGroup::_Render);
 
             tickController->Fire(dt, TickGroup::PostRender);
         }
