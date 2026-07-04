@@ -94,12 +94,14 @@ public:
      * @warning Do not manage timers manually. @sa TimerManager
      * @param duration Duration of timer in seconds
      */
-    template<typename T>
-    Timer(std::string timerName, double duration, T* obj, void(T::*callback)(CallbackArgs...), CallbackArgs&&... args) :
+    template<typename T, typename... Args>
+    Timer(std::string timerName, double duration, T* obj, void(T::*callback)(CallbackArgs...), Args&&... args) :
         TimerHandle(timerName, duration),
         delegate(obj, callback),
-        args(std::forward<CallbackArgs>(args)...)
-    {}
+        args(std::forward<Args>(args)...)
+    {
+        static_assert(sizeof...(Args) == sizeof...(CallbackArgs));
+    }
 
 private:
 

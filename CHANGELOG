@@ -1,10 +1,13 @@
-Version v2.0.1
+Version v2.0.4
 
 CHANGELOG:  
-- Changed engine linking procedure
+
+- Updated tutorial
+- Timers assert argument-to-callback convertibility
 
 PATCHLOG:
-
+- Fixed an issue with timer creation that forwarded arguments *too* perfectly
+- Fixed an issue with checking overlaps in `GameplayHelpers`
 
 TODO:  
 

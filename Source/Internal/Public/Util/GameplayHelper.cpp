@@ -52,10 +52,10 @@ bool GameplayHelper::IsActorOverlapping(const Actor* actor1, const Actor* actor2
     const Vector2 a2Siz = actor2->GetSize();
 
     return 
-        a1Pos.x < a2Pos.x + a2Siz.x && // left side check
-        a1Pos.x + a1Siz.x > a2Pos.x && // right side check
-        a1Pos.y < a2Pos.y + a2Siz.y && // top side check
-        a1Pos.y + a1Siz.y > a2Pos.y // bottom side check
+        a1Pos.x < a2Pos.x + a2Siz.x &&  // a1 left < a2 right
+        a1Pos.x + a1Siz.x > a2Pos.x &&  // a1 right > a2 left
+        a1Pos.y > a2Pos.y - a2Siz.y &&  // a1 top > a2 bottom
+        a1Pos.y - a1Siz.y < a2Pos.y     // a1 bottom < a2 top
     ;
 }
 

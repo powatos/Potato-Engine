@@ -78,13 +78,13 @@ private:
 };
 
 template<typename T, typename... CallbackArgs, typename... Args>
-inline const TimerHandle& TimerManager::AddTimer(std::string name, double duration, T* obj, void(T::*callback)(CallbackArgs...), Args&&... args) {
+inline const TimerHandle& TimerManager::AddTimer(std::string name, double duration, T* obj, void(T::*callback)(CallbackArgs...), Args&&... args) {    
     std::unique_ptr<TimerHandle>& timer = PendingTimers.emplace_back( std::make_unique<Timer<CallbackArgs...>>(
         name,
         duration,
         obj,
         callback,
-        static_cast<CallbackArgs>(std::forward<Args>(args))...
+        std::forward<Args>(args)...
     ));
 
     return *timer;
