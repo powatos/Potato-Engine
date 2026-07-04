@@ -136,7 +136,7 @@ set(POTATO_ENGINE_VERSION "v2.0.0-beta")
 include(FetchContent)
 FetchContent_Declare(
     PotatoEngine
-    URL "https://github.com/powatos/Potato-Engine/releases/tag/${POTATO_ENGINE_VERSION}/download/PotatoEngine.zip"
+    URL "https://github.com/powatos/Potato-Engine/releases/download/${POTATO_ENGINE_VERSION}/PotatoEngine.zip"
 )
 FetchContent_MakeAvailable(PotatoEngine)
 
