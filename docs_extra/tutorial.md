@@ -1,9 +1,10 @@
 @page tutorial Tutorial
 
 # Tutorial: Lazer Assault
+###### v2.0.4-beta
 This page showcases the engine with a tutorial for a simple lazer obstacle game.
 
-The tutorial project was developed on Windows using MSVC. The full project repo can be found at [LazerAssaultv2](https://github.com/powatos/LazerAssaultv2)
+The tutorial project was developed on Windows using MSVC. The full project repo can be found at [LazerAssaultv2](https://github.com/powatos/LazerAssaultv2).
 
 ## Game Overview
 
@@ -19,7 +20,7 @@ The tutorial project was developed on Windows using MSVC. The full project repo 
 To get started, create a folder for the game. This example uses `Documents/LazerAssault`. Open the folder in a code editor and initialize the project:
 
 `src/main.cpp` (empty entrypoint for now)  
-`CMakeLists.txt` (following the **template**)  
+`CMakeLists.txt` (following the [template](https://powatos.github.io/Potato-Engine/installation.html))  
 `game.bat` (downloaded from the release page)  
 
 ## Game setup
