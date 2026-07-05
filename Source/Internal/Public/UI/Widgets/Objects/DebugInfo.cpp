@@ -25,7 +25,7 @@ DebugInfo::DebugInfo(std::string UID) : Widget(std::move(UID)) {
     SetVisibility(true);
 }
 
-void DebugInfo::Tick([[maybe_unused]] float dt) {
+void DebugInfo::TickPostPhysics(float dt) {
     Widget::Tick(dt);
 
     PlayerController* plrCtrl = GameInstance::Get()->GetPlayerController();

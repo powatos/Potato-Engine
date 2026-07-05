@@ -14,23 +14,26 @@ World::World() {
 }
 
 void World::BeginPlay() {
-    const int wallWidth = 5;
 
-    Block* wallB = SpawnActor<Block>(Vector2(0, -1));
-    wallB->SetSize(Vector2(Settings.Size.x, wallWidth));
-    wallB->ctex = 'B';
+    if (Settings.setupDefaultWalls) {
+        const int wallWidth = Settings.defaultWallSize;
 
-    Block* wallL = SpawnActor<Block>(Vector2(-wallWidth, 23));
-    wallL->SetSize(Vector2(wallWidth, 24));
-    wallL->ctex = 'L';
+        Block* wallB = SpawnActor<Block>(Vector2(-wallWidth, -1));
+        wallB->SetSize(Vector2(Settings.Size.x + 2*wallWidth, wallWidth));
+        wallB->ctex = 'B';
 
-    Block* wallR = SpawnActor<Block>(Vector2(Settings.Size.x, 23));
-    wallR->SetSize(Vector2(wallWidth, 24));
-    wallR->ctex = 'R';
+        Block* wallL = SpawnActor<Block>(Vector2(-wallWidth, Settings.Size.y + wallWidth));
+        wallL->SetSize(Vector2(wallWidth, Settings.Size.y + 2*wallWidth));
+        wallL->ctex = 'L';
 
-    Block* wallU = SpawnActor<Block>(Vector2(0, 24+wallWidth));
-    wallU->SetSize(Vector2(Settings.Size.x, wallWidth));
-    wallU->ctex = 'U';
+        Block* wallR = SpawnActor<Block>(Vector2(Settings.Size.x, Settings.Size.y + wallWidth));
+        wallR->SetSize(Vector2(wallWidth, Settings.Size.y + 2*wallWidth));
+        wallR->ctex = 'R';
+
+        Block* wallU = SpawnActor<Block>(Vector2(-wallWidth, Settings.Size.y + wallWidth-1));
+        wallU->SetSize(Vector2(Settings.Size.x + wallWidth*2, wallWidth));
+        wallU->ctex = 'U';
+    }
     
     for (Actor* actor : actorPool) {
         actor->DispatchBeginPlay();

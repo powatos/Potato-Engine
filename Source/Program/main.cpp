@@ -33,6 +33,10 @@ int main()
     PersistentLevel level("save1.json");
     level.LoadStaticActors();
 
+    world->Settings.setupDefaultWalls = true;
+    // world->Settings.doGravity = false;
+    // world->Settings.Size = Vector2(80,24);
+
     Block* Obstacle1 = world->SpawnActor<Block>(Vector2(10,2));
     Obstacle1->SetSize(Vector2(5, 3));
     Obstacle1->ctex = 'O';
@@ -41,10 +45,10 @@ int main()
     /// PLAYER SETUP
     PlayerController* playerController = instance->GetPlayerController();
     Player* player = playerController->GetPlayer();
-    player->SetPosition(Vector2(0, 5));
+    player->SetPosition(Vector2(10, 10));
     player->GetTexture().SetRotation(0.f);
     player->SetUsingCTex(true);
-    player->SetSize(Vector2(5,2));
+    player->SetSize(Vector2(1,1));
     player->ctex = 'P';
 
     /// UI SETUP

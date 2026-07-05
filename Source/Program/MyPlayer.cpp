@@ -15,7 +15,7 @@ void MyPlayer::BeginPlay() {
     downraycast.SetRay(Vector2(5,-5));
     downraycast.Settings.OverrideActorsList.insert(this);
     downraycast.Settings.OverrideActorsType = RaycastOverrideType::Exclude;
-    downraycast.showDebug = true;
+    downraycast.showDebug = false;
     downraycast.debugDuration = 1.0;
 }
 
