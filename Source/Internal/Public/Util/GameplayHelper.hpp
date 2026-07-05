@@ -27,7 +27,7 @@ public:
      * @param camera Camera to check for visibility
      * @returns true if is in frame
      */
-    static bool IsPositionInCameraFrame(const Vector2& pos, Camera* camera);
+    // static bool IsPositionInCameraFrame(const Vector2& pos, Camera* camera);
     /**
      * @brief Gets list of overlapping actors
      * @param actor actor to check for overlaps

@@ -175,7 +175,7 @@ void IOController::DrawLevel() {
         const Vector2 actorPos = actor->GetPosition();
         const float rot = actor->GetTexture().GetRotation();
 
-        if (!GameplayHelper::IsPositionInCameraFrame(actorPos, camera)) { continue; }
+        if (!GameplayHelper::IsActorOverlapping(actor, camera)) { continue; }
 
         const Vector2 camOffsetActorPos = Vector2(actorPos.x - camera->GetPosition().x, actorPos.y);
         const Vector2 screenVector = GameplayHelper::VecToScreenVec(camOffsetActorPos);

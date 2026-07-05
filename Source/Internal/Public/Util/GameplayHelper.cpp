@@ -25,11 +25,18 @@ Vector2 GameplayHelper::VecToScreenVec(const Vector2& worldPos) {
     return vec;
 }
 
-bool GameplayHelper::IsPositionInCameraFrame(const Vector2& pos, Camera* camera) {
+// bool GameplayHelper::IsPositionInCameraFrame(const Vector2& pos, Camera* camera) {
     
-    return pos.x - camera->GetPosition().x >= 0.f && pos.x - camera->GetPosition().x < camera->GetSize().x;
+//     return pos.x - camera->GetPosition().x >= 0.f && pos.x - camera->GetPosition().x < camera->GetSize().x;
 
-}
+//     return 
+//         pos.x < a2Pos.x + a2Siz.x &&  // a1 left < a2 right
+//         pos.x + a1Siz.x > a2Pos.x &&  // a1 right > a2 left
+//         pos.y > a2Pos.y - a2Siz.y &&  // a1 top > a2 bottom
+//         a1Pos.y - a1Siz.y < a2Pos.y     // a1 bottom < a2 top
+//     ;
+
+// }
 
 std::vector<Actor*> GameplayHelper::GetOverlappingActors(const Actor* actor) {
     std::vector<Actor*> result{};
