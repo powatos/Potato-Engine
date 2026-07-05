@@ -4,10 +4,12 @@ CHANGELOG:
 
 - Updated tutorial
 - Timers assert argument-to-callback convertibility
+- Added setting to disable default world walls
 
 PATCHLOG:
 - Fixed an issue with timer creation that forwarded arguments *too* perfectly
 - Fixed an issue with checking overlaps in `GameplayHelpers`
+- Fixed an issue where the player could clip through the borders at the corners
 
 TODO:  
 
