@@ -30,7 +30,15 @@ void PhysicsController::_TickPhysics(float dt) {
 
     // sweep every pair
     std::vector<SweepPair> pendingContacts;
-    std::unordered_map<Actor*, float> nearestBlockTOI;
+    std::unordered_map<Actor*, AxisTOI> nearestAxisTOI;
+
+    auto UpdateNearestAxis = [&](Actor* actor, bool isAxisX, float toi) {
+        AxisTOI& entry = nearestAxisTOI[actor];
+        const float clamped = std::max(toi, 0.f);
+
+        if (isAxisX) { entry.x = std::min(entry.x, clamped); }
+        else { entry.y = std::min(entry.y, clamped); }
+    };
 
     for (Actor* a : actorPool) {
         if (a->GetCollisionType() == CollisionType::None) { continue; }
@@ -50,54 +58,62 @@ void PhysicsController::_TickPhysics(float dt) {
             const SweepResult sweep = SweptAABB(aPos, bPos, a->GetSize(), b->GetSize(), relativeDisplacement);
             if (!sweep.collided) { continue; }
 
-            if (sweep.toi <= 0.f) {
-                // already touching at start of tick
-                ResolveOverlapCollision(a, b, aPos, bPos);
-                continue;
-            }
-
             const bool bothBlocking = (a->GetCollisionType() == CollisionType::Block) && (b->GetCollisionType() == CollisionType::Block);
+            const bool isAxisX = sweep.normal.x != 0.f;
 
-            pendingContacts.push_back({a, b, sweep.toi, sweep.normal, bothBlocking});
+            pendingContacts.push_back({a, b, sweep.toi, sweep.normal, sweep.overlap, isAxisX, bothBlocking});
 
             if (bothBlocking) {
-                auto itA = nearestBlockTOI.find(a);
-                if (itA == nearestBlockTOI.end() || sweep.toi < itA->second) {nearestBlockTOI[a] = sweep.toi;}
-                auto itB = nearestBlockTOI.find(b);
-                if (itB == nearestBlockTOI.end() || sweep.toi < itB->second) {nearestBlockTOI[b] = sweep.toi;}
+                UpdateNearestAxis(a, isAxisX, sweep.toi);
+                UpdateNearestAxis(b, isAxisX, sweep.toi);
             }
-
 
         }
     }
 
-    auto getNearestBlockTOI = [&nearestBlockTOI](Actor* actor) -> float {
-        auto it = nearestBlockTOI.find(actor);
-        return (it != nearestBlockTOI.end()) ? it->second : 1.f;
+    auto GetAxisTOI = [&](Actor* actor, bool isAxisX) -> float {
+        auto it = nearestAxisTOI.find(actor);
+        if (it == nearestAxisTOI.end()) { return 1.f; }
+        return isAxisX ? it->second.x : it->second.y;
     };
 
-    auto OwnStoppingTOI = [&](Actor* actor) -> float {
+    auto getAxisTOI = [&](Actor* actor, bool isAxisX) -> float {
         if (actor->GetMovability() == ActorMovability::Static || !actor->isSimulatingPhysics()) {
             return std::numeric_limits<float>::infinity();
         }
-        return getNearestBlockTOI(actor);
+        return GetAxisTOI(actor, isAxisX);
+
+    };
+
+    auto OwnStoppingAxisTOI = [&](Actor* actor, bool axisIsX) -> float {
+        if (actor->GetMovability() == ActorMovability::Static || !actor->isSimulatingPhysics()) {
+            return std::numeric_limits<float>::infinity();
+        }
+        return GetAxisTOI(actor, axisIsX);
     };
 
     for (Actor* actor : actorPool) {
         if (!actor->isSimulatingPhysics()) { continue; }
         if (actor->GetMovability() == ActorMovability::Static) { continue; }
 
-        const float toi = getNearestBlockTOI(actor);
-        actor->AddLocalOffset(actor->GetVelocity() * dt * toi);
+        auto it = nearestAxisTOI.find(actor);
+        const AxisTOI toi = (it != nearestAxisTOI.end()) ? it->second : AxisTOI{};
+        const Vector2 vel = actor->GetVelocity();
+        actor->AddLocalOffset(Vector2(vel.x * toi.x, vel.y * toi.y) * dt);
     }
 
     for (const SweepPair& contact : pendingContacts) {
-        if (OwnStoppingTOI(contact.a) < contact.toi - TOI_EPSILON
-            || OwnStoppingTOI(contact.b) < contact.toi - TOI_EPSILON
-        ) { continue; }
+        const bool aStoppedEarlier = OwnStoppingAxisTOI(contact.a, contact.isAxisX) < contact.toi - TOI_EPSILON;
+        const bool bStoppedEarlier = OwnStoppingAxisTOI(contact.b, contact.isAxisX) < contact.toi - TOI_EPSILON;
+        if (aStoppedEarlier || bStoppedEarlier) { continue; }
 
         if (contact.bothBlocking) {
-            ApplyCollisionResponse(contact.a, contact.b, contact.normal);
+            if (contact.toi <= 0.f && contact.overlap.x > 0.f && contact.overlap.y > 0.f) {
+                const float penetration = contact.isAxisX ? contact.overlap.x : contact.overlap.y;
+                ApplyPenetrationCorrection(contact.a, contact.b, contact.normal, penetration);
+            }
+
+            ApplyRestitutionImpulse(contact.a, contact.b, contact.normal);
         }
 
         const Vector2 aPos = contact.a->GetPosition();
@@ -208,7 +224,7 @@ PhysicsController::SweepResult PhysicsController::SweptAABB(
     return result;
 }
 
-void PhysicsController::ApplyCollisionResponse(Actor* a, Actor* b, const Vector2& normal) {
+void PhysicsController::ApplyRestitutionImpulse(Actor* a, Actor* b, const Vector2& normal) {
     const World::WorldSettings& Settings = GameInstance::Get()->GetWorld()->Settings;
 
     const float aInvMass = a->GetMovability() == ActorMovability::Static ? 0.f : (1.f / a->GetMass());
@@ -230,65 +246,21 @@ void PhysicsController::ApplyCollisionResponse(Actor* a, Actor* b, const Vector2
     b->AddImpulse(-impulse * bInvMass);
 }
 
-void PhysicsController::ResolveOverlapCollision(Actor* a, Actor* b, const Vector2& aPos, const Vector2& bPos) {
+void PhysicsController::ApplyPenetrationCorrection(Actor* a, Actor* b, const Vector2& normal, float penetration) {
     const World::WorldSettings& Settings = GameInstance::Get()->GetWorld()->Settings;
 
-    const Vector2 aSize = a->GetSize();
-    const Vector2 bSize = b->GetSize();
-    const Vector2 aHalfSize = aSize * 0.5f;
-    const Vector2 bHalfSize = bSize * 0.5f;
-    const Vector2 aCenter = Vector2(aPos.x + aHalfSize.x, aPos.y - aHalfSize.y);
-    const Vector2 bCenter = Vector2(bPos.x + bHalfSize.x, bPos.y - bHalfSize.y);
-    const float dx = bCenter.x - aCenter.x;
-    const float dy = bCenter.y - aCenter.y;
-    const float overlapX = (aHalfSize.x + bHalfSize.x) - std::abs(dx);
-    const float overlapY = (aHalfSize.y + bHalfSize.y) - std::abs(dy);
+    const float seperationAmount = std::max(penetration - Settings.clipAllowed, 0.f) * Settings.clipDampeningFactor;
+    if (seperationAmount <= 0) { return; }
 
-    if (!(overlapX > 0.f && overlapY > 0.f)) { return; }
+    const Vector2 correctionVector = normal * seperationAmount;
 
-    HitResult hitResult;
-    hitResult.distance = 0.f;
+    const float aInvMass = a->GetMovability() == ActorMovability::Static ? 0.f : (1.f / a->GetMass());
+    const float bInvMass = b->GetMovability() == ActorMovability::Static ? 0.f : (1.f / b->GetMass());
+    const float totalInvMass = aInvMass + bInvMass;
+    if (totalInvMass <= 0.f) { return; }
 
-    float penetration{};
-    if (overlapX < overlapY) {
-        penetration = overlapX;
-        hitResult.hitNormal.x = dx > 0.f ? -1.f : 1.f;
-    } else {
-        penetration = overlapY;
-        hitResult.hitNormal.y = dy > 0.f ? -1.f : 1.f;
-    }
-
-    const float left = std::max(aPos.x, bPos.x);
-    const float right = std::min(aPos.x + aSize.x, bPos.x + bSize.x);
-    const float top = std::min(aPos.y, bPos.y);
-    const float bot = std::max(aPos.y - aSize.y, bPos.y - bSize.y);
-
-    hitResult.hitOverlap = Vector2(right - left, top - bot);
-    hitResult.hitPosition = Vector2(left, top);
-
-    if (a->GetCollisionType() == CollisionType::Block && b->GetCollisionType() == CollisionType::Block) {
-        const float seperationAmount = std::max(penetration - Settings.clipAllowed, 0.f) * Settings.clipDampeningFactor;
-        const Vector2 correctionVector = hitResult.hitNormal * seperationAmount;
-
-        const float aInvMass = a->GetMovability() == ActorMovability::Static ? 0.f : (1.f / a->GetMass());
-        const float bInvMass = b->GetMovability() == ActorMovability::Static ? 0.f : (1.f / b->GetMass());
-        const float totalInvMass = aInvMass + bInvMass;
-
-        if (totalInvMass > 0.f) {
-            a->AddLocalOffset(correctionVector * (aInvMass / totalInvMass));
-            b->AddLocalOffset(-correctionVector * (bInvMass / totalInvMass));
-        }
-
-        ApplyCollisionResponse(a, b, hitResult.hitNormal);
-    }
-
-    HitResult hitResultA = hitResult;
-    hitResultA.hitActor = b;
-    a->OnHit(hitResultA);
-
-    HitResult hitResultB = hitResult;
-    hitResultB.hitActor = a;
-    b->OnHit(hitResultB);
+    a->AddLocalOffset(correctionVector * (aInvMass / totalInvMass));
+    b->AddLocalOffset(-correctionVector * (bInvMass / totalInvMass));
 }
 
 void PhysicsController::Resolve() noexcept {

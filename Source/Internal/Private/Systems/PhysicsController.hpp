@@ -36,8 +36,11 @@ private:
         Actor* b;
         float toi;
         Vector2 normal;
+        Vector2 overlap;
+        bool isAxisX;
         bool bothBlocking;
     };
+    struct AxisTOI {float x = 1.f; float y = 1.f;};
 
     void UpdateActorVelocity(Actor* actor, float dt);
     
@@ -46,8 +49,7 @@ private:
         const Vector2& aSize, const Vector2& bSize,
         const Vector2& relativeDisplacement
     ) const;
-
-    void ApplyCollisionResponse(Actor* a, Actor* b, const Vector2& normal);
-    void ResolveOverlapCollision(Actor* a, Actor* b, const Vector2& aPos, const Vector2& bPos);
-
+    
+    void ApplyRestitutionImpulse(Actor* a, Actor* b, const Vector2& normal);
+    void ApplyPenetrationCorrection(Actor* a, Actor* b, const Vector2& normal, float penetration);
 };
