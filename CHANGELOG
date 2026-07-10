@@ -12,6 +12,8 @@ PATCHLOG:
 - Fixed an issue where the player could clip through the borders at the corners
 
 TODO:  
+- async debug
+- debug/release channels
 
 ---
 Update changelog for every change made to engine  
