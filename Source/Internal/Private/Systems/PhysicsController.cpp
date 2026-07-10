@@ -64,10 +64,19 @@ void PhysicsController::_TickPhysics(float dt) {
             pendingContacts.push_back({a, b, sweep.toi, sweep.normal, sweep.overlap, isAxisX, bothBlocking});
 
             if (bothBlocking) {
-                UpdateNearestAxis(a, isAxisX, sweep.toi);
-                UpdateNearestAxis(b, isAxisX, sweep.toi);
-            }
 
+                bool skipClamp = false;
+                if (sweep.toi <= 0.f) {
+                    const float normalVel = (a->GetVelocity() - b->GetVelocity()).Dot(sweep.normal);
+                    skipClamp = (normalVel > 0.f);
+                }
+
+                if (!skipClamp) {
+                    UpdateNearestAxis(a, isAxisX, sweep.toi);
+                    UpdateNearestAxis(b, isAxisX, sweep.toi);
+                }
+
+            }
         }
     }
 
@@ -215,10 +224,28 @@ PhysicsController::SweepResult PhysicsController::SweptAABB(
     result.collided = true;
     result.toi = std::max(0.f, finalEntry);
 
-    if (entryTime.x > entryTime.y) {
-        result.normal = Vector2(relativeDisplacement.x > 0.f ? -1.f : 1.f, 0.f);
+    result.overlap.x = std::min(aMax.x, bMax.x) - std::max(aMin.x, bMin.x);
+    result.overlap.y = std::min(aMax.y, bMax.y) - std::max(aMin.y, bMin.y);
+
+    if (result.toi <= 0) {
+        const Vector2 aCenter((aMin.x + aMax.x) * 0.5f, (aMin.y + aMax.y) * 0.5f);
+        const Vector2 bCenter((bMin.x + bMax.x) * 0.5f, (bMin.y + bMax.y) * 0.5f);
+        const float dx = bCenter.x - aCenter.x;
+        const float dy = bCenter.y - aCenter.y;
+
+        if (result.overlap.x < result.overlap.y) {
+            result.normal = Vector2(dx > 0.f ? -1.f : 1.f, 0.f);
+        } else {
+            result.normal = Vector2(0.f, dy > 0.f ? -1.f : 1.f);
+        }
     } else {
-        result.normal = Vector2(0.f, relativeDisplacement.y > 0.f ? -1.f : 1.f);
+
+        if (entryTime.x > entryTime.y) {
+            result.normal = Vector2(relativeDisplacement.x > 0.f ? -1.f : 1.f, 0.f);
+        } else {
+            result.normal = Vector2(0.f, relativeDisplacement.y > 0.f ? -1.f : 1.f);
+        }
+        
     }
 
     return result;

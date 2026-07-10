@@ -8,7 +8,7 @@
 SET_DEFAULT_SUBCLASS(Player, MyPlayer)
 
 MyPlayer::MyPlayer() : downraycast(Raycast()) {
-    
+    SetBounce(1.f);
 }
 
 void MyPlayer::BeginPlay() {

@@ -40,7 +40,10 @@ int main()
     Block* Obstacle1 = world->SpawnActor<Block>(Vector2(10,2));
     Obstacle1->SetSize(Vector2(5, 3));
     Obstacle1->ctex = 'O';
-    Obstacle1->SetCollisionType(CollisionType::Overlap);
+    Obstacle1->SetCollisionType(CollisionType::Block);
+    Obstacle1->SetSimulatingPhysics(false);
+    Obstacle1->SetMovability(ActorMovability::Static);
+    Obstacle1->SetBounce(0.5f);
 
     /// PLAYER SETUP
     PlayerController* playerController = instance->GetPlayerController();
