@@ -1,5 +1,8 @@
 /** @file PhysicsController.cpp */
 
+#include <limits>
+#include <unordered_map>
+
 #include "Game/Actors/Actor.hpp"
 #include "Core/Control/GameInstance.hpp"
 #include "Game/World/HitResult.hpp"
@@ -15,16 +18,20 @@ PhysicsController::PhysicsController() {
 
 void PhysicsController::_TickPhysics(float dt) {
     const ActorPool& actorPool = GameInstance::Get()->GetWorld()->GetAllActors();
+    constexpr float TOI_EPSILON = 1e-4f;
 
-    // update movement physics for each actor
+    // update velocity for each actor
     for (Actor* actor : actorPool) {
         if (!actor->isSimulatingPhysics()) { continue; }
         if (actor->GetMovability() == ActorMovability::Static) { continue; }
 
-        UpdateActorPropertiesTick(actor, dt);
+        UpdateActorVelocity(actor, dt);
     }
 
-    // update collision physics for each actor
+    // sweep every pair
+    std::vector<SweepPair> pendingContacts;
+    std::unordered_map<Actor*, float> nearestBlockTOI;
+
     for (Actor* a : actorPool) {
         if (a->GetCollisionType() == CollisionType::None) { continue; }
 
@@ -34,26 +41,99 @@ void PhysicsController::_TickPhysics(float dt) {
 
             const Vector2 aPos = a->GetPosition();
             const Vector2 bPos = b->GetPosition();
+            const Vector2 relativeDisplacement = (a->GetVelocity() - b->GetVelocity()) * dt;
 
-            // broadphase check against actors farther than 10'000.f units
-            if (aPos.SquaredDistance(bPos) >= 1'000'000'000.f) { continue; }
+            // broadphase check against actors farther than 10'000.f + (displacement) units
+            const float broadphaseRadius = 10'000.f + relativeDisplacement.Magnitude();
+            if (aPos.SquaredDistance(bPos) >= broadphaseRadius * broadphaseRadius) { continue; }
 
-            ResolveCollision(a, b, aPos, bPos);
+            const SweepResult sweep = SweptAABB(aPos, bPos, a->GetSize(), b->GetSize(), relativeDisplacement);
+            if (!sweep.collided) { continue; }
+
+            if (sweep.toi <= 0.f) {
+                // already touching at start of tick
+                ResolveOverlapCollision(a, b, aPos, bPos);
+                continue;
+            }
+
+            const bool bothBlocking = (a->GetCollisionType() == CollisionType::Block) && (b->GetCollisionType() == CollisionType::Block);
+
+            pendingContacts.push_back({a, b, sweep.toi, sweep.normal, bothBlocking});
+
+            if (bothBlocking) {
+                auto itA = nearestBlockTOI.find(a);
+                if (itA == nearestBlockTOI.end() || sweep.toi < itA->second) {nearestBlockTOI[a] = sweep.toi;}
+                auto itB = nearestBlockTOI.find(b);
+                if (itB == nearestBlockTOI.end() || sweep.toi < itB->second) {nearestBlockTOI[b] = sweep.toi;}
+            }
+
+
         }
+    }
+
+    auto getNearestBlockTOI = [&nearestBlockTOI](Actor* actor) -> float {
+        auto it = nearestBlockTOI.find(actor);
+        return (it != nearestBlockTOI.end()) ? it->second : 1.f;
+    };
+
+    auto OwnStoppingTOI = [&](Actor* actor) -> float {
+        if (actor->GetMovability() == ActorMovability::Static || !actor->isSimulatingPhysics()) {
+            return std::numeric_limits<float>::infinity();
+        }
+        return getNearestBlockTOI(actor);
+    };
+
+    for (Actor* actor : actorPool) {
+        if (!actor->isSimulatingPhysics()) { continue; }
+        if (actor->GetMovability() == ActorMovability::Static) { continue; }
+
+        const float toi = getNearestBlockTOI(actor);
+        actor->AddLocalOffset(actor->GetVelocity() * dt * toi);
+    }
+
+    for (const SweepPair& contact : pendingContacts) {
+        if (OwnStoppingTOI(contact.a) < contact.toi - TOI_EPSILON
+            || OwnStoppingTOI(contact.b) < contact.toi - TOI_EPSILON
+        ) { continue; }
+
+        if (contact.bothBlocking) {
+            ApplyCollisionResponse(contact.a, contact.b, contact.normal);
+        }
+
+        const Vector2 aPos = contact.a->GetPosition();
+        const Vector2 bPos = contact.b->GetPosition();
+        const Vector2 aSize = contact.a->GetSize();
+        const Vector2 bSize = contact.b->GetSize();
+
+        HitResult hitResult;
+        hitResult.distance = 0.f;
+        hitResult.hitNormal = contact.normal;
+        hitResult.hitOverlap = Vector2(
+            std::min(aPos.x + aSize.x, bPos.x + bSize.x) - std::max(aPos.x, bPos.x),
+            std::min(aPos.y, bPos.y) - std::max(aPos.y - aSize.y, bPos.y - bSize.y)
+        );
+        hitResult.hitPosition = Vector2(std::max(aPos.x, bPos.x), std::min(aPos.y, bPos.y));
+
+        HitResult hitResultA = hitResult;
+        hitResultA.hitActor = contact.b;
+        contact.a->OnHit(hitResultA);
+
+        HitResult hitResultB = hitResult;
+        hitResultB.hitActor = contact.a;
+        hitResultB.hitNormal = -contact.normal;
+        contact.b->OnHit(hitResultB);
     }
 
 }
 
-void PhysicsController::UpdateActorPropertiesTick(Actor* actor, float dt) {
+void PhysicsController::UpdateActorVelocity(Actor* actor, float dt) {
     const World::WorldSettings& Settings = GameInstance::Get()->GetWorld()->Settings;
-    
-    // Sum all acting forces
+
     Vector2 forces = actor->GetForces();
     if (Settings.doGravity) {
         if (actor->IsUsingAsymmetricGravity() && actor->GetVelocity().Dot(Vector2::Up()) > 0.f) {
-            forces += Vector2(0, -Settings.upGravity); 
+            forces += Vector2(0, -Settings.upGravity);
         } else {
-            // down gravity used if actor isnt asymettric
             forces += Vector2(0, -Settings.downGravity);
         }
     }
@@ -61,30 +141,111 @@ void PhysicsController::UpdateActorPropertiesTick(Actor* actor, float dt) {
     const Vector2 acceleration = forces / actor->GetMass();
     const Vector2 dVelocity = acceleration * dt;
 
-    actor->AddImpulse(dVelocity); // update velocity based on acceleration
-    actor->AddLocalOffset(actor->GetVelocity() * dt); // update position
-
-    actor->ClearForces(); // clear forces for next tick
+    actor->AddImpulse(dVelocity);
+    actor->ClearForces();
 }
 
-void PhysicsController::ResolveCollision(Actor* a, Actor* b, const Vector2& aPos, const Vector2& bPos) {
+PhysicsController::SweepResult PhysicsController::SweptAABB(
+    const Vector2& aPos, const Vector2 bPos,
+    const Vector2& aSize, const Vector2& bSize,
+    const Vector2& relativeDisplacement
+) const
+{
+    SweepResult result;
+
+    const Vector2 aMin(aPos.x, aPos.y - aSize.y);
+    const Vector2 aMax(aPos.x + aSize.x, aPos.y);
+    const Vector2 bMin(bPos.x, bPos.y - bSize.y);
+    const Vector2 bMax(bPos.x + bSize.x, bPos.y);
+
+    Vector2 entryTime, exitTime;
+
+    if (relativeDisplacement.x > 0.f) {
+        entryTime.x = (bMin.x - aMax.x) / relativeDisplacement.x;
+        exitTime.x  = (bMax.x - aMin.x) / relativeDisplacement.x;
+    } else if (relativeDisplacement.x < 0.f) {
+        entryTime.x = (bMax.x - aMin.x) / relativeDisplacement.x;
+        exitTime.x  = (bMin.x - aMax.x) / relativeDisplacement.x;
+    } else if (aMax.x > bMin.x && aMin.x < bMax.x) {
+        entryTime.x = -std::numeric_limits<float>::infinity();
+        exitTime.x  =  std::numeric_limits<float>::infinity();
+    } else {
+        entryTime.x =  std::numeric_limits<float>::infinity();
+        exitTime.x  = -std::numeric_limits<float>::infinity();
+    }
+
+    if (relativeDisplacement.y > 0.f) {
+        entryTime.y = (bMin.y - aMax.y) / relativeDisplacement.y;
+        exitTime.y  = (bMax.y - aMin.y) / relativeDisplacement.y;
+    } else if (relativeDisplacement.y < 0.f) {
+        entryTime.y = (bMax.y - aMin.y) / relativeDisplacement.y;
+        exitTime.y  = (bMin.y - aMax.y) / relativeDisplacement.y;
+    } else if (aMax.y > bMin.y && aMin.y < bMax.y) {
+        entryTime.y = -std::numeric_limits<float>::infinity();
+        exitTime.y  =  std::numeric_limits<float>::infinity();
+    } else {
+        entryTime.y =  std::numeric_limits<float>::infinity();
+        exitTime.y  = -std::numeric_limits<float>::infinity();
+    }
+
+    const float finalEntry = std::max(entryTime.x, entryTime.y);
+    const float finalExit  = std::min(exitTime.x, exitTime.y);
+
+    if (finalEntry > finalExit
+        || finalExit < 0.f
+        || finalEntry > 1.f
+    ) { return result; }
+
+    result.collided = true;
+    result.toi = std::max(0.f, finalEntry);
+
+    if (entryTime.x > entryTime.y) {
+        result.normal = Vector2(relativeDisplacement.x > 0.f ? -1.f : 1.f, 0.f);
+    } else {
+        result.normal = Vector2(0.f, relativeDisplacement.y > 0.f ? -1.f : 1.f);
+    }
+
+    return result;
+}
+
+void PhysicsController::ApplyCollisionResponse(Actor* a, Actor* b, const Vector2& normal) {
+    const World::WorldSettings& Settings = GameInstance::Get()->GetWorld()->Settings;
+
+    const float aInvMass = a->GetMovability() == ActorMovability::Static ? 0.f : (1.f / a->GetMass());
+    const float bInvMass = b->GetMovability() == ActorMovability::Static ? 0.f : (1.f / b->GetMass());
+    const float totalInvMass = aInvMass + bInvMass;
+    if (totalInvMass <= 0.f) { return; }
+
+    const Vector2 relativeVel = a->GetVelocity() - b->GetVelocity() ;
+    const float normalVel = relativeVel.Dot(normal);
+    if (normalVel >= 0.f) { return; }
+
+    float restitution = a->GetBounce() * b->GetBounce();
+    if (std::abs(normalVel) < Settings.bounceThreshold) { restitution = 0.f; }
+    
+    const float impulseMag = -(1.f + restitution) * normalVel / totalInvMass;
+    const Vector2 impulse = normal * impulseMag;
+
+    a->AddImpulse(impulse * aInvMass);
+    b->AddImpulse(-impulse * bInvMass);
+}
+
+void PhysicsController::ResolveOverlapCollision(Actor* a, Actor* b, const Vector2& aPos, const Vector2& bPos) {
     const World::WorldSettings& Settings = GameInstance::Get()->GetWorld()->Settings;
 
     const Vector2 aSize = a->GetSize();
     const Vector2 bSize = b->GetSize();
     const Vector2 aHalfSize = aSize * 0.5f;
     const Vector2 bHalfSize = bSize * 0.5f;
-    const Vector2 aCenter = Vector2( aPos.x + aHalfSize.x , aPos.y - aHalfSize.y );
-    const Vector2 bCenter = Vector2( bPos.x + bHalfSize.x , bPos.y - bHalfSize.y );
+    const Vector2 aCenter = Vector2(aPos.x + aHalfSize.x, aPos.y - aHalfSize.y);
+    const Vector2 bCenter = Vector2(bPos.x + bHalfSize.x, bPos.y - bHalfSize.y);
     const float dx = bCenter.x - aCenter.x;
     const float dy = bCenter.y - aCenter.y;
     const float overlapX = (aHalfSize.x + bHalfSize.x) - std::abs(dx);
     const float overlapY = (aHalfSize.y + bHalfSize.y) - std::abs(dy);
 
-    // check for actual overlap
-    if ( !(overlapX > 0.f && overlapY > 0.f) ) { return; }
+    if (!(overlapX > 0.f && overlapY > 0.f)) { return; }
 
-    // calculate hit details
     HitResult hitResult;
     hitResult.distance = 0.f;
 
@@ -96,8 +257,7 @@ void PhysicsController::ResolveCollision(Actor* a, Actor* b, const Vector2& aPos
         penetration = overlapY;
         hitResult.hitNormal.y = dy > 0.f ? -1.f : 1.f;
     }
-    
-    // overlap box
+
     const float left = std::max(aPos.x, bPos.x);
     const float right = std::min(aPos.x + aSize.x, bPos.x + bSize.x);
     const float top = std::min(aPos.y, bPos.y);
@@ -106,49 +266,29 @@ void PhysicsController::ResolveCollision(Actor* a, Actor* b, const Vector2& aPos
     hitResult.hitOverlap = Vector2(right - left, top - bot);
     hitResult.hitPosition = Vector2(left, top);
 
-    // only apply collision correction if both actors are blocking
     if (a->GetCollisionType() == CollisionType::Block && b->GetCollisionType() == CollisionType::Block) {
-        // calculate correction details
         const float seperationAmount = std::max(penetration - Settings.clipAllowed, 0.f) * Settings.clipDampeningFactor;
         const Vector2 correctionVector = hitResult.hitNormal * seperationAmount;
 
-        // weighted correction based on mass
         const float aInvMass = a->GetMovability() == ActorMovability::Static ? 0.f : (1.f / a->GetMass());
         const float bInvMass = b->GetMovability() == ActorMovability::Static ? 0.f : (1.f / b->GetMass());
         const float totalInvMass = aInvMass + bInvMass;
 
-        // correct positions
         if (totalInvMass > 0.f) {
-            a->AddLocalOffset( correctionVector * (aInvMass / totalInvMass) );
-            b->AddLocalOffset( -correctionVector * (bInvMass / totalInvMass) );
+            a->AddLocalOffset(correctionVector * (aInvMass / totalInvMass));
+            b->AddLocalOffset(-correctionVector * (bInvMass / totalInvMass));
         }
 
-        // apply impulse based on newtons law of restitution
-        const Vector2 relativeVel = a->GetVelocity() - b->GetVelocity() ;
-        const float normalVel = relativeVel.Dot(hitResult.hitNormal);
+        ApplyCollisionResponse(a, b, hitResult.hitNormal);
+    }
 
-        if (normalVel < 0.f && totalInvMass > 0.f) {
-            float restitution = a->GetBounce() * b->GetBounce(); // amount of bounce
+    HitResult hitResultA = hitResult;
+    hitResultA.hitActor = b;
+    a->OnHit(hitResultA);
 
-            if (std::abs(normalVel) < Settings.bounceThreshold) { restitution = 0.f; } // low restitutions dont bounce
-
-            const float impulseMag = -(1.f + restitution) * normalVel / totalInvMass;
-            const Vector2 impulse = hitResult.hitNormal * impulseMag;
-
-            // conservation of energy
-            a->AddImpulse(impulse * aInvMass);
-            b->AddImpulse(-impulse * bInvMass);
-        }
-    }   
-
-    // always dispatch hit events even if not blocking
-    HitResult HitResultA = hitResult;
-    HitResultA.hitActor = b;
-    a->OnHit(HitResultA);
-
-    HitResult HitResultB = hitResult;
-    HitResultB.hitActor = a;
-    b->OnHit(HitResultB);
+    HitResult hitResultB = hitResult;
+    hitResultB.hitActor = a;
+    b->OnHit(hitResultB);
 }
 
 void PhysicsController::Resolve() noexcept {
