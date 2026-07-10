@@ -20,11 +20,13 @@ void MyPlayer::BeginPlay() {
 }
 
 void MyPlayer::Tick(float dt) {
-    HitResult hit;
-    downraycast.origin = GetPosition() + Vector2::Right() * GetSize().x;
-    downraycast.Cast(hit);
+    // HitResult hit;
+    // downraycast.origin = GetPosition() + Vector2::Right() * GetSize().x;
+    // downraycast.Cast(hit);
 
-    // if (hit.hitActor) {
-    //     LOG_DEFAULT(LogType::DEBUG, "{}", hit.distance); 
-    // }
+    // // if (hit.hitActor) {
+    // //     LOG_DEFAULT(LogType::DEBUG, "{}", hit.distance); 
+    // // }
+
+    LOG_DEFAULT(LogType::DEBUG, "{}", GetPosition().ToStringF());
 }
