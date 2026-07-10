@@ -13,7 +13,7 @@
  */
 enum class ActorMovability
 {
-    Movable, ///< @brief Actor is collision corrected 
+    Movable, ///< @brief Physics can move actor 
     Static ///< @brief Actor is physics-immovable
 };
 
