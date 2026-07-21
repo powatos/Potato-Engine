@@ -1,20 +1,87 @@
 /** @file Debug.cpp */
 
 #include <chrono>
+#include <queue>
+#include <mutex>
+#include <thread>
+#include <condition_variable>
+#include <atomic>
 #include <iomanip>
+#include <fstream>
 
 #include "fmt/chrono.h"
 
-#include "Debug.hpp"
+#include "Log.hpp"
 
 Logger LOG_DEFAULT;
 
-void Logger::init(const char* path){    
-    LogFile.open(path, std::ios::trunc);
-    LogFile.clear();
+struct Logger::LogAsyncImpl
+{
+    std::ofstream logFile;
+    std::queue<LogEntry> logQueue;
+    std::mutex queueMutex;
+    std::condition_variable cv;
+    std::thread t;
+    std::atomic<bool> isRunning{true};
+};
+
+Logger::Logger() : i_LogAsyncImpl(std::make_unique<LogAsyncImpl>()) {}
+
+void Logger::pushLog(LogEntry entry) {
+    {
+        std::lock_guard<std::mutex> lock(i_LogAsyncImpl->queueMutex);
+        i_LogAsyncImpl->logQueue.push(std::move(entry));
+    }
+
+    i_LogAsyncImpl->cv.notify_one();
 }
 
-std::string Logger::getTimestampUTC() {
+void Logger::processLogs() {
+
+    while (true) {
+        std::queue<LogEntry> localQueue;
+
+        {
+            std::unique_lock<std::mutex> lock(i_LogAsyncImpl->queueMutex);
+
+            i_LogAsyncImpl->cv.wait(lock, [this](){
+                return !i_LogAsyncImpl->logQueue.empty() || !i_LogAsyncImpl->isRunning;
+            });
+
+            if (!i_LogAsyncImpl->isRunning && i_LogAsyncImpl->logQueue.empty()) { break; }
+
+            localQueue.swap(i_LogAsyncImpl->logQueue);
+        }
+
+        while (!localQueue.empty()) {
+            const LogEntry& entry = localQueue.front();
+            const std::string colorMod = LogColorMap.at(entry.type);
+            const std::string logName = LogNameMap.at(entry.type);
+        
+            i_LogAsyncImpl->logFile 
+                << entry.timestamp << " - "
+                << colorMod << logName << '\t' << "\x1b[0m"
+                << " | "
+                << colorMod << entry.message << "\x1b[0m" << std::endl;
+
+            localQueue.pop();
+        }
+
+        i_LogAsyncImpl->logFile.flush();
+
+    }
+
+}
+
+void Logger::init(const char* path){    
+    i_LogAsyncImpl->logFile.open(path, std::ios::trunc);
+    i_LogAsyncImpl->logFile.clear();
+
+    i_LogAsyncImpl->t = std::thread(&Logger::processLogs, this);
+
+}
+
+const std::string Logger::getTimestampUTC() const {
     using namespace std::chrono;
 
     auto now = system_clock::now();
@@ -37,7 +104,15 @@ std::string Logger::getTimestampUTC() {
 }
 
 Logger::~Logger() {
-    if (LogFile.is_open()) {
-        LogFile.close();
+
+    i_LogAsyncImpl->isRunning = false;
+    i_LogAsyncImpl->cv.notify_one();
+
+    if (i_LogAsyncImpl->t.joinable()) {
+        i_LogAsyncImpl->t.join();
+    }
+
+    if (i_LogAsyncImpl->logFile.is_open()) {
+        i_LogAsyncImpl->logFile.close();
     }
 }

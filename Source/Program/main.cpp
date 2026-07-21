@@ -12,7 +12,7 @@
 #include <Core/Textures/TextureManager.hpp>
 #include <Core/Textures/Texture.hpp>
 
-#include <Debug/Debug.hpp>
+#include <Debug/Log.hpp>
 #include <Util/Vector2.hpp>
 
 #include <memory>
