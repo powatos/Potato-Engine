@@ -41,8 +41,8 @@ int main()
     Obstacle1->SetSize(Vector2(5, 3));
     Obstacle1->ctex = 'O';
     Obstacle1->SetCollisionType(CollisionType::Block);
-    Obstacle1->SetSimulatingPhysics(false);
-    Obstacle1->SetMovability(ActorMovability::Static);
+    Obstacle1->SetSimulatingPhysics(true);
+    Obstacle1->SetMovability(ActorMovability::Movable);
     Obstacle1->SetBounce(0.5f);
 
     /// PLAYER SETUP
