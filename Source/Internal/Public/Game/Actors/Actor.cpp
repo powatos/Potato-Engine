@@ -8,7 +8,7 @@
 #include "Game/World/World.hpp"
 #include "Core/Textures/TextureManager.hpp"
 
-#include "Debug/Debug.hpp"
+#include "Debug/Log.hpp"
 #include "Util/Vector2.hpp"
 
 #include "Actor.hpp"

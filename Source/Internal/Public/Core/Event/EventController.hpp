@@ -8,7 +8,7 @@
 #include "Core/Singleton.hpp"
 #include "NativeEventBinding.hpp"
 
-#include "Debug/Debug.hpp"
+#include "Debug/Log.hpp"
 
 /**
  * @brief Class for event managing

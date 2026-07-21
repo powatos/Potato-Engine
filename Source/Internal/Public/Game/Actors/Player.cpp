@@ -4,7 +4,7 @@
 #include "Core/Input/InputController.hpp"
 #include "Core/PotatoEngine.hpp"
 
-#include "Debug/Debug.hpp"
+#include "Debug/Log.hpp"
 #include "Util/GameplayHelper.hpp"
 
 #include "Player.hpp"

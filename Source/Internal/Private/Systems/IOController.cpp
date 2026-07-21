@@ -8,7 +8,7 @@
 #include <cmath>
 #include <chrono>
 
-#include "Debug/Debug.hpp"
+#include "Debug/Log.hpp"
 #include "Util/Vector2.hpp"
 #include "Game/World/World.hpp"
 #include "Util/GameplayHelper.hpp"

@@ -1,6 +1,6 @@
 /** @file TimerManager.cpp */
 
-#include "Debug/Debug.hpp"
+#include "Debug/Log.hpp"
 
 #include "TimerManager.hpp"
 

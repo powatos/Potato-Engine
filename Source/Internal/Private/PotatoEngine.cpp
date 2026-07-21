@@ -18,7 +18,7 @@
 #include "Core/Input/InputController.hpp"
 #include "Util/TimerManager.hpp"
 
-#include "Debug/Debug.hpp"
+#include "Debug/Log.hpp"
 
 #include "Core/PotatoEngine.hpp"
 
@@ -27,7 +27,7 @@ void clearConsole();
 PotatoEngine::PotatoEngine() {
     startup();
 
-    Debug::BindDebugLogs();
+    DebugLogs::BindDebugLogs();
 
     LOG_DEFAULT(LogType::VITAL, "PotatoEngine constructed");
 

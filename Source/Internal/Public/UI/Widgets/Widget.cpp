@@ -2,7 +2,7 @@
 
 #include "WidgetElement.hpp"
 
-#include "Debug/Debug.hpp"
+#include "Debug/Log.hpp"
 
 #include "Widget.hpp"
 

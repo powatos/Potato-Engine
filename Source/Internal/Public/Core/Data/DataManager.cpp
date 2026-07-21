@@ -1,6 +1,6 @@
 /** @file DataManager.cpp */
 
-#include "Debug/Debug.hpp"
+#include "Debug/Log.hpp"
 
 #include "DataManager.hpp"
 

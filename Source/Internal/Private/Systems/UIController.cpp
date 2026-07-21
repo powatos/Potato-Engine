@@ -3,7 +3,7 @@
 #include "IOController.hpp"
 #include "UI/Widgets/Widget.hpp"
 
-#include "Debug/Debug.hpp"
+#include "Debug/Log.hpp"
 
 #include "UIController.hpp"
 UIController::UIController() {

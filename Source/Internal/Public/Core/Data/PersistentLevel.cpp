@@ -5,7 +5,7 @@
 #include "Game/World/World.hpp"
 #include "nlohmann/json.hpp"
 
-#include "Debug/Debug.hpp"
+#include "Debug/Log.hpp"
 #include "Util/Vector2.hpp"
 
 #include "PersistentLevel.hpp"

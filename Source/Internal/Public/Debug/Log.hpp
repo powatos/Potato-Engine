@@ -76,7 +76,7 @@ private:
  * - add to @ref Debug::BindDebugLogs "bindings"
  * - instantiate at the top of source file: `Logger {logger}`
  */
-namespace Debug
+namespace DebugLogs
 {
     // construct global Logger objects, bind to log files
     /**

@@ -8,7 +8,7 @@
 #include "Game/World/HitResult.hpp"
 
 #include "Util/GameplayHelper.hpp"
-#include "Debug/Debug.hpp"
+#include "Debug/Log.hpp"
 
 #include "PhysicsController.hpp"
 

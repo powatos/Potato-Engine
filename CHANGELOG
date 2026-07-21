@@ -5,6 +5,7 @@ CHANGELOG:
 - Updated tutorial
 - Timers assert argument-to-callback convertibility
 - Added setting to disable default world walls
+- Improved physics logic/collision responses with swept detection
 
 PATCHLOG:
 - Fixed an issue with timer creation that forwarded arguments *too* perfectly

@@ -5,7 +5,7 @@
 
 #include "Game/Control/PlayerController.hpp"
 
-#include "Debug/Debug.hpp"
+#include "Debug/Log.hpp"
 
 /**
  * @brief A wrapper that carries response delegate information

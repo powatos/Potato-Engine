@@ -3,7 +3,7 @@
 #include "Game/Actors/Block.hpp"
 #include "Game/Actors/Player.hpp"
 
-#include "Debug/Debug.hpp"
+#include "Debug/Log.hpp"
 
 #include "World.hpp"
 

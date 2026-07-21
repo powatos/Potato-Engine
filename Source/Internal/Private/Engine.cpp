@@ -8,7 +8,7 @@
 #include "Systems/IOController.hpp"
 #include "Core/Tick/TickController.hpp"
 
-#include "Debug/Debug.hpp"
+#include "Debug/Log.hpp"
 
 #include "Engine.hpp"
 

@@ -6,7 +6,7 @@
 
 #include "Core/Data/DataManager.hpp"
 
-#include "Debug/Debug.hpp"
+#include "Debug/Log.hpp"
 
 #include "utfcpp/utf8/unchecked.h"
 

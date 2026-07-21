@@ -1,7 +1,7 @@
 
 #include "Core/Control/GameInstance.hpp"
 
-#include "Debug/Debug.hpp"
+#include "Debug/Log.hpp"
 
 #include "MyPlayer.hpp"
 

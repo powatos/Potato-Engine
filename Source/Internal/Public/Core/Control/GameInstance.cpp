@@ -4,7 +4,7 @@
 #include "Game/Actors/Player.hpp"
 #include "Game/World/World.hpp"
 
-#include "Debug/Debug.hpp"
+#include "Debug/Log.hpp"
 
 #include "GameInstance.hpp"
 
