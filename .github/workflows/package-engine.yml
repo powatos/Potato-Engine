@@ -14,6 +14,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      
+      - name: Get latest release
+        id: latest_release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const release = await github.rest.repos.getLatestRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+
+            core.setOutput("tag", release.data.tag_name);
 
       - name: Stage archive
         run: |
@@ -41,16 +53,16 @@ jobs:
         
       - name: Upload archive to release
         uses: softprops/action-gh-release@v2
-        if: github.event_name == 'release' 
         with:
+          tag_name: ${{ steps.latest_release.outputs.tag }}
           files: PotatoEngine.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Upload scripts to release
         uses: softprops/action-gh-release@v2
-        if: github.event_name == 'release' 
         with:
+          tag_name: ${{ steps.latest_release.outputs.tag }}
           files: staging/scripts/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
