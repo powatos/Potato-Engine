@@ -1,17 +1,8 @@
-Version v2.0.4
+Version v2.0.5
 
 CHANGELOG:  
 
-- Updated tutorial
-- Timers assert argument-to-callback convertibility
-- Added setting to disable default world walls
-- Improved physics logic/collision responses with swept detection
-- Debug now logs on a background thread; near-zero log latency
-
 PATCHLOG:
-- Fixed an issue with timer creation that forwarded arguments *too* perfectly
-- Fixed an issue with checking overlaps in `GameplayHelpers`
-- Fixed an issue where the player could clip through the borders at the corners
 
 TODO:  
 - debug/release channels
