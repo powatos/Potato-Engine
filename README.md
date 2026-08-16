@@ -1,6 +1,10 @@
 # Potato Engine
 
-**Potato Engine is currently in development**
+**Development of Potato Engine has now migrated to [Potato Engine 2](www.github.com/powatos/PotatoEnginev2)—a more powerful, optimized, and scalable engine using SDL3. Potato Engine 2 is currently under development!**
+
+*Note: The repository for Potato Engine (v1) will be archived upon release of Potato Engine 2. Potato Engine is no longer being maintained after v2.0.4. The following contents of this README are only accurate up to v2.0.4.*
+
+---
 
 Potato Engine is a lightweight terminal based game engine designed for C++ development. This was inspired by Unreal Engine and initiated for [Horizons by Hack Club](https://horizons.hackclub.com).
 
