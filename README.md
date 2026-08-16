@@ -1,8 +1,8 @@
 # Potato Engine
 
-**Development of Potato Engine has now migrated to [Potato Engine 2](www.github.com/powatos/PotatoEnginev2)—a more powerful, optimized, and scalable engine using SDL3. Potato Engine 2 is currently under development!**
+**Development of Potato Engine has now migrated to [Potato Engine 2](www.github.com/powatos/Potato-Engine-2)—a more powerful, optimized, and scalable engine using SDL3, built to accommodate the limitations of the original. Potato Engine 2 is currently under development!**
 
-*Note: The repository for Potato Engine (v1) will be archived upon release of Potato Engine 2. Potato Engine is no longer being maintained after v2.0.4. The following contents of this README are only accurate up to v2.0.4.*
+*Note: The repository for Potato Engine (v1) will be archived upon release of Potato Engine 2. Potato Engine is no longer being maintained after v2.0.4. The following contents of this README and the documentation page are only accurate up to v2.0.4.*
 
 ---
 
